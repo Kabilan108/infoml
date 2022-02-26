@@ -170,3 +170,26 @@ def kmeans(data: pd.DataFrame, k: int=2, facet_by: str=None) -> tuple:
         info.name = "Cluster Information"
 
         return (info.reset_index(), data.reset_index())
+
+def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
+    """
+    Wrire multiple data frames to an excel file.
+    @param writer
+        An pd.ExcelWriter object
+    @param sheet_name
+        Name of sheet to write data to
+    @param **dfs
+        Names and pandas dataframes
+    """
+    # Initialize worksheet
+    worksheet = writer.book.create_sheet(sheet_name)
+    writer.sheets[sheet_name] = worksheet
+
+    # Write Data Frames to sheet
+    i = 1
+    for (name, df) in dfs.items():
+        # Write data frame to sheet
+        worksheet.cell(row=i, column=1, value=name.replace("_", " "))
+        df.to_excel(writer, sheet_name=sheet_name, start_row=1, startcol=0)
+        # Next data frame starts at
+        i += df.shape[0] + 4
