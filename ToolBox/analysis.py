@@ -1,4 +1,4 @@
-""" Analysis.py
+""" analysis.py
 Useful python functions, classes etc.
 """
 
