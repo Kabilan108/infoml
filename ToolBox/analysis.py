@@ -1,5 +1,6 @@
 """ analysis.py
-Useful python functions, classes etc.
+These functions come in handy when working on data analysis projects.
+I've mainly used them so far in my work for Dr. Laudanski
 """
 
 # Imports
