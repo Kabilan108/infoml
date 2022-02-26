@@ -197,8 +197,9 @@ def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
 
     return
 
-def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None, hue_order: list=None,
-                kind: str='bar', title: str='', xlabs: list=None, filename: str=None) -> None:
+def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
+                hue_order: list=None, kind: str='bar', title: str='',
+                xlabs: list=None, filename: str=None, **plt_kwargs) -> None:
     """
     Generate Visualizations for KMeans Clustering Results
     @param data
@@ -233,7 +234,7 @@ def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None, hu
 
     # Generate Figure
     g = sns.catplot(x='variable', y='value', hue=hue, col='Cluster', hue_order=hue_order,
-                    dodge=.5, saturation=.5, kind=kind, data=data) \
+                    dodge=.5, saturation=.5, kind=kind, data=data, **plt_kwargs) \
             .set(yscale='log') \
             .set_titles(col_template='Cluster {col_name}', size=15) \
             .set_axis_labels('', '') \
