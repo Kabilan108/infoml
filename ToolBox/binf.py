@@ -7,12 +7,12 @@ algorithms.
 # Imports
 import Bio.Align as Align
 import numpy as np
-from typing import Union
+from typing import Union as _Union
 
 
 # Definitions
 def swalign(a: str, b: str, gap: int=-5, submat: Align.substitution_matrices.Array=None,
-            scoreonly: bool=False, identonly: bool=False) -> Union[int, float, dict]:
+            scoreonly: bool=False, identonly: bool=False) -> _Union[int, float, dict]:
     """
     This is a custom implementation of the Smith-Waterman Local Sequence Alignment Algorithm.
     It is based on a code written by Dr. Ahmet Sacan <ahmetmsacan@gmail.com>
