@@ -51,7 +51,7 @@ def see_distn(data: pd.DataFrame, title: str='') -> None:
         g.fig.subplots_adjust(hspace=.3, top=.9)
         plt.show()
     except:
-        rich.print("[red]ERROR:[/red] Please provide a valid DataFrame (Ideally, the result of pd.DataFrame.melt()).")
+        rich.print("[red bold]ERROR:[/red bold] Please provide a valid DataFrame (Ideally, the result of pd.DataFrame.melt()).")
 
 def rmoutliers(x: pd.Series) -> pd.Series:
     """
@@ -124,6 +124,8 @@ def kmeans(data: pd.DataFrame, k: int=2, facet_by: str=None) -> tuple:
         Number of clusters
     @param facet
         Column to split data on when clustering. Must be within Data Frame Index
+    @return
+        Tuple containing cluster info and labelled data
     """
 
     # Remove missing data and select only numeric columns from data
@@ -150,7 +152,7 @@ def kmeans(data: pd.DataFrame, k: int=2, facet_by: str=None) -> tuple:
                         
             return (info, data)
         else:
-            rich.print("[red]ERROR:[/red] Facet not in Data Frame Index.")
+            rich.print("[red bold]ERROR:[/red bold] Facet not in Data Frame Index.")
     else:
         # Fit data to kmeans cluster model
         fit = cluster.KMeans(n_clusters=k, random_state=69).fit(data.values)
@@ -172,7 +174,7 @@ def kmeans(data: pd.DataFrame, k: int=2, facet_by: str=None) -> tuple:
 
 def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
     """
-    Wrire multiple data frames to an excel file.
+    Write multiple data frames to an excel file.
     @param writer
         An pd.ExcelWriter object
     @param sheet_name
@@ -192,3 +194,55 @@ def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
         df.to_excel(writer, sheet_name=sheet_name, startrow=i, startcol=0)
         # Next data frame starts at
         i += df.shape[0] + 4
+
+    return
+
+def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None, hue_order: list=None,
+                kind: str='bar', title: str='', xlabs: list=None, filename: str=None) -> None:
+    """
+    Generate Visualizations for KMeans Clustering Results
+    @param data
+        Pandas Data Frame
+    @param id_vars
+        List of id_vars for the pd.DataFrame.melt() method
+    @param hue
+        data column to use for figure colors
+    @param hue_order
+        List defining color order
+    @param kind
+        Type of plot to generate (either 'bar' or 'box')
+    @param title
+        Figure title
+    @param xlabs
+        List of labels for the horizontal axis
+    """
+
+    # Validate inputs
+    if kind not in ['box', 'bar']:
+        rich.print("[red bold]ERROR:[/red bold] Provide a valid plot type ('bar' or 'box').")
+        return
+    if not set(id_vars).issubset(set(data.columns)):
+        rich.print("[red bold]ERROR:[/red bold] id_vars must contain valid columns data.")
+        return
+    if hue not in data.columns:
+        rich.print("[red bold]ERROR:[/red bold] hue must be a valid column of data.")
+        return
+
+    # Melt data
+    data = data.melt(id_vars=id_vars)
+
+    # Generate Figure
+    g = sns.catplot(x='variable', y='value', hue=hue, col='Cluster', hue_order=hue_order,
+                    dodge=.5, saturation=.5, kind=kind, data=data) \
+            .set(yscale='log') \
+            .set_titles(col_template='Cluster {col_name}', size=15) \
+            .set_axis_labels('', '') \
+            .set_xticklabels(xlabs)
+    g.fig.subplots_adjust(top=.85)
+    g.fig.suptitle(title, fontsize=15)
+
+    # Save figure if necessary
+    if filename is not None:
+        plt.savefig(filename)
+
+    return 
