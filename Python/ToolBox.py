@@ -1,11 +1,12 @@
 # Useful python functions, classes etc.
 
 # Imports
+import sklearn.preprocessing as preprocess
+import sklearn.cluster as cluster
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 import itertools as Iter
 import seaborn as sns
-import sklearn as sk
 import pandas as pd
 import numpy as np
 import rich
@@ -65,3 +66,33 @@ def rmoutliers(x: pd.Series) -> pd.Series:
     x[x > Q3 + 1.5*(Q3-Q1)] = np.NaN
 
     return x
+
+def elbow_plot(data: pd.DataFrame, max_k: int=10, title: str='') -> None:
+    """
+    Generate an elbow plot to determine optimal K for K-means clusters.
+    @param data
+        Pandas DataFrame
+    @param max_k
+        Maximum number of clusters to test
+    @param title
+        Title of Elbow plot
+    """
+
+    # Scale data before use
+    scaler = preprocess.StandardScaler()
+    normal_data = scaler.fit_transform(data.dropna().values)
+
+    # Create elbow plot
+    inertia = []
+    for k in range(1, max_k+1):
+        fit = cluster.KMeans(n_clusters=k).fit(normal_data)
+        fit.fit(normal_data)
+        inertia.append(fit.inertia_)
+
+    # Create figure
+    plt.figure(figsize=(5,3))
+    plt.plot(K, inertia, 'go-')
+    plt.xlabel("k")
+    plt.ylabel("Inertia")
+    plt.title(title)
+    plt.show()
