@@ -3,6 +3,7 @@
 # Imports
 import sklearn.preprocessing as preprocess
 import sklearn.cluster as cluster
+import IPython.display as ipy_display
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 import itertools as Iter
@@ -10,8 +11,6 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 import rich
-
-from IPython.display import display_html
 
 
 # Definitions
@@ -30,7 +29,7 @@ def show_dfs(*args: pd.DataFrame, titles: Iter.cycle=Iter.cycle([''])) -> None:
         html_str += f"<h2>{title}</h2>"
         html_str += df.to_html().replace("table", "table style='display: inline'")
         html_str += "</td></th>"
-    display_html(html_str, raw=True)
+    ipy_display.display_html(html_str, raw=True)
 
     return
 
