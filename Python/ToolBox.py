@@ -115,3 +115,58 @@ def calculate_pvalues(df: pd.DataFrame) -> pd.DataFrame:
             pvalues[r][c] = round(stats.pearsonr(df[r], df[c])[1], 10)
 
     return pvalues
+
+def kmeans(data: pd.DataFrame, k: int=2, facet_by: str=None) -> tuple:
+    """
+    Wrapper for sklearn.cluster.KMeans()
+    @param data
+        Pandas dataframe (Result of pd.DataFrame.melt())
+    @param k
+        Number of clusters
+    @param facet
+        Column to split data on when clustering. Must be within Data Frame Index
+    """
+
+    # Remove missing data and select only numeric columns from data
+    data = data._get_numeric_data().dropna()
+    
+    if facet_by is not None:
+        # Verify that facet is valid
+        if facet_by in data.index.names:
+            # Loop through facets
+            info = []
+            sset = []
+            for facet in data.index.to_frame(index=False)[facet_by].unique():
+                # Compute clusters on subset of data (recursive)
+                (i,d) = kmeans(data[data.index.get_level_values(facet_by).isin([facet])], k)
+                # Add facet to cluster information
+                i[facet_by] = facet
+                # Append new data
+                info.append(i)
+                sset.append(d)
+
+            # Concatenate data
+            info = pd.concat(info)
+            data = pd.concat(sset)
+                        
+            return (info, data)
+        else:
+            rich.print("[red]ERROR:[/red] Facet not in Data Frame Index.")
+    else:
+        # Fit data to kmeans cluster model
+        fit = cluster.KMeans(n_clusters=k, random_state=69).fit(data.values)
+        
+        # Add cluster labels to data
+        data = pd.concat([data.reset_index(), pd.DataFrame(fit.labels_)], axis=1)\
+                .rename({0: 'Cluster'}, axis=1)\
+                .set_index(data.index.names)
+        data.name = "Cluster Data"
+        
+        # Store cluster information
+        info = pd.concat([
+            pd.DataFrame(fit.cluster_centers_, columns=data.columns[:-1]).round(2),
+            pd.DataFrame(data.groupby('Cluster').count().mean(axis=1).apply(round), columns=['Size'])
+        ], axis=1).rename_axis('Cluster')
+        info.name = "Cluster Information"
+
+        return (info.reset_index(), data.reset_index())
