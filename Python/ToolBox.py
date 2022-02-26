@@ -52,3 +52,16 @@ def see_distn(data: pd.DataFrame, title: str='') -> None:
         plt.show()
     except:
         rich.print("[red]ERROR:[/red] Please provide a valid DataFrame (Ideally, the result of pd.DataFrame.melt()).")
+
+def rmoutliers(x: pd.Series) -> pd.Series:
+    """
+    Remove statistical outliers from pandas series
+    @param x
+        Pandas series
+    """
+    # Compute quartiles
+    Q1, Q3 = x.quantile((.25, .75))
+    # Fix outliers
+    x[x > Q3 + 1.5*(Q3-Q1)] = np.NaN
+
+    return x
