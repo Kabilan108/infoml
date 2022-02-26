@@ -91,8 +91,27 @@ def elbow_plot(data: pd.DataFrame, max_k: int=10, title: str='') -> None:
 
     # Create figure
     plt.figure(figsize=(5,3))
-    plt.plot(K, inertia, 'go-')
+    plt.plot(range(1, max_k+1), inertia, 'go-')
     plt.xlabel("k")
     plt.ylabel("Inertia")
     plt.title(title)
     plt.show()
+
+def calculate_pvalues(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Generate p-values matrix from data frame
+    @param df
+        Pandas Data Frame
+    """
+
+    # Extract numeric data from df
+    df = df.dropna()._get_numeric_data()
+    # Create empty p-values matrix (same rows & columns)
+    cols = pd.DataFrame(columns=df.columns)
+    pvalues = cols.transpose().join(cols, how='outer')
+    # Populate matrix
+    for r in df.columns:
+        for c in df.columns:
+            pvalues[r][c] = round(stats.pearsonr(df[r], df[c])[1], 10)
+
+    return pvalues
