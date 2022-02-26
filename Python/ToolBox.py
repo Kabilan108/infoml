@@ -4,16 +4,17 @@
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 import itertools as Iter
+import seaborn as sns
 import sklearn as sk
-import seaborn as sb
 import pandas as pd
 import numpy as np
+import rich
 
 from IPython.display import display_html
 
 
 # Definitions
-def show_dfs(*args, titles=Iter.cycle([''])):
+def show_dfs(*args: pd.DataFrame, titles: Iter.cycle=Iter.cycle([''])) -> None:
     """
     Display dataframes next to each other in a jupyter notebook.
     @param *args
@@ -32,5 +33,22 @@ def show_dfs(*args, titles=Iter.cycle([''])):
 
     return
 
-    
-    
+def see_distn(data: pd.DataFrame, title: str='') -> None:
+    """
+    Create boxplots that show the distribution of numeric variables in a dataframe.
+    @param data
+        Pandas dataframe with specific column names (ideally, the result of pd.DataFrame.melt())
+    @param title
+        Title for distribution figure
+    """
+    try:
+        g = sns.catplot(y='value', kind='box', col='variable', col_wrap=4,
+                        sharey=False, height=2, data=data)
+        g.set_titles('{col_name}', size=12, pad=13)\
+         .set_ylabels('')\
+         .despine(bottom=True)
+        g.fig.suptitle(title, size=20)
+        g.fig.subplots_adjust(hspace=.3, top=.9)
+        plt.show()
+    except:
+        rich.print("[red]ERROR:[/red] Please provide a valid DataFrame (Ideally, the result of pd.DataFrame.melt()).")
