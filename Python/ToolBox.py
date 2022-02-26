@@ -190,6 +190,6 @@ def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
     for (name, df) in dfs.items():
         # Write data frame to sheet
         worksheet.cell(row=i, column=1, value=name.replace("_", " "))
-        df.to_excel(writer, sheet_name=sheet_name, start_row=1, startcol=0)
+        df.to_excel(writer, sheet_name=sheet_name, startrow=i, startcol=0)
         # Next data frame starts at
         i += df.shape[0] + 4
