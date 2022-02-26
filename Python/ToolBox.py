@@ -219,13 +219,13 @@ def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
     """
 
     # Validate inputs
-    if kind not in ['box', 'bar']:
+    if kind not in ['box', 'bar', 'old']:
         rich.print("[red bold]ERROR:[/red bold] Provide a valid plot type ('bar' or 'box').")
         return
     if not set(id_vars).issubset(set(data.columns)):
         rich.print("[red bold]ERROR:[/red bold] id_vars must contain valid columns data.")
         return
-    if hue not in data.columns:
+    if hue not in data.columns and not kind == 'old':
         rich.print("[red bold]ERROR:[/red bold] hue must be a valid column of data.")
         return
 
@@ -233,14 +233,25 @@ def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
     data = data.melt(id_vars=id_vars)
 
     # Generate Figure
-    g = sns.catplot(x='variable', y='value', hue=hue, col='Cluster', hue_order=hue_order,
-                    dodge=.5, saturation=.5, kind=kind, data=data, **plt_kwargs) \
-            .set(yscale='log') \
-            .set_titles(col_template='Cluster {col_name}', size=15) \
-            .set_axis_labels('', '') \
-            .set_xticklabels(xlabs)
-    g.fig.subplots_adjust(top=.85)
-    g.fig.suptitle(title, fontsize=15)
+    if kind == 'old':
+        g = sns.catplot(x='variable', y='value', col='Cluster', kind='box',
+                        saturation=.5, data=data, **plt_kwargs) \
+                       .set(yscale='log') \
+                .set_titles("Cluster {col_name}") \
+                .set_axis_labels('', '') \
+                .set_xticklabels(xlabs) \
+                .despine(bottom=True)
+        g.fig.subplots_adjust(top=.9)
+        g.fig.suptitle(title, fontsize=15)
+    else:
+        g = sns.catplot(x='variable', y='value', hue=hue, col='Cluster', hue_order=hue_order,
+                        dodge=.5, saturation=.5, kind=kind, data=data, **plt_kwargs) \
+                .set(yscale='log') \
+                .set_titles(col_template='Cluster {col_name}', size=15) \
+                .set_axis_labels('', '') \
+                .set_xticklabels(xlabs)
+        g.fig.subplots_adjust(top=.85)
+        g.fig.suptitle(title, fontsize=15)
 
     # Save figure if necessary
     if filename is not None:
