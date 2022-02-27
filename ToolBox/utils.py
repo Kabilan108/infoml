@@ -24,6 +24,6 @@ def io_head(file: str, n: int=5):
     # Read and print file
     with open(file, 'r') as f:
         for _ in range(n):
-            print(f.readline())
+            print(f.readline().strip())
 
     return
