@@ -11,6 +11,26 @@ from typing import Union as _Union
 
 
 # Definitions
+class BWT:
+    """
+    A simple implementation of the Burrows-Wheeler Transform
+    """
+    def transform(sequence: str) -> str:
+        sequence += '$'
+        table = [sequence[index:] + sequence[:index] for index, _ in enumerate(sequence)]
+        table.sort()
+	    
+        return ''.join([ rotation[-1] for rotation in table ])
+
+    def inverse(sequence: str) -> str:
+        table = [col for col in sequence]
+        for i in range(len(sequence) - 1):
+            table.sort()
+            table = [sequence[i] + table[i] for i in range(len(sequence))]
+
+        return table[[row[-1] for row in table].index('$')] 
+
+
 def swalign(a: str, b: str, gap: int=-5, submat: Align.substitution_matrices.Array=None,
             scoreonly: bool=False, identonly: bool=False) -> _Union[int, float, dict]:
     """
