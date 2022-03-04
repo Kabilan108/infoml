@@ -8,6 +8,7 @@ algorithms.
 import Bio.Align as _Align
 import numpy as _np
 from typing import Union as _Union
+from . import dirs as _dirs
 
 
 # Definitions

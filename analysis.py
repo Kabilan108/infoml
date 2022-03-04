@@ -14,6 +14,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 import rich
+from . import dirs as _dirs
 
 
 # Definitions

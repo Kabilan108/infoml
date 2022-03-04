@@ -5,7 +5,7 @@ General Utility Functions
 # Imports
 import rich
 import os
-
+from . import dirs as _dirs
 
 # Definitions
 def io_head(file: str, n: int=5):
