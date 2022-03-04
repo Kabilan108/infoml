@@ -88,7 +88,7 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
             for j in range(B):
                 # reset, diag, horz, vert.
                 options = ( 0, Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-                bestmove = np.argmax(options)
+                bestmove = _np.argmax(options)
                 Ti_plus1[j+1] = options[bestmove]
 
                 if bestmove == 1: # Diagonal
