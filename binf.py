@@ -6,12 +6,15 @@ algorithms.
 
 # Imports
 import Bio.Align as _Align
+import pandas as _pd
 import numpy as _np
 from typing import Union as _Union
-from . import dirs as _dirs
 
 
 # Definitions
+#TODO: Write function to generate phylogenetic tree from distance matrix (use turtle)
+#TODO: use turtle to draw tree as you condense the distance matrix (use arithmetic mean)
+
 class BWT:
     """
     A simple implementation of the Burrows-Wheeler Transform
@@ -58,7 +61,7 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
         submat = _Align.substitution_matrices.load('BLOSUM62')
     # Define sequence lengths
     A = len(a)
-    B = len(b)
+    B = len(b) 
     # Initialize Dynamic Programming (score) table
     T = _np.zeros( (A+1, B+1) ).tolist()
 
@@ -158,3 +161,38 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
     ident = _np.count_nonzero([align[0][i] == align[1][i] for i in range(L)]) / L * 100
 
     return {'score': score, 'align': align, 'ident': ident}
+
+
+def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2, 
+            penalize_end_gaps=False, scoreonly: bool=False, identonly: bool=False,
+            submat: _Align.substitution_matrices.Array=None, alphabet: str='nt') -> _Union[int, float, dict]:
+    """
+    Custom implementation of the Needleman-Wunsch algorithm
+    """
+
+    # Define sequence lengths
+    A = len(a)
+    B = len(b) 
+    # Initialzie Dynamic Programming table
+    T = _np.zeros( (A+1, B+1) ).tolist()
+
+    # Default substitution matrix
+    if submat is None:
+        if alphabet == 'nt': # Create nucleotide scoring matrix
+            submat = _pd.DataFrame(mismatch * _np.ones((4, 4)) + (match - mismatch) * _np.identity(4),
+                                   index=["A", "C", "T", "G"], columns=["A", "C", "T", "G"])
+        elif alphabet == 'aa':
+            submat = _Align.substitution_matrices.load('BLOSUM62')
+
+    if penalize_end_gaps: # Global alignment
+        pass
+    else: # Free-end gaps (Semiglobal Alignment)
+        if scoreonly:
+            for i in range(A):
+                submat_ai = submat[a[i]]
+                Ti = T[i]
+                Ti_plus1 = T[i+1]
+                for j in range(B):
+                    # diag, horz, vert.
+                    Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
+            return T[A][B]
