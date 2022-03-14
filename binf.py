@@ -202,4 +202,4 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
                 for j in range(B):
                     # diag, horz, vert.
                     Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-            return _np.vstack([ T[A, :], T[:, B] ]).max(axis=None)
+            return _np.hstack([_np.array(T)[A, :], _np.array(T)[:, B]]).max(axis=None)
