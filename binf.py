@@ -163,12 +163,23 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
     return {'score': score, 'align': align, 'ident': ident}
 
 
-def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2, 
-            penalize_end_gaps=False, scoreonly: bool=False, identonly: bool=False,
+def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
+            score_only: bool=False, ident_only: bool=False, penalize_end_gaps=False,
             submat: _Align.substitution_matrices.Array=None, alphabet: str='nt') -> _Union[int, float, dict]:
     """
     Custom implementation of the Needleman-Wunsch algorithm
     """
+
+    # Default substitution matrix
+    if submat is None:
+        if alphabet == 'nt': # Create nucleotide scoring matrix
+            # TODO: Modify this to handle gap characters
+            submat = _pd.DataFrame(
+                mismatch * _np.ones((4, 4)) + (match - mismatch) * _np.identity(4),
+                index=["A", "C", "T", "G"], columns=["A", "C", "T", "G"]
+            )
+        elif alphabet == 'aa':
+            submat = _Align.substitution_matrices.load('BLOSUM62')
 
     # Define sequence lengths
     A = len(a)
@@ -176,18 +187,14 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
     # Initialzie Dynamic Programming table
     T = _np.zeros( (A+1, B+1) ).tolist()
 
-    # Default substitution matrix
-    if submat is None:
-        if alphabet == 'nt': # Create nucleotide scoring matrix
-            submat = _pd.DataFrame(mismatch * _np.ones((4, 4)) + (match - mismatch) * _np.identity(4),
-                                   index=["A", "C", "T", "G"], columns=["A", "C", "T", "G"])
-        elif alphabet == 'aa':
-            submat = _Align.substitution_matrices.load('BLOSUM62')
-
-    if penalize_end_gaps: # Global alignment
+    if penalize_end_gaps:
+        # Global alignment
         pass
-    else: # Free-end gaps (Semiglobal Alignment)
-        if scoreonly:
+    else: 
+        # Free-end gaps (Semiglobal Alignment)
+        #   Zeros in first row and first column
+        #   Max value in last row or last column is end of alignment
+        if score_only:
             for i in range(A):
                 submat_ai = submat[a[i]]
                 Ti = T[i]
@@ -195,4 +202,4 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
                 for j in range(B):
                     # diag, horz, vert.
                     Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-            return T[A][B]
+            return _np.vstack([ T[A, :], T[:, B] ]).max(axis=None)
