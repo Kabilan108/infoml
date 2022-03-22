@@ -195,7 +195,10 @@ def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
     for (name, df) in dfs.items():
         # Write data frame to sheet
         worksheet.cell(row=i, column=1, value=name.replace("_", " "))
-        df.to_excel(writer, sheet_name=sheet_name, startrow=i, startcol=0)
+        df.to_excel(writer, sheet_name=sheet_name, startrow=i, startcol=0, index=False)
+        # Style table
+        for cell in worksheet[str(i)]: cell.style = "Headline 2"
+        for cell in worksheet[str(i+1)]: cell.style = "Headline 3"
         # Next data frame starts at
         i += df.shape[0] + 4
 
