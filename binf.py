@@ -6,8 +6,11 @@ algorithms.
 
 # Imports
 import Bio.Align as _Align
+import tempfile as _temp
 import pandas as _pd
 import numpy as _np
+import os as _os
+import GEOparse
 from typing import Union as _Union
 
 
@@ -203,3 +206,40 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
                     # diag, horz, vert.
                     Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
             return _np.hstack([_np.array(T)[A, :], _np.array(T)[:, B]]).max(axis=None)
+
+def tempdir(dirname: str):
+    """Create a temporary directory"""
+    name = _temp.gettempdir().replace("\\","/") + '/' + dirname
+    if not _os.path.isdir(name): _os.mkdir(name)
+    return name
+
+def geodlparse(acc: str):
+    # Create temp dir
+    geodir = tempdir("GEO")
+
+    # Download files
+    try:
+        if acc[:3] == 'GPL':
+            gplfile = _os.path.join(geodir, f'{acc}.txt')
+            if _os.path.isfile(gplfile):
+                print('Already downloaded. Parsing...')
+                gpl = GEOparse.parse_GPL(gplfile)
+            else:
+                print('Downloading and parsing...')
+                gpl = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
+            return gpl
+        elif acc[:3] == 'GSE':
+            gsefile = _os.path.join(geodir, f'{acc}_family.soft.gz')
+            if _os.path.isfile(gsefile):
+                print('Already downloaded. Parsing...')
+                gse = GEOparse.get_GEO(filepath=gsefile, silent=True)
+            else:
+                print('Downloading and parsing...')
+                gse = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
+            return gse
+        else:
+            print("Error: Enter a valid Accension")
+            return 
+    except:
+        print("Error: Enter a valid Accension")
+        return
