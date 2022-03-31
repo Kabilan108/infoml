@@ -57,7 +57,7 @@ def see_distn(data: pd.DataFrame, title: str='') -> None:
     except:
         rich.print("[red bold]ERROR:[/red bold] Please provide a valid DataFrame (Ideally, the result of pd.DataFrame.melt()).")
 
-def rmoutliers(x: pd.Series) -> pd.Series:
+def rmoutliers(x: pd.Series, method: str='remove') -> pd.Series:
     """
     Remove statistical outliers from pandas series
     @param x
@@ -66,7 +66,10 @@ def rmoutliers(x: pd.Series) -> pd.Series:
     # Compute quartiles
     Q1, Q3 = x.quantile((.25, .75))
     # Fix outliers
-    x[x > Q3 + 1.5*(Q3-Q1)] = np.NaN
+    if method == 'remove':
+        x[x > Q3 + 1.5*(Q3-Q1)] = np.nan
+    elif method == 'replace':
+        x[x > Q3 + 1.5*(Q3-Q1)] = Q3 + 1.5*(Q3-Q1)
 
     return x
 
@@ -206,7 +209,8 @@ def write_dfs(writer: pd.ExcelWriter, sheet_name: str, **dfs) -> None:
 
 def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
                 hue_order: list=None, kind: str='bar', title: str='',
-                xlabs: list=None, filename: str=None, **plt_kwargs) -> None:
+                xlabs: list=None, filename: str=None, scale='log',
+                col_title='Cluster ', **plt_kwargs) -> None:
     """
     Generate Visualizations for KMeans Clustering Results
     @param data
@@ -243,8 +247,8 @@ def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
     if kind == 'old':
         g = sns.catplot(x='variable', y='value', col='Cluster', kind='box',
                         saturation=.5, data=data, **plt_kwargs) \
-                       .set(yscale='log') \
-                .set_titles("Cluster {col_name}") \
+                       .set(yscale=scale) \
+                .set_titles(col_title + "{col_name}") \
                 .set_axis_labels('', '') \
                 .set_xticklabels(xlabs) \
                 .despine(bottom=True)
@@ -253,8 +257,8 @@ def clusterplot(data: pd.DataFrame, id_vars: list=['Cluster'], hue: str=None,
     else:
         g = sns.catplot(x='variable', y='value', hue=hue, col='Cluster', hue_order=hue_order,
                         dodge=.5, saturation=.5, kind=kind, data=data, **plt_kwargs) \
-                .set(yscale='log') \
-                .set_titles(col_template='Cluster {col_name}', size=15) \
+                .set(yscale=scale) \
+                .set_titles(col_title + "{col_name}", size=15) \
                 .set_axis_labels('', '') \
                 .set_xticklabels(xlabs)
         g.fig.subplots_adjust(top=.85)
