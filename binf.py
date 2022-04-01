@@ -11,6 +11,7 @@ import pandas as _pd
 import numpy as _np
 import os as _os
 import GEOparse
+import rich
 from typing import Union as _Union
 
 
@@ -214,32 +215,38 @@ def tempdir(dirname: str):
     return name
 
 def geodlparse(acc: str):
-    # Create temp dir
-    geodir = tempdir("GEO")
+
+    # Path to temporary directory
+    geodir = tempdir('GEO')
 
     # Download files
     try:
-        if acc[:3] == 'GPL':
-            gplfile = _os.path.join(geodir, f'{acc}.txt')
-            if _os.path.isfile(gplfile):
-                print('Already downloaded. Parsing...')
-                gpl = GEOparse.parse_GPL(gplfile)
-            else:
-                print('Downloading and parsing...')
-                gpl = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
-            return gpl
-        elif acc[:3] == 'GSE':
-            gsefile = _os.path.join(geodir, f'{acc}_family.soft.gz')
-            if _os.path.isfile(gsefile):
-                print('Already downloaded. Parsing...')
-                gse = GEOparse.get_GEO(filepath=gsefile, silent=True)
-            else:
-                print('Downloading and parsing...')
-                gse = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
-            return gse
+        # Specify file names
+        names = [f'{acc}.txt', f'{acc}_family.soft.gz']
+        geofile = _os.path.join(geodir, names[0 if acc[:3] == 'GPL' else 1])
+        cachefile = _os.path.join(geodir, f"{date.today().strftime('%Y%m%d')}_{acc}.pkl")
+
+        if _os.path.isfile(cachefile):
+            # Load data if it has already been cached
+            try:
+                rich.print('Loading cached data...')
+                with open(cachefile, 'rb') as cache:
+                    geodata =  pickle.load(cache)
+                return geodata
+            except Exception as e:
+                rich.print(f"[red]ERROR:[/red] Loading cached file failed.\n{e}")
         else:
-            print("Error: Enter a valid Accension")
-            return 
-    except:
-        print("Error: Enter a valid Accension")
-        return
+            if _os.path.isfile(geofile):
+                # If data has already been downloaded, parse it and cache results
+                rich.print('Already downloaded. Parsing...')
+                geodata = GEOparse.get_GEO(filepath=geofile, silent=True)
+            else:
+                # Download and parse data
+                rich.print('Downloading and parsing...')
+                geodata = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
+            # Cache data
+            with open(cachefile, 'wb') as cache:
+                pickle.dump(geodata, file=cache)
+            return geodata
+    except Exception as e:
+        rich.print(f"[red]ERROR:[/red] Enter a valid GEO Accension\n{e}")
