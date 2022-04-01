@@ -208,8 +208,8 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
             return _np.hstack([_np.array(T)[A, :], _np.array(T)[:, B]]).max(axis=None)
 
 def tempdir(dirname: str):
-    """Create a temporary directory"""
-    name = _temp.gettempdir().replace("\\","/") + '/' + dirname
+    """Create path to a temporary directory"""
+    name = _os.path.join(_temp.gettempdir().replace("\\","/"), dirname)
     if not _os.path.isdir(name): _os.mkdir(name)
     return name
 
