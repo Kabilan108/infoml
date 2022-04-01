@@ -231,24 +231,24 @@ def geodlparse(acc: str):
         if _os.path.isfile(cachefile):
             # Load data if it has already been cached
             try:
-                rich.print('Loading cached data...')
+                print('Loading cached data...')
                 with open(cachefile, 'rb') as cache:
                     geodata =  pickle.load(cache)
                 return geodata
             except Exception as e:
-                rich.print(f"[red]ERROR:[/red] Loading cached file failed.\n{e}")
+                print(f"ERROR: Loading cached file failed.\n{e}")
         else:
             if _os.path.isfile(geofile):
                 # If data has already been downloaded, parse it and cache results
-                rich.print('Already downloaded. Parsing...')
+                print('Already downloaded. Parsing...')
                 geodata = GEOparse.get_GEO(filepath=geofile, silent=True)
             else:
                 # Download and parse data
-                rich.print('Downloading and parsing...')
+                print('Downloading and parsing...')
                 geodata = GEOparse.get_GEO(acc, destdir=geodir, silent=True)
             # Cache data
             with open(cachefile, 'wb') as cache:
                 pickle.dump(geodata, file=cache)
             return geodata
     except Exception as e:
-        rich.print(f"[red]ERROR:[/red] Enter a valid GEO Accension\n{e}")
+        print(f"ERROR: Enter a valid GEO Accension\n{e}")
