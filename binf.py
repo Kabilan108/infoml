@@ -226,7 +226,7 @@ def geodlparse(acc: str):
         # Specify file names
         names = [f'{acc}.txt', f'{acc}_family.soft.gz']
         geofile = _os.path.join(geodir, names[0 if acc[:3] == 'GPL' else 1])
-        cachefile = _os.path.join(geodir, f"{date.today().strftime('%Y%m%d')}_{acc}.pkl")
+        cachefile = _os.path.join(geodir, f"{acc}.pkl")
 
         if _os.path.isfile(cachefile):
             # Load data if it has already been cached
