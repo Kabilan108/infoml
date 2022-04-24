@@ -3,9 +3,9 @@ General Utility Functions
 """
 
 # Imports
-import rich
 import os
-from . import dirs as _dirs
+import rich
+import tempfile as temp
 
 # Definitions
 def io_head(file: str, n: int=5):
@@ -27,3 +27,9 @@ def io_head(file: str, n: int=5):
             print(f.readline().strip())
 
     return
+
+def tempdir(dirname: str):
+    """Create path to a temporary directory"""
+    name = os.path.join(temp.gettempdir().replace("\\","/"), dirname)
+    if not os.path.isdir(name): os.mkdir(name)
+    return name
