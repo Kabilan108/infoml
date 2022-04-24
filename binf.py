@@ -5,16 +5,14 @@ algorithms.
 """
 
 # Imports
-import Bio.Align as _Align
-import tempfile as _temp
-import pandas as _pd
-import numpy as _np
-import os as _os
+import Bio.Align as Align
+import pandas as pd
+import numpy as np
 import GEOparse
 import pickle
-import rich
-from typing import Union as _Union
-from datetime import date
+import utils
+import os
+from typing import Union
 
 
 # Definitions
@@ -41,8 +39,8 @@ class BWT:
         return table[[row[-1] for row in table].index('$')] 
 
 
-def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Array=None,
-            scoreonly: bool=False, identonly: bool=False) -> _Union[int, float, dict]:
+def swalign(a: str, b: str, gap: int=-5, submat: Align.substitution_matrices.Array=None,
+            scoreonly: bool=False, identonly: bool=False) -> Union[int, float, dict]:
     """
     This is a custom implementation of the Smith-Waterman Local Sequence Alignment Algorithm.
     It is based on a code written by Dr. Ahmet Sacan <ahmetmsacan@gmail.com>
@@ -64,12 +62,12 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
 
     # Default substitution matrix
     if submat is None:
-        submat = _Align.substitution_matrices.load('BLOSUM62')
+        submat = Align.substitution_matrices.load('BLOSUM62')
     # Define sequence lengths
     A = len(a)
     B = len(b) 
     # Initialize Dynamic Programming (score) table
-    T = _np.zeros( (A+1, B+1) ).tolist()
+    T = np.zeros( (A+1, B+1) ).tolist()
 
     if scoreonly:
         for i in range(A):
@@ -82,12 +80,12 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
             for j in range(B):
                 # reset, diag, horz, vert.
                 Ti_plus1[j+1] = max( 0, Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-        return _np.max(T, axis=None)
+        return np.max(T, axis=None)
 
     elif identonly:
         # Initialize counts
-        MC = _np.zeros((A+1, B+1), dtype=int).tolist() # match counts
-        AL = _np.zeros((A+1, B+1), dtype=int).tolist() # alignment lengths
+        MC = np.zeros((A+1, B+1), dtype=int).tolist() # match counts
+        AL = np.zeros((A+1, B+1), dtype=int).tolist() # alignment lengths
 
         for i in range(A):
             submat_ai = submat[a[i]]
@@ -98,7 +96,7 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
             for j in range(B):
                 # reset, diag, horz, vert.
                 options = ( 0, Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-                bestmove = _np.argmax(options)
+                bestmove = np.argmax(options)
                 Ti_plus1[j+1] = options[bestmove]
 
                 if bestmove == 1: # Diagonal
@@ -113,7 +111,7 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
 
     else:
         # Store the best direction (we only keep one when there are multiple good options.)
-        P = _np.zeros((A+1, B+1), dtype=int).tolist()
+        P = np.zeros((A+1, B+1), dtype=int).tolist()
         for i in range(A):
             submat_ai = submat[a[i]]
             Ti = T[i]
@@ -123,12 +121,12 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
             for j in range(B):
                 # reset, diag, horz, vert.
                 options = ( 0, Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-                bestmove = _np.argmax(options)
+                bestmove = np.argmax(options)
                 Ti_plus1[j+1] = options[bestmove]
                 Pi_plus1[j+1] = bestmove
 
     # Determine score positions
-    scorepos = _np.unravel_index(_np.argmax(T, axis=None), (A+1, B+1))
+    scorepos = np.unravel_index(np.argmax(T, axis=None), (A+1, B+1))
     r,c = scorepos # r=scorepos[0]; c=scorepos[1]
     if identonly:
         # Compute and return percent identity
@@ -164,14 +162,14 @@ def swalign(a: str, b: str, gap: int=-5, submat: _Align.substitution_matrices.Ar
 
     # Compute percent identity
     L = len(align[0])
-    ident = _np.count_nonzero([align[0][i] == align[1][i] for i in range(L)]) / L * 100
+    ident = np.count_nonzero([align[0][i] == align[1][i] for i in range(L)]) / L * 100
 
     return {'score': score, 'align': align, 'ident': ident}
 
 
 def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
             score_only: bool=False, ident_only: bool=False, penalize_end_gaps=False,
-            submat: _Align.substitution_matrices.Array=None, alphabet: str='nt') -> _Union[int, float, dict]:
+            submat: Align.substitution_matrices.Array=None, alphabet: str='nt') -> Union[int, float, dict]:
     """
     Custom implementation of the Needleman-Wunsch algorithm
     """
@@ -180,18 +178,18 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
     if submat is None:
         if alphabet == 'nt': # Create nucleotide scoring matrix
             # TODO: Modify this to handle gap characters
-            submat = _pd.DataFrame(
-                mismatch * _np.ones((4, 4)) + (match - mismatch) * _np.identity(4),
+            submat = pd.DataFrame(
+                mismatch * np.ones((4, 4)) + (match - mismatch) * np.identity(4),
                 index=["A", "C", "T", "G"], columns=["A", "C", "T", "G"]
             )
         elif alphabet == 'aa':
-            submat = _Align.substitution_matrices.load('BLOSUM62')
+            submat = Align.substitution_matrices.load('BLOSUM62')
 
     # Define sequence lengths
     A = len(a)
     B = len(b) 
     # Initialzie Dynamic Programming table
-    T = _np.zeros( (A+1, B+1) ).tolist()
+    T = np.zeros( (A+1, B+1) ).tolist()
 
     if penalize_end_gaps:
         # Global alignment
@@ -208,27 +206,21 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
                 for j in range(B):
                     # diag, horz, vert.
                     Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
-            return _np.hstack([_np.array(T)[A, :], _np.array(T)[:, B]]).max(axis=None)
-
-def tempdir(dirname: str):
-    """Create path to a temporary directory"""
-    name = _os.path.join(_temp.gettempdir().replace("\\","/"), dirname)
-    if not _os.path.isdir(name): _os.mkdir(name)
-    return name
+            return np.hstack([np.array(T)[A, :], np.array(T)[:, B]]).max(axis=None)
 
 def geodlparse(acc: str):
 
     # Path to temporary directory
-    geodir = tempdir('GEO')
+    geodir = utils.tempdir('GEO')
 
     # Download files
     try:
         # Specify file names
         names = [f'{acc}.txt', f'{acc}_family.soft.gz']
-        geofile = _os.path.join(geodir, names[0 if acc[:3] == 'GPL' else 1])
-        cachefile = _os.path.join(geodir, f"{acc}.pkl")
+        geofile = os.path.join(geodir, names[0 if acc[:3] == 'GPL' else 1])
+        cachefile = os.path.join(geodir, f"{acc}.pkl")
 
-        if _os.path.isfile(cachefile):
+        if os.path.isfile(cachefile):
             # Load data if it has already been cached
             try:
                 print('Loading cached data...')
@@ -238,7 +230,7 @@ def geodlparse(acc: str):
             except Exception as e:
                 print(f"ERROR: Loading cached file failed.\n{e}")
         else:
-            if _os.path.isfile(geofile):
+            if os.path.isfile(geofile):
                 # If data has already been downloaded, parse it and cache results
                 print('Already downloaded. Parsing...')
                 geodata = GEOparse.get_GEO(filepath=geofile, silent=True)
