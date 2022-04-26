@@ -33,7 +33,7 @@ def sanitizefilename(file):
     return file
 
 
-def tempdir(dirname: str):
+def tempdir(dirname: str='ToolBox'):
     """
     Create path to a temporary directory
     """
