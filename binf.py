@@ -9,9 +9,11 @@ import Bio.Align as Align
 import pandas as pd
 import numpy as np
 import GEOparse
+import sqlite3
 import pickle
 import utils
 import os
+from utils import download
 from typing import Union
 
 
@@ -209,6 +211,14 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
             return np.hstack([np.array(T)[A, :], np.array(T)[:, B]]).max(axis=None)
 
 def geodlparse(acc: str):
+    """
+    Download, parse and cache data from GEO
+
+    @param acc
+        GEO accession
+    @return
+        parsed GEO data
+    """
 
     # Path to temporary directory
     geodir = utils.tempdir('GEO')
@@ -244,3 +254,28 @@ def geodlparse(acc: str):
             return geodata
     except Exception as e:
         print(f"ERROR: Enter a valid GEO Accension\n{e}")
+
+def targetscandb(mirna: str, scorethr: float=0.8, db: str='mir2target'):
+    """
+    Retreive data from a table in the TargetScan Database
+    """
+
+    # Ensure TargetScan DB has been downloaded
+    dbfile = download('http://sacan.biomed.drexel.edu/ftp/binf/targetscandb.sqlite')
+
+    # Connect to database
+    conn = sqlite3.connect(dbfile)
+    cur = conn.cursor()
+
+    if db == 'mir2target':
+        query = f"""
+        SELECT DISTINCT("generefseqid") FROM "{db}"
+            WHERE score >= {scorethr} 
+            AND mirna IN ("{mirna}", "{mirna}-3p", "{mirna}-5p")
+        """
+    else:
+        raise NotImplementedError("I can't query that table yet")
+
+    rows = cur.execute(query).fetchall()
+    
+    return [ row[0] for row in rows ]
