@@ -9,3 +9,6 @@ class dirs:
 
 # Define visible modules
 __all__ = ['analysis', 'binf', 'utils']
+
+# TODO:  Set up cache and data directories for storing data in the long and short term
+# TODO: Write clean up scripts for getting rid of cached data (pickles)
