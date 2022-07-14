@@ -8,7 +8,7 @@ class dirs:
     TEMPDIR = "/tmp/data/"
 
 # Define visible modules
-__all__ = ['analysis', 'binf', 'utils']
+__all__ = ['analysis', 'binf', 'utils', 'neuro']
 
 # TODO:  Set up cache and data directories for storing data in the long and short term
 # TODO: Write clean up scripts for getting rid of cached data (pickles)
