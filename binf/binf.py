@@ -1,4 +1,5 @@
-""" binf.py
+""" alg.py
+Bioinformatics Algorithms
 These are methods, functions and classes that I've used for different
 Bioinformatics Applications including custom implementation of certain
 algorithms.
