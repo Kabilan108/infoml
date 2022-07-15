@@ -2,7 +2,7 @@
 Statistical Methods for Connectomics
 """
 
-# Import standard libraries
+# Imports
 from scipy import stats
 import numpy as np
 
@@ -29,4 +29,3 @@ def edgewise_correlation(cntms: np.ndarray, vctr: np.ndarray) -> np.ndarray:
             cmap[i,j], pval[i,j] = stats.pearsonr(cntms[i,j,:], vctr)
 
     return cmap, pval
-    
