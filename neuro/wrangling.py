@@ -1,5 +1,6 @@
-"""data.py
-This module contains functions for loading and preprocessing data.
+"""wrangling.py
+This module contains functions for data wrangling, preprocessing
+and quality control.
 """
 
 # Imports
@@ -8,10 +9,10 @@ import numpy as np
 import glob
 
 
-def load_connectomes(dir: str, demo: pd.DataFrame) -> np.ndarray:
+def load_connectomes(dir: str, demo: pd.DataFrame, zero_diag: bool=True):
     """
     Load connectomes from a directory
-    Returns a 3D array of connectomes (subjects x rows x columns)
+    Returns a 3D array of connectomes (subjects x rows x columns) (k x i x j)
     """
 
     # Get list of files corresponding to the subjects
@@ -21,6 +22,9 @@ def load_connectomes(dir: str, demo: pd.DataFrame) -> np.ndarray:
     # Load connectomes
     cntms = list()
     for file in files:
-        cntms.append(np.loadtxt(file))
+        cntm = np.loadtxt(file)
+        if zero_diag:
+            np.fill_diagonal(cntm, 0)
+        cntms.append(cntm)
 
     return np.array(cntms)
