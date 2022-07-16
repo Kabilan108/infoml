@@ -104,7 +104,38 @@ def remove_outliers(data: np.ndarray) -> np.ndarray:
     data = data[(data <= upper_bound) & (data >= lower_bound)]
 
     return data
-    
+
+
+def get_outlier_idx(data: np.ndarray) -> np.ndarray:
+    """
+    Get indices of outliers in a data set.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Data set to remove outliers from.
+
+    Returns
+    -------
+    idx : np.ndarray
+        Indices of outliers.
+    """
+
+    # Check inputs
+    data = np.asarray(data)
+    assert isinstance(data, np.ndarray), "data must be a numpy array or array-like"
+
+    # Compuite the upper and lower quartiles
+    lower, upper = np.percentile(data, [25, 75])
+    IQD = upper - lower
+    lower_bound = lower - 1.5 * IQD
+    upper_bound = upper + 1.5 * IQD
+
+    # Get indices of outliers
+    idx = np.argwhere((data <= upper_bound) & (data >= lower_bound))
+
+    return idx
+
 
 def edgewise_correlation(cntms: np.ndarray, vctr: np.ndarray) -> np.ndarray:
     """
