@@ -12,12 +12,12 @@ import itertools
 
 from neuro import stats
 
+
 # Global Plot options
 sns.set(font='Times New Roman')
 
-
 # Export functions
-__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot']
+__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot', 'group_difference']
 
 
 def heatmap(matrix, save=None, cmap='jet', bgcolor='black', threshold=None, 
@@ -282,8 +282,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     return fig, ax
 
 
-def violinplot(data, labels, jitter=False, ylim=[], 
-               title='', xlab='', ylab='', 
+def violinplot(data, labels, ylim=[], title='', xlab='', ylab='', 
                figsize=(6,4), save=None,
                colors=['#2096BA', '#AB3E16', '#351C4D', 
                        '#849974', '#F7DFD4', '#F5AB99'],
@@ -297,8 +296,6 @@ def violinplot(data, labels, jitter=False, ylim=[],
         Data to plot
     labels : list
         Labels for data
-    jitter : bool
-        If True, add jitter to data
     ylim : tuple or list
         Y-axis limits. Useful for adding space above plot to include
         stars and other annotations
@@ -329,7 +326,6 @@ def violinplot(data, labels, jitter=False, ylim=[],
     assert isinstance(data, np.ndarray), "data must be a numpy array"
     assert data.ndim <= 2, "data must be 1 or 2 dimensional"
     assert isinstance(labels, list), "labels must be an list"
-    assert isinstance(jitter, bool), "jitter must be a boolean"
     assert isinstance(ylim, tuple) or isinstance(ylim, list), \
         "ylim must be a tuple"
     assert isinstance(title, str), "title must be a string"
@@ -372,3 +368,118 @@ def violinplot(data, labels, jitter=False, ylim=[],
         plt.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
 
     return fig, ax
+
+
+def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
+                     alternative='two-sided',
+                     title='', xlab='', ylab='',
+                     figsize=(6,4), save=None):
+    """
+    Created annotated plots showing the group difference between X and Y.
+    Plots are annotated with stars (*) and effect sizes.
+
+    Parameters
+    ----------
+    X, Y : np.ndarray
+        Data sets to compare.
+    parametric : bool
+        If True, use parametric test. If False, use non-parametric test.
+    paired : bool
+        If True, use paired test. If False, use unpaired test.
+    rmoutliers : bool
+        If True, remove outliers from the data. If False, do not remove outliers.
+    alternative : str
+        Type of alternative hypothesis to test. Options are:
+        ['two-sided', 'greater', 'less']
+    title : str
+        Figure title
+    xlab : str
+        X-axis label
+    ylab : str
+        Y-axis label
+    figsize : tuple
+        Figure size [ for plt.subplots() ]
+    save : str
+        Path to save figure to
+
+    Returns
+    -------
+    fig, ax : matplotlib.figure.Figure, matplotlib.axes.Axes
+    """
+
+    raise NotImplementedError
+
+
+def barplot(groups, values, title='', xlab='', ylab='', save=None,
+            figsize=(6,4), colors=['#2096BA', '#AB3E16', '#351C4D',
+                                   '#849974', '#F7DFD4', '#F5AB99']):
+    """
+    Create barplot
+
+    Parameters
+    ----------
+    groups : list
+        Groups to plot
+    values : list
+        Values to plot
+    title : str
+        Figure title
+    xlab : str  
+        X-axis label
+    ylab : str
+        Y-axis label
+    save : str
+        Path to save figure to
+    figsize : tuple
+        Figure size [ for plt.subplots() ]
+    colors : list
+        Colors for boxplots
+
+    Returns
+    -------
+    fig, ax : matplotlib.figure.Figure, matplotlib.axes.Axes
+    """
+
+    # Check inputs
+    groups = np.asarray(groups)
+    values = np.asarray(values)
+    assert len(groups) == len(values), "groups and values must be the same length"
+    assert isinstance(title, str), "title must be a string"
+    assert isinstance(xlab, str), "xlab must be a string"
+    assert isinstance(ylab, str), "ylab must be a string"
+    assert isinstance(save, str) or save is None, "save must be a string"
+    assert isinstance(figsize, tuple), "figsize must be a tuple"
+    assert isinstance(colors, list), "colors must be a list"
+
+    # Create figure
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Create barplot
+    sns.barplot(x=groups, y=values, ax=ax)
+
+    # Style bars
+    colors = itertools.cycle(colors)
+    for bar, color in zip(ax.patches, colors):
+        bar.set(color=color, alpha=.7, linewidth=2)
+
+    # Plot labels and axis styling
+    ax.set_xlabel(xlab, fontsize=13)
+    ax.set_ylabel(ylab, fontsize=13)
+    ax.set_title(title, fontsize=15)
+    ax.set_xticklabels(groups, fontsize=12)
+    ax.tick_params(axis='both', labelsize=11)
+
+    # Figure styling
+    ax.set_facecolor('white')
+    ax.grid(True, which='both', color='lightgrey', linestyle='--')
+    sns.despine()
+    ax.spines['left'].set(color='black', linewidth=1)
+    ax.spines['bottom'].set(color='black', linewidth=1)
+
+    # save figure
+    if save is not None:
+        plt.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
+
+    return fig, ax
+
+
