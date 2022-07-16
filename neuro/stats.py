@@ -6,8 +6,11 @@ Statistical Methods for Connectomics
 import scipy.stats as sps
 import numpy as np
 
+
 # Export functions
-__all__ = ['fdr', 'edgewise_correlation']
+__all__ = ['fdr', 'remove_outliers', 'get_outlier_idx', 'group_difference', 
+           'compare_variances', 
+           'edgewise_correlation']
 
 
 def _ecdf(x):
