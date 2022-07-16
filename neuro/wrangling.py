@@ -10,6 +10,10 @@ import glob
 import os
 
 
+# Export functions
+__all__ = ['load_connectomes', 'savetxt_compact']
+
+
 def load_connectomes(dir, demo, zero_diag=True):
     """
     Load connectomes from a directory
