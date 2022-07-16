@@ -10,7 +10,7 @@ import glob
 import os
 
 
-def load_connectomes(dir: str, demo: pd.DataFrame, zero_diag: bool=True):
+def load_connectomes(dir, demo, zero_diag=True):
     """
     Load connectomes from a directory
 
@@ -49,8 +49,7 @@ def load_connectomes(dir: str, demo: pd.DataFrame, zero_diag: bool=True):
     return np.array(cntms)
 
 
-def savetxt_compact(fname: str, mat: np.ndarray, fmt: str='%.6f', 
-                    delim: str='\t', fileaccess: str='a') -> None:
+def savetxt_compact(fname, mat, fmt='%.6f', delim='\t', fileaccess='a'):
     """
     Save a matrix to a text file in a compact format.
 
@@ -80,3 +79,4 @@ def savetxt_compact(fname: str, mat: np.ndarray, fmt: str='%.6f',
         for row in mat:
             line = delim.join('0' if val == 0 else fmt % val for val in row)
             f.write(line + '\n')
+
