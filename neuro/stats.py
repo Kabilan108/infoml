@@ -3,7 +3,7 @@ Statistical Methods for Connectomics
 """
 
 # Imports
-from scipy import stats
+import scipy.stats as sps
 import numpy as np
 
 # Export functions
@@ -137,6 +137,138 @@ def get_outlier_idx(data):
     return idx
 
 
+def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
+                     alternative='two-sided'):
+    """
+    Compute the group difference between X and Y
+
+    Parameters
+    ----------
+    X, Y : np.ndarray
+        Data sets to compare.
+    parametric : bool
+        If True, use parametric test. If False, use non-parametric test.
+    paired : bool
+        If True, use paired test. If False, use unpaired test.
+    rmoutliers : bool
+        If True, remove outliers from the data. If False, do not remove outliers.
+    alternative : str
+        Type of alternative hypothesis to test. Options are:
+        ['two-sided', 'greater', 'less']
+
+    Returns
+    -------
+    pval : float
+        P-values for each element of diff.
+    effect_size : float
+        Effects size of the difference.
+    """
+
+    # Check inputs
+    X = np.asarray(X)
+    Y = np.asarray(Y)
+    assert X.ndim == 1, "X must be 1-dimensional, i.e., of shape (n,)"
+    assert Y.ndim == 1, "Y must be 1-dimensional, i.e., of shape (n,)"
+    assert X.shape == Y.shape, "X and Y must have the same shape"
+    assert alternative in ['two-sided', 'greater', 'less'], \
+        "Alternative must be one of 'two-sided', 'greater', or 'less'"
+
+    # Remove outliers if requested
+    if rmoutliers:
+        X = remove_outliers(X)
+        Y = remove_outliers(Y)
+
+    # Compute descriptive statistics
+    mean = np.array([X.mean(), Y.mean()])
+    var = np.array([X.var(), Y.var()])
+    std = np.array([X.std(), Y.std()])
+    size = np.array([X.size, Y.size])
+
+    # If there is no variation, return 0
+    if (var == (0,0)).all():
+        return 0, 1
+
+    if parametric:
+        if paired:
+            # Student's t-test for normally distributed repeateed measures
+            _, pval = sps.ttest_rel(X, Y)
+
+            # Calculate effect size (see: https://bit.ly/PairedCohensD)
+            _, r = sps.pearsonr(X, Y)
+            s_z = np.sqrt(var.sum() - 2*r*std.prod())
+            s_rm = s_z / np.sqrt(2*(1-r))
+            effect_size = (mean[0] - mean[1]) / s_rm
+        elif not paired:
+            # Student's t-test for normally distributed independent variables
+            
+            # F-tests for unequal variances: 
+            #   if fpval < 0.05, distributions have unequal variances
+            if var[1] != 0:
+                F = var[0] / var[1]
+                fpval = 1 - sps.f.cdf(F, len(X)-1, len(Y)-1)
+            else:
+                # If variance of one of the data is zero while the other is not 
+                # then consider this as the two dataset has different variance
+                fpval = 0
+
+            # Perform ttest for independent variables
+            if fpval > 0.05:
+                _, pval = sps.ttest_ind(X, Y, equal_var=True)
+            else:
+                _, pval = sps.ttest_ind(X, Y, equal_var=False)
+
+            # Compute effect size (see: https://bit.ly/IndependentCohensD)
+            s_pooled = np.sqrt(((size -1) * var).sum() / (size.sum() - 2))
+            effect_size = (mean[0] - mean[1]) / s_pooled
+        else:
+            raise ValueError("paired must be either True or False")
+    elif not parametric:
+        if paired:
+            # Wilcoxon's rank-sum test for non-normally distributed repeated measures
+            _, pval = sps.wilcoxon(X, Y, alternative=alternative)
+
+            # Calculate effect size (see: https://bit.ly/WilcoxonEffectSize)
+            # effect_size = z / sqrt(N)
+            # z = sum of signed ranks divided by the square root of the sum
+            #     of their squares: https://bit.ly/3aMaTnp
+            #     w / sqrt(sum of squares of ranks)
+            # abs(r) -> small=0.1   medium=0.3  large=0.5
+            diff = Y - X
+            abs_diff = np.abs(diff)
+            ranks = sps.rankdata(abs_diff)
+            signs = [1 if x > 0 else -1 for x in diff]
+            signed_ranks = ranks * signs
+            # the statistic is calculated as follows (gives the same result 
+            # with the fisrt output of the stt.wilcoxon(X, Y) function)
+            # -  positiveRanks = signed_rank[signed_rank>0]
+            # -  negativeRanks = -signed_rank[signed_rank<0]
+            # -  w = min(np.sum(positiveRanks), np.sum(negativeRanks))
+            z = np.sum(signed_ranks) / np.sqrt(np.sum(signed_ranks**2))
+            effect_size = z / np.sqrt(size.sum())
+
+        elif not paired:
+            # Mann-Whitney U test for non-normally distributed independent variables
+            U, pval = sps.mannwhitneyu(X, Y, alternative=alternative)
+
+            # Calculate effect size (see: https://bit.ly/MannWhitneyEffectSize)
+            # effect_size = z / sqrt(N)
+            # abs(r) -> small=0.1   medium=0.3  large=0.5
+            # z = (U - m_U) / std_U  (see: https://bit.ly/3AUPBiq)
+            # m_U = size_x * size_y / 2
+            # std_U = sqrt(size_x * size_y * (size_x + size_y + 1) / 12)
+            m_U = size.prod() / 2
+            std_U = np.sqrt(size.prod() * (size.sum() +1) / 12.0)
+            z = (U - m_U) / std_U
+            effect_size = z / np.sqrt(size.sum())
+            
+        else:
+            raise ValueError("paired must be either True or False")
+    else:
+        raise ValueError("parametric must be either True or False")
+
+    return pval, effect_size
+
+
 def edgewise_correlation(cntms, vctr):
     """
     Calculate the correlation between the edges of a connectivity matrix 
@@ -166,6 +298,7 @@ def edgewise_correlation(cntms, vctr):
     # Populate the correlation and pvalues
     for i in range(I):
         for j in range(J):
-            cmat[i,j], pval[i,j] = stats.pearsonr(cntms[i,j,:], vctr)
+            cmat[i,j], pval[i,j] = sps.pearsonr(cntms[i,j,:], vctr)
 
     return cmat, pval
+    
