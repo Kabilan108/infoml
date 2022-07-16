@@ -9,7 +9,7 @@ import numpy as np
 
 # Export functions
 __all__ = ['fdr', 'remove_outliers', 'get_outlier_idx', 'group_difference', 
-           'compare_variances', 
+           'compare_variances', 'corrtest',
            'edgewise_correlation']
 
 
@@ -314,6 +314,46 @@ def compare_variances(X, Y, test='F', rmoutliers=False):
         statistic, pval = sps.levene(X, Y, center='mean')
 
     return statistic, pval
+
+
+def corrtest(X, Y, parametric=True):
+    """
+    Compute correlation coefficient and p-value for two vectors
+
+    Parameters
+    ----------
+    X, Y : np.ndarray
+        Vectors to compare
+    parametric : bool
+        If True, use Pearson's correlation coefficient. If False, use Spearman's
+
+    Returns
+    -------
+    r : float
+        Correlation coefficient
+    p : float
+        p-value
+    """
+
+    # Check inputs
+    assert isinstance(X, np.ndarray), "X must be a numpy array"
+    assert isinstance(Y, np.ndarray), "Y must be a numpy array"
+    assert X.ndim == 1, "X must be 1-dimensional, i.e., of shape (n,)"
+    assert Y.ndim == 1, "Y must be 1-dimensional, i.e., of shape (n,)"
+    assert X.shape == Y.shape, "X and Y must have the same shape"
+    assert isinstance(parametric, bool), "parametric must be a boolean"
+
+    # Compute correlation coefficient
+    if parametric:
+        # Pearson's correlation coefficient
+        r, p = sps.pearsonr(X, Y)
+    elif not parametric:
+        # Spearman's correlation coefficient
+        r, p = sps.spearmanr(X, Y)
+    else:
+        raise ValueError("parametric must be a boolean")
+
+    return r, p
 
 
 def edgewise_correlation(cntms, vctr):
