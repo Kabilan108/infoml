@@ -162,6 +162,8 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
 
 def boxplot(data, labels, jitter=False, title='', xlab='', ylab='', 
             middleline=['median'], figsize=(6,4), save=None,
+            colors=['#2096BA', '#AB3E16', '#351C4D', 
+                    '#849974', '#F7DFD4', '#F5AB99'],
             boxplot_kws={}, swarmplot_kws={}):
     """
     Create boxplot for data with labels
@@ -186,6 +188,8 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
         Figure size [ for plt.subplots() ]
     save : str
         Path to save figure to
+    colors : list
+        Colors for boxplots
     boxplot_kws : dict
         Keyword arguments for seaborn.boxplot()
     swarmplot_kws : dict
@@ -208,6 +212,7 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
     assert isinstance(middleline, list), "middleline must be a list"
     assert isinstance(figsize, tuple), "figsize must be a tuple"
     assert isinstance(save, str) or save is None, "save must be a string"
+    assert isinstance(colors, list), "colors must be a list"
 
 
     # Create figure
@@ -225,9 +230,9 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
     meanline = 'mean' in middleline
     showmeans = 'mean' in middleline
     if 'median' in middleline:
-        medianprops = dict(linestyle='-', linewidth=1, color='firebrick')
+        medianprops = dict(linestyle='-', linewidth=1.5, color='firebrick')
     if 'mean' in middleline:
-        meanprops = dict(linestyle='-', linewidth=1, color='firebrick', 
+        meanprops = dict(linestyle='-.', linewidth=1.5, color='firebrick', 
                          marker='D', markersize=4, markerfacecolor='black')
 
     # Create boxplot
@@ -239,8 +244,7 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
                 **boxplot_kws)
 
     # Boxplot styling
-    colors = itertools.cycle(['#2096BA', '#AB3E16', '#351C4D', '#849974', 
-                              '#F7DFD4', '#F5AB99'])
+    colors = itertools.cycle(colors)
     for patch, color in zip(ax.patches, colors):
         patch.set_facecolor(color)
         patch.set_edgecolor(color)
