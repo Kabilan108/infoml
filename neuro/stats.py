@@ -158,10 +158,10 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
 
     Returns
     -------
-    pval : float
-        P-values for each element of diff.
     effect_size : float
         Effects size of the difference.
+    pval : float
+        P-values for each element of diff.
     """
 
     # Check inputs
@@ -266,7 +266,51 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
     else:
         raise ValueError("parametric must be either True or False")
 
-    return pval, effect_size
+    return effect_size, pval
+
+
+def compare_variances(X, Y, test='F', rmoutliers=False):
+    """
+    Compare the variances of two distibutions using various statistical tests
+
+    Parameters
+    ----------
+    X, Y :
+        Data sets to compare.
+    test : str
+        Type of test of variance to use. Options are:
+        ['F', 'bartlett', 'levene']
+
+    Returns
+    -------
+    statistic: float
+        Test statistic
+    pval: float
+        P-value
+    """
+
+    # Check inputs
+    X = np.asarray(X)
+    Y = np.asarray(Y)
+    assert X.ndim == 1, "X must be 1-dimensional, i.e., of shape (n,)"
+    assert Y.ndim == 1, "Y must be 1-dimensional, i.e., of shape (n,)"
+    assert X.shape == Y.shape, "X and Y must have the same shape"
+    assert np.all([x in 'abeflnrtv' for x in test.lower()]), \
+        "test must be one of 'F', 'bartlett', 'levene'"
+
+    if rmoutliers:
+        X = remove_outliers(X)
+        Y = remove_outliers(Y)
+    
+    if test.upper() == 'F':
+        pval = 1 - sps.f.cdf(X.var() / Y.var(), len(X)-1, len(Y)-1)
+        statistic = -1  # not implemented
+    elif test.lower() in ['b', 'bartlett']:
+        statistic, pval = sps.bartlett(X, Y)
+    elif test.lower() in ['l', 'levene']:
+        statistic, pval = sps.levene(X, Y, center='mean')
+
+    return statistic, pval
 
 
 def edgewise_correlation(cntms, vctr):
@@ -301,4 +345,3 @@ def edgewise_correlation(cntms, vctr):
             cmat[i,j], pval[i,j] = sps.pearsonr(cntms[i,j,:], vctr)
 
     return cmat, pval
-    
