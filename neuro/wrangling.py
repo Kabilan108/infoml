@@ -8,13 +8,43 @@ import pandas as pd
 import numpy as np
 import glob
 import os
+import re
 
 
 # Export functions
-__all__ = ['load_connectomes', 'savetxt_compact']
+__all__ = ['_load_connectome', 'load_connectomes', 'savetxt_compact']
 
 
-def load_connectomes(dir, demo, zero_diag=True):
+def _load_connectome(fname, zero_diag=True):
+    """
+    Load a connectome from a text file.
+
+    Parameters
+    ----------
+    fname : str
+        Path to file.
+    zero_diag : bool
+        Whether to zero the diagonal of the connectome.
+
+    Returns
+    -------
+    cntm : np.ndarray
+        Connectome.
+    """
+
+    # Check inputs
+    assert os.path.exists(fname), "fname must be a valid file"
+    assert isinstance(zero_diag, bool), "zero_diag must be a boolean"
+
+    # Load connectome
+    cntm = np.loadtxt(fname)
+    if zero_diag:
+        np.fill_diagonal(cntm, 0)
+
+    return cntm
+
+
+def load_connectomes(dir, ids, id_pattern, ext='*.txt', zero_diag=True):
     """
     Load connectomes from a directory
 
@@ -22,8 +52,12 @@ def load_connectomes(dir, demo, zero_diag=True):
     ----------
     dir : str
         Path to directory containing connectome files.
-    demo : pd.DataFrame
-        Demographic information.
+    ids : array_like
+        List of IDs to load.
+    id_pattern : str
+        Regular expression pattern to match IDs.
+    ext : str
+        Pattern for file extensions.
     zero_diag : bool
         Whether to zero the diagonal of the connectome.
 
@@ -34,23 +68,18 @@ def load_connectomes(dir, demo, zero_diag=True):
     """
 
     # Check inputs
+    ids = list(ids)
     assert os.path.isdir(dir), "dir must be a valid directory"
-    assert isinstance(demo, pd.DataFrame), "demo must be a pandas DataFrame"
     assert isinstance(zero_diag, bool), "zero_diag must be a boolean"
 
     # Get list of files corresponding to the subjects
-    files = [x for x in glob.glob(f"{dir}/*.txt") 
-            if x[len(dir)+1:len(dir)+12] in demo.Subject.tolist()]
+    get_id = lambda x: re.search(id_pattern, x)[0]
+    files = [x for x in glob.glob(f"{dir}/{ext}") if get_id(x) in ids]
 
     # Load connectomes
-    cntms = list()
-    for file in files:
-        cntm = np.loadtxt(file)
-        if zero_diag:
-            np.fill_diagonal(cntm, 0)
-        cntms.append(cntm)
+    cntms = np.array([ _load_connectome(f, zero_diag) for f in files ])
 
-    return np.array(cntms)
+    return cntms
 
 
 def savetxt_compact(fname, mat, fmt='%.6f', delim='\t', fileaccess='a'):
