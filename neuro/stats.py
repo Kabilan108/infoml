@@ -75,6 +75,37 @@ def fdr(pvals: np.ndarray, correction: str='bh') -> np.ndarray:
     return adj_pvals
 
 
+def remove_outliers(data: np.ndarray) -> np.ndarray:
+    """
+    Remove outliers from a data set.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Data set to remove outliers from.
+
+    Returns
+    -------
+    data : np.ndarray
+        Data set without outliers.
+    """
+
+    # Check inputs
+    data = np.asarray(data)
+    assert isinstance(data, np.ndarray), "data must be a numpy array or array-like"
+
+    # Compuite the upper and lower quartiles
+    lower, upper = np.percentile(data, [25, 75])
+    IQD = upper - lower
+    lower_bound = lower - 1.5 * IQD
+    upper_bound = upper + 1.5 * IQD
+
+    # Remove outliers
+    data = data[(data <= upper_bound) & (data >= lower_bound)]
+
+    return data
+    
+
 def edgewise_correlation(cntms: np.ndarray, vctr: np.ndarray) -> np.ndarray:
     """
     Calculate the correlation between the edges of a connectivity matrix 
