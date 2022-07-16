@@ -18,7 +18,7 @@ def _ecdf(x):
     return np.arange(1, n+1) / float(n)
 
 
-def fdr(pvals: np.ndarray, correction: str='bh') -> np.ndarray:
+def fdr(pvals, correction='bh'):
     """
     Perform FDR correction on a list of p-values.
 
@@ -75,7 +75,7 @@ def fdr(pvals: np.ndarray, correction: str='bh') -> np.ndarray:
     return adj_pvals
 
 
-def remove_outliers(data: np.ndarray) -> np.ndarray:
+def remove_outliers(data):
     """
     Remove outliers from a data set.
 
@@ -106,7 +106,7 @@ def remove_outliers(data: np.ndarray) -> np.ndarray:
     return data
 
 
-def get_outlier_idx(data: np.ndarray) -> np.ndarray:
+def get_outlier_idx(data):
     """
     Get indices of outliers in a data set.
 
@@ -137,7 +137,7 @@ def get_outlier_idx(data: np.ndarray) -> np.ndarray:
     return idx
 
 
-def edgewise_correlation(cntms: np.ndarray, vctr: np.ndarray) -> np.ndarray:
+def edgewise_correlation(cntms, vctr):
     """
     Calculate the correlation between the edges of a connectivity matrix 
     and a vector.
