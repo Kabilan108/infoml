@@ -17,7 +17,7 @@ sns.set(font='Times New Roman')
 
 
 # Export functions
-__all__ = ['heatmap', 'corrplot', 'boxplot']
+__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot']
 
 
 def heatmap(matrix, save=None, cmap='jet', bgcolor='black', threshold=None, 
@@ -160,7 +160,7 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
     return fig, ax
 
 
-def boxplot(data, labels, jitter=False, title='', xlab='', ylab='', 
+def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
             middleline=['median'], figsize=(6,4), save=None,
             colors=['#2096BA', '#AB3E16', '#351C4D', 
                     '#849974', '#F7DFD4', '#F5AB99'],
@@ -176,6 +176,9 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
         Labels for data
     jitter : bool
         If True, add jitter to data
+    ylim : tuple or list
+        Y-axis limits. Useful for adding space above plot to include
+        stars and other annotations
     title : str
         Figure title
     xlab : str
@@ -206,6 +209,8 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
     assert data.ndim <= 2, "data must be 1 or 2 dimensional"
     assert isinstance(labels, list), "labels must be an list"
     assert isinstance(jitter, bool), "jitter must be a boolean"
+    assert isinstance(ylim, tuple) or isinstance(ylim, list), \
+        "ylim must be a tuple"
     assert isinstance(title, str), "title must be a string"
     assert isinstance(xlab, str), "xlab must be a string"
     assert isinstance(ylab, str), "ylab must be a string"
@@ -261,13 +266,14 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
     ax.set_title(title, fontsize=15)
     ax.set_xticklabels(labels, fontsize=12)
     ax.tick_params(axis='both', labelsize=11)
+    if len(ylim) == 2:
+        ax.set_ylim(*ylim)
 
     # Figure styling
     ax.set_facecolor('white')
     ax.grid(True, which='both', axis='y', color='lightgrey', linestyle='--')
     sns.despine(offset=10, trim=True, bottom=True)
     ax.spines['left'].set(color='black', linewidth=1)
-    ax.spines['bottom'].set(color='black', linewidth=1)
 
     # save figure
     if save is not None:
@@ -275,3 +281,94 @@ def boxplot(data, labels, jitter=False, title='', xlab='', ylab='',
 
     return fig, ax
 
+
+def violinplot(data, labels, jitter=False, ylim=[], 
+               title='', xlab='', ylab='', 
+               figsize=(6,4), save=None,
+               colors=['#2096BA', '#AB3E16', '#351C4D', 
+                       '#849974', '#F7DFD4', '#F5AB99'],
+               **violin_kws):
+    """
+    Create boxplot for data with labels
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Data to plot
+    labels : list
+        Labels for data
+    jitter : bool
+        If True, add jitter to data
+    ylim : tuple or list
+        Y-axis limits. Useful for adding space above plot to include
+        stars and other annotations
+    title : str
+        Figure title
+    xlab : str
+        X-axis label
+    ylab : str  
+        Y-axis label
+    figsize : tuple
+        Figure size [ for plt.subplots() ]
+    save : str
+        Path to save figure to
+    colors : list
+        Colors for boxplots
+    violin_kws : dict
+        Keyword arguments for seaborn.violinplot()
+    swarmplot_kws : dict
+        Keyword arguments for seaborn.swarmplot()
+
+    Returns
+    -------
+    fig, ax : matplotlib.figure.Figure, matplotlib.axes.Axes
+    """
+
+    # Check inputs
+    data = np.asarray(data)
+    assert isinstance(data, np.ndarray), "data must be a numpy array"
+    assert data.ndim <= 2, "data must be 1 or 2 dimensional"
+    assert isinstance(labels, list), "labels must be an list"
+    assert isinstance(jitter, bool), "jitter must be a boolean"
+    assert isinstance(ylim, tuple) or isinstance(ylim, list), \
+        "ylim must be a tuple"
+    assert isinstance(title, str), "title must be a string"
+    assert isinstance(xlab, str), "xlab must be a string"
+    assert isinstance(ylab, str), "ylab must be a string"
+    assert isinstance(figsize, tuple), "figsize must be a tuple"
+    assert isinstance(save, str) or save is None, "save must be a string"
+    assert isinstance(colors, list), "colors must be a list"
+
+
+    # Create figure
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Create violinplot
+    sns.violinplot(data=data, ax=ax, **violin_kws)
+
+    # Style violins
+    colors = itertools.cycle(colors)
+    for violin, color in zip(ax.collections[::2], colors):
+        violin.set_color(color)
+        violin.set_alpha(.6)
+
+    # Plot labels and axis styling
+    ax.set_xlabel(xlab, fontsize=13)
+    ax.set_ylabel(ylab, fontsize=13)
+    ax.set_title(title, fontsize=15)
+    ax.set_xticklabels(labels, fontsize=12)
+    ax.tick_params(axis='both', labelsize=11)
+    if len(ylim) == 2:
+        ax.set_ylim(*ylim)
+
+    # Figure styling
+    ax.set_facecolor('white')
+    ax.grid(True, which='both', axis='y', color='lightgrey', linestyle='--')
+    sns.despine(offset=10, trim=True, bottom=True)
+    ax.spines['left'].set(color='black', linewidth=1)
+
+    # save figure
+    if save is not None:
+        plt.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
+
+    return fig, ax
