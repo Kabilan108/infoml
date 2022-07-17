@@ -9,18 +9,21 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 import itertools
+import warnings
+import os
 
-from neuro import stats
+from neuro import stats, wrangling
 
 
 # Global Plot options
 sns.set(font='Times New Roman')
 
 # Export functions
-__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot', 'group_difference']
+__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot', 'group_difference',
+           'barplot', 'histogram', 'connectome']
 
 
-def heatmap(matrix, save=None, cmap='jet', bgcolor='black', threshold=None, 
+def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None, 
             figsize=(6, 6), **hmap_kwargs):
     """
     Generate heatmap for a given matrix
@@ -47,11 +50,8 @@ def heatmap(matrix, save=None, cmap='jet', bgcolor='black', threshold=None,
 
     # Check inputs
     assert isinstance(matrix, np.ndarray), "matrix must be a numpy array"
-    assert isinstance(save, str) or save is None, "save must be a string"
-    assert isinstance(cmap, str), "cmap must be a string"
+    assert cmap in plt.colormaps(), "cmap must be a valid matplotlib colormap"
     assert isinstance(bgcolor, str), "bgcolor must be a string"
-    assert type(threshold) in [int, float] or threshold is None, \
-        "threshold must be numeric"
     assert isinstance(figsize, tuple), "figsize must be a tuple"
 
     # Create colormap
@@ -63,11 +63,10 @@ def heatmap(matrix, save=None, cmap='jet', bgcolor='black', threshold=None,
 
     # Plot heatmap
     sns.heatmap(matrix, cmap=cmap, vmin=threshold, ax=ax,
-                square=True, annot=False, **hmap_kwargs)
-
-    # save figure
-    if save is not None:
-        plt.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
+                square=True, annot=False, 
+                cbar_kws=dict(spacing='proportional', orientation='vertical',
+                              shrink=0.8, pad=.03, format='%.2f'),
+                xticklabels=10, yticklabels=10, **hmap_kwargs)
 
     return fig, ax
 
@@ -370,6 +369,7 @@ def violinplot(data, labels, ylim=[], title='', xlab='', ylab='',
     return fig, ax
 
 
+# TODO: group difference figure
 def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
                      alternative='two-sided',
                      title='', xlab='', ylab='',
@@ -482,4 +482,105 @@ def barplot(groups, values, title='', xlab='', ylab='', save=None,
 
     return fig, ax
 
+
+# TODO: histograms
+def histogram():
+    pass
+
+
+def connectome(cntm: np.ndarray, sign: str='full', threshold: float=0.0, 
+               bgcolor: str='black', cmap: str='jet', show: bool=False, 
+               save=None,  logscale: bool=False, symmetric: bool=False, 
+               min: float=None, max: float=None):
+    """
+    Plot connectome.
+
+    Parameters
+    ----------
+    cntm : np.ndarray
+        Connectome matrix
+    sign : str
+        Plot the whole matirx, or the positive/negative side
+        ['full', 'positive', 'negative']
+    threshold : float
+        min threshold for the magnitude of the cell values (i.e., a threshold 
+        of absolute values)
+    bgcolor : str
+        Background color. 
+    cmap : str
+        Seabron Colormap
+    show : bool
+        If True, show the plot. If False, do not show the plot.
+    save : str
+        Path to save figure to. If 'none', do not save the figure.
+    logscale : bool
+        If True, use logarithmic scale. If False, use linear scale.
+    symmetric : bool
+        if the data contains values above and below zero, set the middle 
+        point of the range to zero while displaying
+    min : float
+        Minimum value for the colormap.
+    max : float
+        Maximum value for the colormap.
+
+    Returns
+    -------
+    fig, ax : matplotlib.figure.Figure, matplotlib.axes.Axes
+    """
+
+    # Check inputs
+    assert cntm.ndim == 2, "cntm must be a 2D array"
+    assert sign in ['full', 'positive', 'negative'], \
+        "sign must be 'full', 'positive', or 'negative'"
+    assert isinstance(bgcolor, str), "bgcolor must be a string"
+    assert cmap in plt.colormaps(), "cmap must be a valid matplotlib colormap"
+    assert isinstance(show, bool), "show must be a boolean"
+    assert isinstance(save, str) or save is None, "save must be a string"
+    assert isinstance(logscale, bool), "logscale must be a boolean"
+    assert isinstance(symmetric, bool), "symmetric must be a boolean"
+    assert isinstance(min, float) or min is None, "min must be a float"
+    assert isinstance(max, float) or max is None, "max must be a float"
+
+    # Log scaling: log scale the egdes but make sure, you are scaling the 
+    # values greater than 1 and setting the values less than 1 to zero.
+    if logscale:
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore')
+            cntm = np.where(cntm < 1, 0, np.log(cntm))
+
+    # Remove small values wrt zero  (i.e., small in magnitude (absolute value))
+    cntm[np.absolute(cntm) < threshold] = 0
+    if sign == 'positive':
+        cntm[cntm < 0] = 0
+    elif sign == 'negative':
+        cntm[cntm > 0] = 0
+        cntm *= -1
+
+    if symmetric:
+        vmax = np.max(np.abs(cntm))
+        threshold = -vmax
+    elif min is not None and max is not None:  # min and max are given
+        threshold = min
+        vmax = max
+    elif min is None and max is None:  # min and max are not given
+        vmax = None
+    elif min is not None and max is None:  # min is given and max is not given
+        threshold = min
+        vmax = None
+    elif min is None and max is not None:  # min is not given and max is given
+        vmax = max
+
+    # Plot connectome
+    fig, ax = heatmap(cntm, cmap=cmap, bgcolor=bgcolor, threshold=threshold, 
+                      figsize=(6, 6), vmax=vmax);
+
+    # Show figure
+    if show:
+        plt.show()
+
+    # Save figure
+    if save is not None:
+        fig.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
+
+    return fig, ax
 
