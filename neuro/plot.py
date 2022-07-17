@@ -10,6 +10,7 @@ import numpy as np
 import itertools
 import warnings
 
+from matplotlib.ticker import FuncFormatter
 from neuro import stats, wrangling
 
 
@@ -19,6 +20,35 @@ sns.set(font='Times New Roman')
 # Export functions
 __all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot', 'group_difference',
            'barplot', 'histogram', 'connectome']
+
+
+def _yfmt(y, pos):
+    """
+    Formatter for yaxes
+    """
+
+    # Define abbreviations
+    decades = [1e9, 1e6, 1e3, 1e0, 1e-3, 1e-6, 1e-9 ]
+    suffix = ['G', 'M', 'k', '', 'm', 'µ', 'n']
+
+    if y == 0:
+        return '0'
+    for i, d in enumerate(decades):
+        if np.abs(y) >= d:
+            val = y / float(d)
+            signf = len(str(val).split('.')[1])
+
+            if signf == 0:
+                return f'{int(val):d} {suffix[i]}'
+            else:
+                if signf == 1:
+                    if str(val).split('.')[1] == '0':
+                        return f'{int(round(val)):d} {suffix[i]}'
+                tx = "{"+"val:.{signf}f".format(signf = signf) +"} {suffix}"
+                tx = "{{val:.{signf}f}} {{suffix}}".format(signf)
+                return tx.format(val=val, suffix=suffix[i])
+    
+    return y
 
 
 def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None, 
@@ -301,6 +331,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     ax.tick_params(axis='both', labelsize=11)
     if len(ylim) == 2:
         ax.set_ylim(*ylim)
+    ax.yaxis.set_major_formatter(FuncFormatter(_yfmt))
 
     # Figure styling
     ax.set_facecolor('white')
@@ -389,6 +420,7 @@ def violinplot(data, labels, ylim=[], title='', xlab='', ylab='',
     ax.tick_params(axis='both', labelsize=11)
     if len(ylim) == 2:
         ax.set_ylim(*ylim)
+    ax.yaxis.set_major_formatter(FuncFormatter(_yfmt))
 
     # Figure styling
     ax.set_facecolor('white')
@@ -502,6 +534,7 @@ def barplot(groups, values, title='', xlab='', ylab='', save=None,
     ax.set_title(title, fontsize=15)
     ax.set_xticklabels(groups, fontsize=12)
     ax.tick_params(axis='both', labelsize=11)
+    ax.yaxis.set_major_formatter(FuncFormatter(_yfmt))
 
     # Figure styling
     ax.set_facecolor('white')
