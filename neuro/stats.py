@@ -9,8 +9,7 @@ import numpy as np
 
 # Export functions
 __all__ = ['fdr', 'remove_outliers', 'get_outlier_idx', 'group_difference', 
-           'compare_variances', 'corrtest',
-           'edgewise_correlation']
+           'compare_variances', 'corrtest', 'edgewise_correlation']
 
 
 def _ecdf(x):
@@ -388,3 +387,4 @@ def edgewise_correlation(cntms, vctr):
             cmat[i,j], pval[i,j] = sps.pearsonr(cntms[i,j,:], vctr)
 
     return cmat, pval
+
