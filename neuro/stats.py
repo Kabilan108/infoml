@@ -388,3 +388,38 @@ def edgewise_correlation(cntms, vctr):
 
     return cmat, pval
 
+
+def zscore(data, ctrl_group):
+    """
+    Compute zscore with respect to a control group
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Data to zscore
+    ctrl_group : np.ndarray
+        Ordered Indexes for Control group to use for zscoring
+
+    Returns
+    -------
+    zscored : np.ndarray
+        Zscored data
+    """
+
+    # Check inputs
+    data = np.asarray(data).copy()
+    ctrl_group = np.asarray(ctrl_group)
+    assert data.ndim == 1, "data must be 1-dimensional, i.e., of shape (n,)"
+    assert ctrl_group.ndim == 1, "ctrl_group must be 1-dimensional, i.e., of shape (n,)"
+
+    for i in range(len(data)):
+        if i < len(ctrl_group):
+            controls = np.delete(ctrl_group, np.where(ctrl_group == i))
+        ctrl_mean = np.mean(data[controls])
+        ctrl_std = np.std(data[controls])
+        if ctrl_std > 0.000001:
+            data[i] = (data[i] - ctrl_mean) / ctrl_std
+        else:
+            data[i] = data[i] - ctrl_mean
+        
+    return data
