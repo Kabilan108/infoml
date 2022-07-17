@@ -134,9 +134,9 @@ def get_outlier_idx(data):
     upper_bound = upper + 1.5 * IQD
 
     # Get indices of outliers
-    idx = np.argwhere((data <= upper_bound) & (data >= lower_bound))
+    idx = np.argwhere((data >= upper_bound) | (data <= lower_bound))
 
-    return idx
+    return list(idx.flatten())
 
 
 def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
