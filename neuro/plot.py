@@ -6,11 +6,9 @@ This module contains functions for plotting.
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
-import pandas as pd
 import numpy as np
 import itertools
 import warnings
-import os
 
 from neuro import stats, wrangling
 
@@ -163,6 +161,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
             middleline=['median'], figsize=(6,4), save=None,
             colors=['#2096BA', '#AB3E16', '#351C4D', 
                     '#849974', '#F7DFD4', '#F5AB99'],
+            threshold=None, name_outliers=False, subject_ids=[],
             boxplot_kws={}, swarmplot_kws={}):
     """
     Create boxplot for data with labels
@@ -192,6 +191,12 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
         Path to save figure to
     colors : list
         Colors for boxplots
+    threshold : float
+        Threshold for heatmap
+    name_outliers : bool
+        If True, add names of outliers to plot
+    subject_ids : list
+        List of subject IDs
     boxplot_kws : dict
         Keyword arguments for seaborn.boxplot()
     swarmplot_kws : dict
@@ -203,9 +208,12 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     """
 
     # Check inputs
-    data = np.asarray(data)
+    data = np.asmatrix(data)
+    if data.shape[0] == 1:
+        data = data.T
+    subject_ids = list(subject_ids)
     assert isinstance(data, np.ndarray), "data must be a numpy array"
-    assert data.ndim <= 2, "data must be 1 or 2 dimensional"
+    assert data.ndim == 2, "data must be a 2D array"
     assert isinstance(labels, list), "labels must be an list"
     assert isinstance(jitter, bool), "jitter must be a boolean"
     assert isinstance(ylim, tuple) or isinstance(ylim, list), \
@@ -217,6 +225,11 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     assert isinstance(figsize, tuple), "figsize must be a tuple"
     assert isinstance(save, str) or save is None, "save must be a string"
     assert isinstance(colors, list), "colors must be a list"
+    assert isinstance(threshold, float) or threshold is None, \
+        "threshold must be a float"
+    assert isinstance(name_outliers, bool), "name_outliers must be a boolean"
+    if len(subject_ids) != data.shape[0]:
+        raise ValueError("subject_ids must be the same length as data")
 
 
     # Create figure
@@ -246,6 +259,27 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
                 medianprops=medianprops, meanprops=meanprops, 
                 meanline=meanline, showmeans=showmeans,
                 **boxplot_kws)
+
+    if threshold != None:
+        ax.axhline(y=threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
+        ax.axhline(y=-threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
+
+    # Label outliers
+    if name_outliers and len(subject_ids) > 0:
+        if threshold is None:
+            outlier_idx = [stats.get_outlier_idx(x) for x in data.T]
+        else:
+            outlier_idx = []
+            for x in data.T:
+                idx = np.argwhere((x >= threshold) | (x <= -threshold))
+                outlier_idx.append(list(idx.flatten()))
+
+        # Annotate boxes
+        for i, outliers in enumerate(outlier_idx):
+            if len(outliers) > 0:
+                for j in outliers:
+                    ax.annotate(subject_ids[j], (i, data[j, i]), 
+                                size=10, alpha=.7, color='black')
 
     # Boxplot styling
     colors = itertools.cycle(colors)
