@@ -33,6 +33,7 @@ def _load_connectome(fname, zero_diag=True):
     """
 
     # Check inputs
+    fname = os.path.expanduser(fname)
     assert os.path.exists(fname), "fname must be a valid file"
     assert isinstance(zero_diag, bool), "zero_diag must be a boolean"
 
