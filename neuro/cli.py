@@ -8,7 +8,12 @@ scripts, and computation of graph theory metrics.
 from typer import Typer, Argument, Option
 from neuro import wrangling, plot
 from enum import Enum
+import numpy.linalg as LA
+import nibabel as nib
+import numpy as np
 import os
+
+from neuro import wrangling, stats, plot, metrics
 
 
 class cli:
@@ -57,6 +62,17 @@ class cli:
         plot.connectome(cntm, sign=sign, threshold=threshold, bgcolor=bgcolor, 
                         cmap=cmap, show=show, save=outpath, logscale=logscale, 
                         symmetric=symmetric, min=min, max=max);
+
+        
+    # QC command
+    @app.command()
+    def qc(
+
+    ):
+        """
+        Quality control for connectomes.
+        """
+        pass
 
 
 if __name__ == '__main__':
