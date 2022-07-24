@@ -243,6 +243,5 @@ class cli:
 
 
 if __name__ == '__main__':
-    print('Running QC...')
     neuro = cli()
     neuro.app()
