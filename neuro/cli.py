@@ -92,10 +92,6 @@ class cli:
         else:
             subjects = sorted(os.listdir(indir))
 
-        # Create output directory
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
-
         # Obtain subject names from the file names
         subject_names = [re.search(name_pattern, x)[0] for x in subjects]
         
