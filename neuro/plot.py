@@ -6,20 +6,21 @@ This module contains functions for plotting.
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
+import pandas as pd
 import numpy as np
 import itertools
 import warnings
 
 from matplotlib.ticker import FuncFormatter
-from neuro import stats, wrangling
+import stats, wrangling
 
 
 # Global Plot options
 sns.set(font='Times New Roman')
 
 # Export functions
-__all__ = ['heatmap', 'corrplot', 'boxplot', 'violinplot', 'group_difference',
-           'barplot', 'histogram', 'connectome']
+__all__ = ['heatmap', 'corrplot', 'boxplot', 'boxplots', 'violinplot', 
+           'group_difference', 'barplot', 'histogram', 'connectome']
 
 
 def _yfmt(y, pos):
@@ -188,7 +189,7 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
 
 
 def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
-            middleline=['median'], figsize=(6,4), save=None,
+            middleline=['median'], figsize=(6,4), save=None, ax=None,
             colors=['#2096BA', '#AB3E16', '#351C4D', 
                     '#849974', '#F7DFD4', '#F5AB99'],
             threshold=None, name_outliers=False, subject_ids=[],
@@ -219,10 +220,12 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
         Figure size [ for plt.subplots() ]
     save : str
         Path to save figure to
+    ax : matplotlib.axes.Axes
+        Axes to plot on
     colors : list
         Colors for boxplots
     threshold : float
-        Threshold for heatmap
+        Number of standard deviations to threshold data
     name_outliers : bool
         If True, add names of outliers to plot
     subject_ids : list
@@ -238,13 +241,13 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     """
 
     # Check inputs
-    data = np.asmatrix(data)
+    data = np.asarray(np.asmatrix(data))
     if data.shape[0] == 1:
         data = data.T
     subject_ids = list(subject_ids)
     assert isinstance(data, np.ndarray), "data must be a numpy array"
     assert data.ndim == 2, "data must be a 2D array"
-    assert isinstance(labels, list), "labels must be an list"
+    assert isinstance(labels, list), "labels must be a list"
     assert isinstance(jitter, bool), "jitter must be a boolean"
     assert isinstance(ylim, tuple) or isinstance(ylim, list), \
         "ylim must be a tuple"
@@ -258,12 +261,13 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     assert isinstance(threshold, float) or threshold is None, \
         "threshold must be a float"
     assert isinstance(name_outliers, bool), "name_outliers must be a boolean"
-    if len(subject_ids) != data.shape[0]:
+    if name_outliers and len(subject_ids) != data.shape[0]:
         raise ValueError("subject_ids must be the same length as data")
 
 
     # Create figure
-    fig, ax = plt.subplots(figsize=figsize)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
 
     # Boxplot options
     markersize = 0 if jitter else 6
@@ -291,14 +295,16 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
                 **boxplot_kws)
 
     if threshold != None:
+        threshold = np.std(data, axis=0)
         ax.axhline(y=threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
         ax.axhline(y=-threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
 
     # Label outliers
     if name_outliers and len(subject_ids) > 0:
         if threshold is None:
-            outlier_idx = [stats.get_outlier_idx(x) for x in data.T]
+            outlier_idx = [stats.get_outlier_idx(data[:,i]) for i in range(data.shape[1])]
         else:
+            threshold = np.std(data, axis=0)
             outlier_idx = []
             for x in data.T:
                 idx = np.argwhere((x >= threshold) | (x <= -threshold))
@@ -320,7 +326,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
 
     # Add points to boxplot
     if jitter:
-        sns.swarmplot(data=data, ax=ax, color='black', alpha=.3, s=4,
+        sns.swarmplot(data=data, ax=ax, color='black', alpha=.3, s=3,
                       **swarmplot_kws)
 
     # Plot labels and axis styling
@@ -331,19 +337,68 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     ax.tick_params(axis='both', labelsize=11)
     if len(ylim) == 2:
         ax.set_ylim(*ylim)
-    ax.yaxis.set_major_formatter(FuncFormatter(_yfmt))
+    # ax.yaxis.set_major_formatter(FuncFormatter(_yfmt))
 
     # Figure styling
     ax.set_facecolor('white')
     ax.grid(True, which='both', axis='y', color='lightgrey', linestyle='--')
-    sns.despine(offset=10, trim=True, bottom=True)
+    sns.despine(ax=ax, offset=10, trim=True, bottom=True)
     ax.spines['left'].set(color='black', linewidth=1)
 
     # save figure
     if save is not None:
         plt.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
 
-    return fig, ax
+    if ax is None:
+        return fig, ax
+    else:
+        return ax
+
+
+def boxplots(data, title='', 
+             colors=['#2096BA', '#AB3E16', '#351C4D', 
+                     '#849974', '#F7DFD4', '#F5AB99'],
+            figsize=(12, 4), *args, **kwargs):
+    """
+    Plot multiple boxplots as subplots
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataframe with variables to plot
+    title : str
+        Title of the figure
+    colors : list
+        List of colors for boxes
+    figsize : tuple
+        Dimensions of overall figure
+    *args, **kwargs
+        Arguments for boxplot() function
+
+    Return
+    ------
+    fig, ax : matplotlib.figure.Figure, matplotlib.axes.Axes
+    """
+
+    # Check inputs
+    assert isinstance(data, pd.DataFrame), "data must be a DataFrame"
+    assert data.ndim == 2, "data must be a 2D array"
+    assert isinstance(figsize, tuple), "figsize must be a tuple"
+    assert isinstance(colors, list), "colors must be a list"
+    colors = itertools.cycle(colors)
+
+    # Create figure
+    n = data.shape[1]
+    fig, axes = plt.subplots(nrows=1, ncols=n, figsize=figsize)
+
+    # Plot boxplots
+    for ax, color, (col, vals) in zip(axes, colors, data.items()):
+        boxplot(vals, [col], ax=ax, colors=[color], *args, **kwargs);
+    plt.suptitle(title, size=16)
+    plt.tight_layout()
+
+    return fig, axes
+
 
 
 def violinplot(data, labels, ylim=[], title='', xlab='', ylab='', 
