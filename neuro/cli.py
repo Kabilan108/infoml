@@ -96,6 +96,7 @@ class cli:
         subject_names = [re.search(name_pattern, x)[0] for x in subjects]
         
         # Load connectomes
+        print("Loading connectomes...")
         connectomes = wrangling.load_connectomes(
             indir, subject_names, id_pattern=name_pattern, zero_diag=zero_diag
         )
@@ -132,6 +133,7 @@ class cli:
 
         # Keep track of statistics in a dictionary
         statistics = dict()
+        print("Computing statistics...")
 
         # Calculate statistics
         statistics['Total Connectivity'] = \
