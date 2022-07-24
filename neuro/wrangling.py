@@ -12,7 +12,8 @@ import re
 
 
 # Export functions
-__all__ = ['_load_connectome', 'load_connectomes', 'savetxt_compact']
+__all__ = ['_load_connectome', 'load_connectomes', 'savetxt_compact'
+           'load_computed_measures']
 
 # TODO: Move these to separate text files
 # Define feature sets
