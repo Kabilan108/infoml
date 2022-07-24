@@ -8,10 +8,25 @@ import numpy as np
 
 
 # Export functions
-__all__ = ['intrahemispheric_stength', 'interhemispheric_stength']
+__all__ = ['compute_global_metric', 'intrahemispheric_stength', 
+           'interhemispheric_stength', 'connectivity_strength', 'density']
 
 
-def intrahemispheric_stength(cntm, hemispheremap):
+def compute_global_metric(cntms, func, *args, **kwargs):
+            """
+            Compute global metrics for a list of connectomes
+
+            @param: cntms -> (k x m x n); k = subjects
+            @param: function that returns a 1D array of length k
+            """
+
+            values = []
+            for cntm in cntms:
+                values.append( func(cntm, *args, **kwargs) )
+            return np.array(values)
+
+
+def intrahemispheric_strength(cntm, hemispheremap):
     """
     Compute the intra-hemispheric connectivity of a connectome.
 
@@ -31,19 +46,20 @@ def intrahemispheric_stength(cntm, hemispheremap):
     assert cntm.shape[0] == len(hemispheremap), \
         "cntm must have the same number of rows as hemishperemap"
     assert hemispheremap.ndim == 1, "hemishperemap must be a 1D array"
+    hemispheremap = hemispheremap.astype(bool)
+    inv_hemispheremap = np.invert(hemispheremap)
+
 
     # Number of nodes
     num_nodes = len(cntm)
 
     # Compute intrahemispheric strength
-    strength = []
-    for i in range(num_nodes):
-        strength.append( cntm[i][hemispheremap == hemispheremap[i]].sum() )
+    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) + np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, inv_hemispheremap))) / 2.0
 
-    return np.array(strength)
+    return np.array(val)
 
 
-def interhemispheric_stength(cntm, hemispheremap):
+def interhemispheric_strength(cntm, hemispheremap):
     """
     Compute the inter-hemispheric connectivity of a connectome.
 
@@ -63,21 +79,30 @@ def interhemispheric_stength(cntm, hemispheremap):
     assert cntm.shape[0] == len(hemispheremap), \
         "cntm must have the same number of rows as hemishperemap"
     assert hemispheremap.ndim == 1, "hemishperemap must be a 1D array"
+    hemispheremap = hemispheremap.astype(bool)
+    inv_hemispheremap = np.invert(hemispheremap)
 
     # Number of nodes
     num_nodes = len(cntm)
 
     # Compute intrahemispheric strength
-    strength = []
-    for i in range(num_nodes):
-        strength.append( cntm[i][hemispheremap != hemispheremap[i]].sum() )
+    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) + np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, hemispheremap))) / 2.0
 
-    return np.array(strength)
+    return np.array(val)
 
 
-def strength(cntm):
+def connectivity_strength(cntm):
     """
-    Compute Strength
+    Compute Connectivity Strength
     """
 
     return np.sum(cntm * (cntm > 0)) / 2.0 + np.trace(cntm * (cntm > 0)) / 2.0
+
+
+def density(cntm):
+    """
+    Compute Connection Density
+    """
+    return np.sum(cntm > 0) * 100.0 / float(cntm.shape[0] * (cntm.shape[0]-1))
+
+
