@@ -112,6 +112,9 @@ class cli:
                 discard_subject_node_count.append(len(cntm))
         connectomes = np.delete(connectomes, discard_idx, axis=0)
 
+        if connectomes.shape[0] == 0:
+            raise ValueError("Nodes is incorrect.")
+
         # Subject numbers and orders
         num_subjects = len(connectomes)
         subject_order = np.arange(num_subjects)
