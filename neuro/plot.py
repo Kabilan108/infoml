@@ -12,7 +12,7 @@ import itertools
 import warnings
 
 from matplotlib.ticker import FuncFormatter
-import stats, wrangling
+from . import stats, wrangling
 
 
 # Global Plot options
