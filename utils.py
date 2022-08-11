@@ -4,6 +4,7 @@ General Utility Functions
 
 # Imports
 import tempfile as temp
+import pathlib
 import string
 import shutil
 import urllib
@@ -39,7 +40,7 @@ def tempdir(dirname: str = 'ToolBox'):
     Create path to a temporary directory
     """
 
-    name = os.path.join(temp.gettempdir().replace("\\", "/"), dirname)
+    name = pathlib.Path(temp.gettempdir()).joinpath(dirname).resolve()
     if not os.path.isdir(name):
         os.mkdir(name)
 
