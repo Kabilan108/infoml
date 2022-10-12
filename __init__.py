@@ -3,6 +3,10 @@ Collection of useful python functions, classes etc.
 """
 
 # Defince computer-specific folders
+# TODO: Define paths needed for each submodule
+#   Dir for downloading data
+#   Dir for temporary data
+#   Dir for storing figures
 class dirs:
     DATADIR = "/home/kabil/.data"
     TEMPDIR = "/tmp/data/"
