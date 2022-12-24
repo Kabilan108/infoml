@@ -19,7 +19,7 @@ from . import stats, wrangling
 sns.set(font='Times New Roman')
 
 # Export functions
-__all__ = ['heatmap', 'corrplot', 'boxplot', 'boxplots', 'violinplot', 
+__all__ = ['heatmap', 'corrplot', 'boxplot', 'boxplots', 'violinplot',
            'group_difference', 'barplot', 'histogram', 'connectome']
 
 
@@ -29,7 +29,7 @@ def _yfmt(y, pos):
     """
 
     # Define abbreviations
-    decades = [1e9, 1e6, 1e3, 1e0, 1e-3, 1e-6, 1e-9 ]
+    decades = [1e9, 1e6, 1e3, 1e0, 1e-3, 1e-6, 1e-9]
     suffix = ['G', 'M', 'k', '', 'm', 'µ', 'n']
 
     if y == 0:
@@ -45,14 +45,14 @@ def _yfmt(y, pos):
                 if signf == 1:
                     if str(val).split('.')[1] == '0':
                         return f'{int(round(val)):d} {suffix[i]}'
-                tx = "{"+"val:.{signf}f".format(signf = signf) +"} {suffix}"
+                tx = "{"+"val:.{signf}f".format(signf=signf) + "} {suffix}"
                 tx = "{{val:.{signf}f}} {{suffix}}".format(signf)
                 return tx.format(val=val, suffix=suffix[i])
-    
+
     return y
 
 
-def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None, 
+def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None,
             figsize=(6, 6), **hmap_kwargs):
     """
     Generate heatmap for a given matrix
@@ -92,7 +92,7 @@ def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None,
 
     # Plot heatmap
     sns.heatmap(matrix, cmap=cmap, vmin=threshold, ax=ax,
-                square=True, annot=False, 
+                square=True, annot=False,
                 cbar_kws=dict(spacing='proportional', orientation='vertical',
                               shrink=0.8, pad=.03, format='%.2f'),
                 xticklabels=10, yticklabels=10, **hmap_kwargs)
@@ -100,8 +100,8 @@ def heatmap(matrix, cmap='jet', bgcolor='black', threshold=None,
     return fig, ax
 
 
-def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='', 
-             save=None, pt_annot=None, text=None, figsize=(6,4), 
+def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
+             save=None, pt_annot=None, text=None, figsize=(6, 4),
              **regplot_kws):
     """
     Generate regression plot for X and Y, annotated with 
@@ -150,9 +150,9 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
     fig, ax = plt.subplots(figsize=figsize)
 
     # Plot regression
-    sns.regplot(x=X, y=Y, ax=ax, 
-                scatter_kws={'s': 60, 'edgecolor': 'none', 'alpha': 0.5, 
-                            'color': '#0000CC'}, 
+    sns.regplot(x=X, y=Y, ax=ax,
+                scatter_kws={'s': 60, 'edgecolor': 'none', 'alpha': 0.5,
+                             'color': '#0000CC'},
                 line_kws={'color': 'red'},
                 **regplot_kws)
 
@@ -171,7 +171,7 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
     ax.text(0.78, 0.88, text, transform=ax.transAxes,
             color='black', fontsize=12,
             horizontalalignment='left', verticalalignment='center',
-            bbox={'facecolor': 'white', 'alpha': 0.6, 
+            bbox={'facecolor': 'white', 'alpha': 0.6,
                   'pad': 10, 'linewidth': 0})
 
     # Figure styling
@@ -189,8 +189,8 @@ def corrplot(X, Y, parametric=True, xlab='X', ylab='Y', title='',
 
 
 def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
-            middleline=['median'], figsize=(6,4), save=None, ax=None,
-            colors=['#2096BA', '#AB3E16', '#351C4D', 
+            middleline=['median'], figsize=(6, 4), save=None, ax=None,
+            colors=['#2096BA', '#AB3E16', '#351C4D',
                     '#849974', '#F7DFD4', '#F5AB99'],
             threshold=None, name_outliers=False, subject_ids=[],
             boxplot_kws={}, swarmplot_kws={}):
@@ -264,7 +264,6 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     if name_outliers and len(subject_ids) != data.shape[0]:
         raise ValueError("subject_ids must be the same length as data")
 
-
     # Create figure
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
@@ -272,7 +271,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     # Boxplot options
     markersize = 0 if jitter else 6
     boxprops = dict(linestyle='-', linewidth=1.5)
-    flierprops = dict(marker='o', markerfacecolor='grey', markersize=markersize, 
+    flierprops = dict(marker='o', markerfacecolor='grey', markersize=markersize,
                       markeredgecolor='none', linestyle='none')
     capprops = dict(linestyle='-', linewidth=2, color='grey')
     whiskerprops = dict(linestyle='--', linewidth=2, color='grey')
@@ -283,26 +282,29 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
     if 'median' in middleline:
         medianprops = dict(linestyle='-', linewidth=1.5, color='firebrick')
     if 'mean' in middleline:
-        meanprops = dict(linestyle='-.', linewidth=1.5, color='firebrick', 
+        meanprops = dict(linestyle='-.', linewidth=1.5, color='firebrick',
                          marker='D', markersize=4, markerfacecolor='black')
 
     # Create boxplot
     sns.boxplot(data=data, ax=ax,
                 boxprops=boxprops, flierprops=flierprops,
                 capprops=capprops, whiskerprops=whiskerprops,
-                medianprops=medianprops, meanprops=meanprops, 
+                medianprops=medianprops, meanprops=meanprops,
                 meanline=meanline, showmeans=showmeans,
                 **boxplot_kws)
 
     if threshold != None:
         threshold = np.std(data, axis=0)
-        ax.axhline(y=threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
-        ax.axhline(y=-threshold, linewidth=.5, color='r', linestyle='--', zorder=1)
+        ax.axhline(y=threshold, linewidth=.5,
+                   color='r', linestyle='--', zorder=1)
+        ax.axhline(y=-threshold, linewidth=.5,
+                   color='r', linestyle='--', zorder=1)
 
     # Label outliers
     if name_outliers and len(subject_ids) > 0:
         if threshold is None:
-            outlier_idx = [stats.get_outlier_idx(data[:,i]) for i in range(data.shape[1])]
+            outlier_idx = [stats.get_outlier_idx(
+                data[:, i]) for i in range(data.shape[1])]
         else:
             threshold = np.std(data, axis=0)
             outlier_idx = []
@@ -314,7 +316,7 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
         for i, outliers in enumerate(outlier_idx):
             if len(outliers) > 0:
                 for j in outliers:
-                    ax.annotate(subject_ids[j], (i, data[j, i]), 
+                    ax.annotate(subject_ids[j], (i, data[j, i]),
                                 size=10, alpha=.7, color='black')
 
     # Boxplot styling
@@ -355,10 +357,10 @@ def boxplot(data, labels, jitter=False, ylim=[], title='', xlab='', ylab='',
         return ax
 
 
-def boxplots(data, title='', 
-             colors=['#2096BA', '#AB3E16', '#351C4D', 
+def boxplots(data, title='',
+             colors=['#2096BA', '#AB3E16', '#351C4D',
                      '#849974', '#F7DFD4', '#F5AB99'],
-            figsize=(12, 4), *args, **kwargs):
+             figsize=(12, 4), *args, **kwargs):
     """
     Plot multiple boxplots as subplots
 
@@ -393,17 +395,16 @@ def boxplots(data, title='',
 
     # Plot boxplots
     for ax, color, (col, vals) in zip(axes, colors, data.items()):
-        boxplot(vals, [col], ax=ax, colors=[color], *args, **kwargs);
+        boxplot(vals, [col], ax=ax, colors=[color], *args, **kwargs)
     plt.suptitle(title, size=16)
     plt.tight_layout()
 
     return fig, axes
 
 
-
-def violinplot(data, labels, ylim=[], title='', xlab='', ylab='', 
-               figsize=(6,4), save=None,
-               colors=['#2096BA', '#AB3E16', '#351C4D', 
+def violinplot(data, labels, ylim=[], title='', xlab='', ylab='',
+               figsize=(6, 4), save=None,
+               colors=['#2096BA', '#AB3E16', '#351C4D',
                        '#849974', '#F7DFD4', '#F5AB99'],
                **violin_kws):
     """
@@ -454,7 +455,6 @@ def violinplot(data, labels, ylim=[], title='', xlab='', ylab='',
     assert isinstance(save, str) or save is None, "save must be a string"
     assert isinstance(colors, list), "colors must be a list"
 
-
     # Create figure
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -491,10 +491,10 @@ def violinplot(data, labels, ylim=[], title='', xlab='', ylab='',
 
 
 # TODO: group difference figure
-def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
+def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
                      alternative='two-sided',
                      title='', xlab='', ylab='',
-                     figsize=(6,4), save=None):
+                     figsize=(6, 4), save=None):
     """
     Created annotated plots showing the group difference between X and Y.
     Plots are annotated with stars (*) and effect sizes.
@@ -532,8 +532,8 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
 
 
 def barplot(groups, values, title='', xlab='', ylab='', save=None,
-            figsize=(6,4), colors=['#2096BA', '#AB3E16', '#351C4D',
-                                   '#849974', '#F7DFD4', '#F5AB99']):
+            figsize=(6, 4), colors=['#2096BA', '#AB3E16', '#351C4D',
+                                    '#849974', '#F7DFD4', '#F5AB99']):
     """
     Create barplot
 
@@ -564,7 +564,8 @@ def barplot(groups, values, title='', xlab='', ylab='', save=None,
     # Check inputs
     groups = np.asarray(groups)
     values = np.asarray(values)
-    assert len(groups) == len(values), "groups and values must be the same length"
+    assert len(groups) == len(
+        values), "groups and values must be the same length"
     assert isinstance(title, str), "title must be a string"
     assert isinstance(xlab, str), "xlab must be a string"
     assert isinstance(ylab, str), "ylab must be a string"
@@ -610,10 +611,10 @@ def histogram():
     pass
 
 
-def connectome(cntm: np.ndarray, sign: str='full', threshold: float=0.0, 
-               bgcolor: str='black', cmap: str='jet', show: bool=False, 
-               save=None,  logscale: bool=False, symmetric: bool=False, 
-               min: float=None, max: float=None):
+def connectome(cntm: np.ndarray, sign: str = 'full', threshold: float = 0.0,
+               bgcolor: str = 'black', cmap: str = 'jet', show: bool = False,
+               save=None,  logscale: bool = False, symmetric: bool = False,
+               min: float = None, max: float = None):
     """
     Plot connectome.
 
@@ -663,7 +664,7 @@ def connectome(cntm: np.ndarray, sign: str='full', threshold: float=0.0,
     assert isinstance(min, float) or min is None, "min must be a float"
     assert isinstance(max, float) or max is None, "max must be a float"
 
-    # Log scaling: log scale the egdes but make sure, you are scaling the 
+    # Log scaling: log scale the egdes but make sure, you are scaling the
     # values greater than 1 and setting the values less than 1 to zero.
     if logscale:
         with warnings.catch_warnings():
@@ -693,8 +694,8 @@ def connectome(cntm: np.ndarray, sign: str='full', threshold: float=0.0,
         vmax = max
 
     # Plot connectome
-    fig, ax = heatmap(cntm, cmap=cmap, bgcolor=bgcolor, threshold=threshold, 
-                      figsize=(6, 6), vmax=vmax);
+    fig, ax = heatmap(cntm, cmap=cmap, bgcolor=bgcolor, threshold=threshold,
+                      figsize=(6, 6), vmax=vmax)
 
     # Show figure
     if show:
@@ -705,4 +706,3 @@ def connectome(cntm: np.ndarray, sign: str='full', threshold: float=0.0,
         fig.savefig(save, dpi=300, transparent=True, bbox_inches='tight')
 
     return fig, ax
-

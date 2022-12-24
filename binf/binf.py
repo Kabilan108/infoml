@@ -30,7 +30,7 @@ class BWT:
     def transform(sequence: str) -> str:
         sequence += '$'
         table = [sequence[index:] + sequence[:index]
-            for index, _ in enumerate(sequence)]
+                 for index, _ in enumerate(sequence)]
         table.sort()
 
         return ''.join([rotation[-1] for rotation in table])
@@ -88,39 +88,42 @@ def swalign(a: str, b: str, gap: int = -5, scoreonly: bool = False,
             for j in range(B):
                 # reset, diag, horz, vert.
                 Ti_plus1[j + 1] = max(0, Ti[j] + submat_ai[b[j]],
-                                      Ti_plus1[j] + gap, Ti[j + 1] + gap )
+                                      Ti_plus1[j] + gap, Ti[j + 1] + gap)
         return np.max(T, axis=None)
 
     elif identonly:
         # Initialize counts
-        MC = np.zeros((A + 1, B + 1), dtype=int).tolist() # match counts
-        AL = np.zeros((A + 1, B + 1), dtype=int).tolist() # alignment lengths
+        MC = np.zeros((A + 1, B + 1), dtype=int).tolist()  # match counts
+        AL = np.zeros((A + 1, B + 1), dtype=int).tolist()  # alignment lengths
 
         for i in range(A):
             submat_ai = submat[a[i]]
-            Ti = T[i];	Ti_plus1 = T[i + 1];
-            MCi = MC[i];	MCi_plus1 = MC[i + 1];
-            ALi = AL[i];	ALi_plus1 = AL[i + 1];
+            Ti = T[i]
+            Ti_plus1 = T[i + 1]
+            MCi = MC[i]
+            MCi_plus1 = MC[i + 1]
+            ALi = AL[i]
+            ALi_plus1 = AL[i + 1]
 
             for j in range(B):
                 # reset, diag, horz, vert.
-                options = (0, Ti[j] + submat_ai[b[j]], Ti_plus1[j] + gap, 
+                options = (0, Ti[j] + submat_ai[b[j]], Ti_plus1[j] + gap,
                            Ti[j+1] + gap)
                 bestmove = np.argmax(options)
                 Ti_plus1[j + 1] = options[bestmove]
 
-                if bestmove == 1: # Diagonal
+                if bestmove == 1:  # Diagonal
                     MCi_plus1[j + 1] = MCi[j] + (a[i] == b[j])
                     ALi_plus1[j + 1] = ALi[j] + 1
-                elif bestmove == 2: # Horizontal
+                elif bestmove == 2:  # Horizontal
                     MCi_plus1[j + 1] = MCi_plus1[j]
                     ALi_plus1[j + 1] = ALi_plus1[j] + 1
-                elif bestmove == 3: # Vertical
+                elif bestmove == 3:  # Vertical
                     MCi_plus1[j + 1] = MCi[j + 1]
                     ALi_plus1[j + 1] = ALi[j + 1] + 1
 
     else:
-        # Store the best direction (we only keep one when there are multiple 
+        # Store the best direction (we only keep one when there are multiple
         # good options.)
         P = np.zeros((A + 1, B + 1), dtype=int).tolist()
         for i in range(A):
@@ -131,7 +134,7 @@ def swalign(a: str, b: str, gap: int = -5, scoreonly: bool = False,
 
             for j in range(B):
                 # reset, diag, horz, vert.
-                options = (0, Ti[j] + submat_ai[b[j]], Ti_plus1[j] + gap, 
+                options = (0, Ti[j] + submat_ai[b[j]], Ti_plus1[j] + gap,
                            Ti[j + 1] + gap)
                 bestmove = np.argmax(options)
                 Ti_plus1[j + 1] = options[bestmove]
@@ -139,7 +142,7 @@ def swalign(a: str, b: str, gap: int = -5, scoreonly: bool = False,
 
     # Determine score positions
     scorepos = np.unravel_index(np.argmax(T, axis=None), (A + 1, B + 1))
-    r,c = scorepos # r=scorepos[0]; c=scorepos[1]
+    r, c = scorepos  # r=scorepos[0]; c=scorepos[1]
     if identonly:
         # Compute and return percent identity
         return MC[r][c] / AL[r][c] * 100
@@ -148,7 +151,8 @@ def swalign(a: str, b: str, gap: int = -5, scoreonly: bool = False,
     score = T[r][c]
 
     # Reconstruct Alignment (#? Bactracking)
-    align_a = []; align_b = []
+    align_a = []
+    align_b = []
     while T[r][c] != 0 and P[r][c] != 0:
         move = P[r][c]
         # Define alignment characters
@@ -166,22 +170,25 @@ def swalign(a: str, b: str, gap: int = -5, scoreonly: bool = False,
             achar = a[r]
             bchar = '-'
 
-        align_a.append(achar); align_b.append(bchar);
+        align_a.append(achar)
+        align_b.append(bchar)
 
     # Reverse alignments and convert to strings
-    align_a.reverse(); align_b.reverse()
+    align_a.reverse()
+    align_b.reverse()
     align = [''.join(align_a), ''.join(align_b)]
 
     # Compute percent identity
     L = len(align[0])
-    ident = np.count_nonzero([align[0][i] == align[1][i] for i in range(L)]) / L * 100
+    ident = np.count_nonzero([align[0][i] == align[1][i]
+                             for i in range(L)]) / L * 100
 
     return {'score': score, 'align': align, 'ident': ident}
 
 
-def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
-            score_only: bool=False, ident_only: bool=False, alphabet: str='nt',
-            submat: Align.substitution_matrices.Array=None,
+def nwalign(a: str, b: str, match: int = 1, mismatch: int = -1, gap: int = -2,
+            score_only: bool = False, ident_only: bool = False, alphabet: str = 'nt',
+            submat: Align.substitution_matrices.Array = None,
             penalize_end_gaps=False) -> Union[int, float, dict]:
     """
     Custom implementation of the Needleman-Wunsch algorithm
@@ -189,10 +196,11 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
 
     # Default substitution matrix
     if submat is None:
-        if alphabet == 'nt': # Create nucleotide scoring matrix
+        if alphabet == 'nt':  # Create nucleotide scoring matrix
             # TODO: Modify this to handle gap characters
             submat = pd.DataFrame(
-                mismatch * np.ones((4, 4)) + (match - mismatch) * np.identity(4),
+                mismatch * np.ones((4, 4)) +
+                (match - mismatch) * np.identity(4),
                 index=["A", "C", "T", "G"], columns=["A", "C", "T", "G"]
             )
         elif alphabet == 'aa':
@@ -200,14 +208,14 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
 
     # Define sequence lengths
     A = len(a)
-    B = len(b) 
+    B = len(b)
     # Initialzie Dynamic Programming table
-    T = np.zeros( (A+1, B+1) ).tolist()
+    T = np.zeros((A+1, B+1)).tolist()
 
     if penalize_end_gaps:
         # Global alignment
         pass
-    else: 
+    else:
         # Free-end gaps (Semiglobal Alignment)
         #   Zeros in first row and first column
         #   Max value in last row or last column is end of alignment
@@ -218,10 +226,12 @@ def nwalign(a: str, b: str, match: int=1, mismatch: int=-1, gap: int=-2,
                 Ti_plus1 = T[i+1]
                 for j in range(B):
                     # diag, horz, vert.
-                    Ti_plus1[j+1] = max( Ti[j]+submat_ai[b[j]], Ti_plus1[j]+gap, Ti[j+1]+gap )
+                    Ti_plus1[j+1] = max(Ti[j]+submat_ai[b[j]],
+                                        Ti_plus1[j]+gap, Ti[j+1]+gap)
             return np.hstack([np.array(T)[A, :], np.array(T)[:, B]]).max(axis=None)
 
-def geodlparse(acc: str, limit_runs: int=1):
+
+def geodlparse(acc: str, limit_runs: int = 1):
     """
     Download, parse and cache data from GEO
 
@@ -253,7 +263,7 @@ def geodlparse(acc: str, limit_runs: int=1):
             try:
                 print('Loading cached data...')
                 with open(cachefile, 'rb') as cache:
-                    geodata =  pickle.load(cache)
+                    geodata = pickle.load(cache)
             except Exception as e:
                 print(f"ERROR: Loading cached file failed.\n{e}")
         else:
@@ -299,13 +309,14 @@ def geodlparse(acc: str, limit_runs: int=1):
     return geodata
 
 
-def targetscandb(mirna: str, scorethr: float=0.8, db: str='mir2target'):
+def targetscandb(mirna: str, scorethr: float = 0.8, db: str = 'mir2target'):
     """
     Retreive data from a table in the TargetScan Database
     """
 
     # Ensure TargetScan DB has been downloaded
-    dbfile = download('http://sacan.biomed.drexel.edu/ftp/binf/targetscandb.sqlite')
+    dbfile = download(
+        'http://sacan.biomed.drexel.edu/ftp/binf/targetscandb.sqlite')
 
     # Connect to database
     conn = sqlite3.connect(dbfile)
@@ -321,5 +332,5 @@ def targetscandb(mirna: str, scorethr: float=0.8, db: str='mir2target'):
         raise NotImplementedError("I can't query that table yet")
 
     rows = cur.execute(query).fetchall()
-    
-    return [ row[0] for row in rows ]
+
+    return [row[0] for row in rows]

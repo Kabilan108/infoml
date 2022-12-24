@@ -50,7 +50,8 @@ def dim_reduction(
         method = [method]
     method = [x.lower() for x in method]
     for m in method:
-        assert m in ['pca', 'tsne', 'umap'], "method must be 'pca', 'tsne' or 'umap'"
+        assert m in ['pca', 'tsne',
+                     'umap'], "method must be 'pca', 'tsne' or 'umap'"
 
     if pca_kws is None:
         pca_kws = dict(n_components=5, random_state=RANDOMSTATE)
@@ -58,13 +59,13 @@ def dim_reduction(
         pca_kws['random_state'] = RANDOMSTATE
 
     if tsne_kws is None:
-        tsne_kws = dict(n_components=3, perplexity=30.0, learning_rate='auto', 
+        tsne_kws = dict(n_components=3, perplexity=30.0, learning_rate='auto',
                         init='random', random_state=RANDOMSTATE)
     else:
         tsne_kws['random_state'] = RANDOMSTATE
 
     if umap_kws is None:
-        umap_kws = dict(n_components=3, init='random', n_neighbors=20, 
+        umap_kws = dict(n_components=3, init='random', n_neighbors=20,
                         min_dist=0.2, random_state=RANDOMSTATE)
     else:
         umap_kws['random_state'] = RANDOMSTATE
@@ -86,10 +87,10 @@ def dim_reduction(
     expvar = None
     for m, est in estimators.items():
         if m == 'pca':
-            proj.append( est.transform(data) )
+            proj.append(est.transform(data))
             expvar = est.explained_variance_ratio_ * 100
         else:
-            proj.append( est.fit_transform(data) )
+            proj.append(est.fit_transform(data))
     proj = np.concatenate(proj, axis=1)
 
     # Create column names for output data frame
@@ -101,16 +102,16 @@ def dim_reduction(
 
     # Create data frame of projections
     proj = (pd.DataFrame(proj, columns=cols, index=data.index)
-        .melt(ignore_index=False))
+            .melt(ignore_index=False))
     proj['component'] = (proj['variable']
-        .apply(lambda x: re.search(r'\d+', x)[0])
-        .astype(int))
+                         .apply(lambda x: re.search(r'\d+', x)[0])
+                         .astype(int))
     proj['variable'] = (proj['variable']
-        .apply(lambda x: re.search(r'^\w*', x)[0]))
+                        .apply(lambda x: re.search(r'^\w*', x)[0]))
     proj = (proj
-        .pivot_table(values='value', columns='component',
-                     index=list(data.index.names) + ['variable'])
-        .reset_index())
+            .pivot_table(values='value', columns='component',
+                         index=list(data.index.names) + ['variable'])
+            .reset_index())
     proj.columns = proj.columns.astype(str)
 
     return proj, expvar

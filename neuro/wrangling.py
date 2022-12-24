@@ -17,25 +17,25 @@ __all__ = ['_load_connectome', 'load_connectomes', 'savetxt_compact'
 
 # TODO: Move these to separate text files
 # Define feature sets
-## Nodal measures
-NODAL = ['degree', 'degree_interHemisphere', 'degree_intraHemisphere', 'degree_withinModule', 'degree_betweenModule', 'strength_noSelf', 
-         'strength_interHemisphere', 'strength_intraHemisphere', 'strength_withinModule', 'strength_betweenModule', 
-         'strength_selfConnections_nodal', 'node_betweenness_centrality', 'eigenvector_centrality', 'modularity_nodal', 
-         'participation_coefficient', 'clustering_coefficient', 'eccentricity', 'rich_club_coefficient', 'degree_neg', 'degree_interHemisphere_neg', 
-         'degree_intraHemisphere_neg', 'degree_withinModule_neg', 'degree_betweenModule_neg', 'strength_noSelf_neg', 
-         'strength_interHemisphere_neg', 'strength_intraHemisphere_neg', 'strength_withinModule_neg', 'strength_betweenModule_neg', 
-         'participation_coefficient_pos', 'participation_coefficient_neg', 'modularity_nodal_neg', 'clustering_coefficient_neg', 
+# Nodal measures
+NODAL = ['degree', 'degree_interHemisphere', 'degree_intraHemisphere', 'degree_withinModule', 'degree_betweenModule', 'strength_noSelf',
+         'strength_interHemisphere', 'strength_intraHemisphere', 'strength_withinModule', 'strength_betweenModule',
+         'strength_selfConnections_nodal', 'node_betweenness_centrality', 'eigenvector_centrality', 'modularity_nodal',
+         'participation_coefficient', 'clustering_coefficient', 'eccentricity', 'rich_club_coefficient', 'degree_neg', 'degree_interHemisphere_neg',
+         'degree_intraHemisphere_neg', 'degree_withinModule_neg', 'degree_betweenModule_neg', 'strength_noSelf_neg',
+         'strength_interHemisphere_neg', 'strength_intraHemisphere_neg', 'strength_withinModule_neg', 'strength_betweenModule_neg',
+         'participation_coefficient_pos', 'participation_coefficient_neg', 'modularity_nodal_neg', 'clustering_coefficient_neg',
          'clustering_coefficient_zhang', 'clustering_coefficient_zhang_neg']
 
-# Global measures 
-GLOBAL = ['degree_avg', 'degree_interHemisphere_avg', 'degree_intraHemisphere_avg', 'degree_withinModule_avg', 
-          'degree_betweenModule_avg', 'strength_global', 'strength_global_offDiagonal', 'strength_interHemisphere_global', 
-          'strength_intraHemisphere_global', 'strength_selfConnections_global', 'node_betweenness_centrality_avg', 'eigenvector_centrality_avg', 
-          'participation_coefficient_avg', 'clustering_coefficient_avg', 'eccentricity_avg', 'characteristic_path_length', 'global_efficiency', 
-          'radius', 'diameter', 'modularity_global', 'assortativity', 'density', 'degree_neg_avg', 'degree_interHemisphere_neg_avg', 
-          'degree_intraHemisphere_neg_avg', 'degree_withinModule_neg_avg', 'degree_betweenModule_neg_avg', 'strength_global_neg', 
-          'strength_global_offDiagonal_neg', 'strength_interHemisphere_global_neg', 'strength_intraHemisphere_global_neg', 'participation_coefficient_pos_avg', 
-          'participation_coefficient_neg_avg', 'clustering_coefficient_neg_avg', 'modularity_global_neg', 'clustering_coefficient_zhang_avg', 
+# Global measures
+GLOBAL = ['degree_avg', 'degree_interHemisphere_avg', 'degree_intraHemisphere_avg', 'degree_withinModule_avg',
+          'degree_betweenModule_avg', 'strength_global', 'strength_global_offDiagonal', 'strength_interHemisphere_global',
+          'strength_intraHemisphere_global', 'strength_selfConnections_global', 'node_betweenness_centrality_avg', 'eigenvector_centrality_avg',
+          'participation_coefficient_avg', 'clustering_coefficient_avg', 'eccentricity_avg', 'characteristic_path_length', 'global_efficiency',
+          'radius', 'diameter', 'modularity_global', 'assortativity', 'density', 'degree_neg_avg', 'degree_interHemisphere_neg_avg',
+          'degree_intraHemisphere_neg_avg', 'degree_withinModule_neg_avg', 'degree_betweenModule_neg_avg', 'strength_global_neg',
+          'strength_global_offDiagonal_neg', 'strength_interHemisphere_global_neg', 'strength_intraHemisphere_global_neg', 'participation_coefficient_pos_avg',
+          'participation_coefficient_neg_avg', 'clustering_coefficient_neg_avg', 'modularity_global_neg', 'clustering_coefficient_zhang_avg',
           'clustering_coefficient_zhang_neg_avg',]
 
 
@@ -98,11 +98,11 @@ def load_connectomes(dir, ids, id_pattern, ext='*.txt', zero_diag=True):
     assert isinstance(zero_diag, bool), "zero_diag must be a boolean"
 
     # Get list of files corresponding to the subjects
-    get_id = lambda x: re.search(id_pattern, x)[0]
+    def get_id(x): return re.search(id_pattern, x)[0]
     files = [x for x in glob.glob(f"{dir}/{ext}") if get_id(x) in ids]
 
     # Load connectomes
-    cntms = np.array([ _load_connectome(f, zero_diag) for f in files ])
+    cntms = np.array([_load_connectome(f, zero_diag) for f in files])
 
     return cntms
 
@@ -171,7 +171,7 @@ def load_computed_measures(path, scale):
         raise ValueError("scale must be nodal or global")
 
     # Retreive paths to desired features
-    feature_paths = [x for x in glob.glob(path + '/*.txt') if 
+    feature_paths = [x for x in glob.glob(path + '/*.txt') if
                      os.path.basename(x)[:-4] in FSET]
 
     # Load features
@@ -183,4 +183,4 @@ def load_computed_measures(path, scale):
     if scale == 'global':
         features = pd.DataFrame(features)
 
-    return features    
+    return features

@@ -8,7 +8,7 @@ import numpy as np
 
 
 # Export functions
-__all__ = ['fdr', 'remove_outliers', 'get_outlier_idx', 'group_difference', 
+__all__ = ['fdr', 'remove_outliers', 'get_outlier_idx', 'group_difference',
            'compare_variances', 'corrtest', 'edgewise_correlation']
 
 
@@ -94,7 +94,8 @@ def remove_outliers(data):
 
     # Check inputs
     data = np.asarray(data)
-    assert isinstance(data, np.ndarray), "data must be a numpy array or array-like"
+    assert isinstance(
+        data, np.ndarray), "data must be a numpy array or array-like"
 
     # Compuite the upper and lower quartiles
     lower, upper = np.percentile(data, [25, 75])
@@ -125,7 +126,8 @@ def get_outlier_idx(data):
 
     # Check inputs
     data = np.asarray(data)
-    assert isinstance(data, np.ndarray), "data must be a numpy array or array-like"
+    assert isinstance(
+        data, np.ndarray), "data must be a numpy array or array-like"
 
     # Compuite the upper and lower quartiles
     lower, upper = np.percentile(data, [25, 75])
@@ -139,7 +141,7 @@ def get_outlier_idx(data):
     return list(idx.flatten())
 
 
-def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False, 
+def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
                      alternative='two-sided'):
     """
     Compute the group difference between X and Y
@@ -187,7 +189,7 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
     size = np.array([X.size, Y.size])
 
     # If there is no variation, return 0
-    if (var == (0,0)).all():
+    if (var == (0, 0)).all():
         return 0, 1
 
     if parametric:
@@ -202,14 +204,14 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
             effect_size = (mean[0] - mean[1]) / s_rm
         elif not paired:
             # Student's t-test for normally distributed independent variables
-            
-            # F-tests for unequal variances: 
+
+            # F-tests for unequal variances:
             #   if fpval < 0.05, distributions have unequal variances
             if var[1] != 0:
                 F = var[0] / var[1]
                 fpval = 1 - sps.f.cdf(F, len(X)-1, len(Y)-1)
             else:
-                # If variance of one of the data is zero while the other is not 
+                # If variance of one of the data is zero while the other is not
                 # then consider this as the two dataset has different variance
                 fpval = 0
 
@@ -220,7 +222,7 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
                 _, pval = sps.ttest_ind(X, Y, equal_var=False)
 
             # Compute effect size (see: https://bit.ly/IndependentCohensD)
-            s_pooled = np.sqrt(((size -1) * var).sum() / (size.sum() - 2))
+            s_pooled = np.sqrt(((size - 1) * var).sum() / (size.sum() - 2))
             effect_size = (mean[0] - mean[1]) / s_pooled
         else:
             raise ValueError("paired must be either True or False")
@@ -240,7 +242,7 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
             ranks = sps.rankdata(abs_diff)
             signs = [1 if x > 0 else -1 for x in diff]
             signed_ranks = ranks * signs
-            # the statistic is calculated as follows (gives the same result 
+            # the statistic is calculated as follows (gives the same result
             # with the fisrt output of the stt.wilcoxon(X, Y) function)
             # -  positiveRanks = signed_rank[signed_rank>0]
             # -  negativeRanks = -signed_rank[signed_rank<0]
@@ -259,10 +261,10 @@ def group_difference(X, Y, parametric=True, paired=False, rmoutliers=False,
             # m_U = size_x * size_y / 2
             # std_U = sqrt(size_x * size_y * (size_x + size_y + 1) / 12)
             m_U = size.prod() / 2
-            std_U = np.sqrt(size.prod() * (size.sum() +1) / 12.0)
+            std_U = np.sqrt(size.prod() * (size.sum() + 1) / 12.0)
             z = (U - m_U) / std_U
             effect_size = z / np.sqrt(size.sum())
-            
+
         else:
             raise ValueError("paired must be either True or False")
     else:
@@ -303,7 +305,7 @@ def compare_variances(X, Y, test='F', rmoutliers=False):
     if rmoutliers:
         X = remove_outliers(X)
         Y = remove_outliers(Y)
-    
+
     if test.upper() == 'F':
         pval = 1 - sps.f.cdf(X.var() / Y.var(), len(X)-1, len(Y)-1)
         statistic = -1  # not implemented
@@ -384,7 +386,7 @@ def edgewise_correlation(cntms, vctr):
     # Populate the correlation and pvalues
     for i in range(I):
         for j in range(J):
-            cmat[i,j], pval[i,j] = sps.pearsonr(cntms[i,j,:], vctr)
+            cmat[i, j], pval[i, j] = sps.pearsonr(cntms[i, j, :], vctr)
 
     return cmat, pval
 
@@ -421,7 +423,5 @@ def zscore(data, ctrl_group):
             data[i] = (data[i] - ctrl_mean) / ctrl_std
         else:
             data[i] = data[i] - ctrl_mean
-        
+
     return data
-
-

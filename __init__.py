@@ -7,9 +7,12 @@ Collection of useful python functions, classes etc.
 #   Dir for downloading data
 #   Dir for temporary data
 #   Dir for storing figures
+
+
 class dirs:
     DATADIR = "/home/kabil/.data"
     TEMPDIR = "/tmp/data/"
+
 
 # Define visible modules
 __all__ = ['analysis', 'binf', 'utils', 'neuro']

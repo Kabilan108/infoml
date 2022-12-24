@@ -31,7 +31,6 @@ class datasets:
 
         print("Available Datasets:", *datasets._avail.keys(), sep='\n')
 
-
     def load_dataset(dataset):
         """
         Load a built-in dataset

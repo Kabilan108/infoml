@@ -8,22 +8,22 @@ import numpy as np
 
 
 # Export functions
-__all__ = ['compute_global_metric', 'intrahemispheric_stength', 
+__all__ = ['compute_global_metric', 'intrahemispheric_stength',
            'interhemispheric_stength', 'connectivity_strength', 'density']
 
 
 def compute_global_metric(cntms, func, *args, **kwargs):
-            """
-            Compute global metrics for a list of connectomes
+    """
+    Compute global metrics for a list of connectomes
 
-            @param: cntms -> (k x m x n); k = subjects
-            @param: function that returns a 1D array of length k
-            """
+    @param: cntms -> (k x m x n); k = subjects
+    @param: function that returns a 1D array of length k
+    """
 
-            values = []
-            for cntm in cntms:
-                values.append( func(cntm, *args, **kwargs) )
-            return np.array(values)
+    values = []
+    for cntm in cntms:
+        values.append(func(cntm, *args, **kwargs))
+    return np.array(values)
 
 
 def intrahemispheric_strength(cntm, hemispheremap):
@@ -49,12 +49,12 @@ def intrahemispheric_strength(cntm, hemispheremap):
     hemispheremap = hemispheremap.astype(bool)
     inv_hemispheremap = np.invert(hemispheremap)
 
-
     # Number of nodes
     num_nodes = len(cntm)
 
     # Compute intrahemispheric strength
-    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) + np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, inv_hemispheremap))) / 2.0
+    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) +
+           np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, inv_hemispheremap))) / 2.0
 
     return np.array(val)
 
@@ -86,7 +86,8 @@ def interhemispheric_strength(cntm, hemispheremap):
     num_nodes = len(cntm)
 
     # Compute intrahemispheric strength
-    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) + np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, hemispheremap))) / 2.0
+    val = (np.sum(cntm * (cntm > 0) * np.outer(hemispheremap, hemispheremap)) +
+           np.sum(cntm * (cntm > 0) * np.outer(inv_hemispheremap, hemispheremap))) / 2.0
 
     return np.array(val)
 
@@ -104,5 +105,3 @@ def density(cntm):
     Compute Connection Density
     """
     return np.sum(cntm > 0) * 100.0 / float(cntm.shape[0] * (cntm.shape[0]-1))
-
-

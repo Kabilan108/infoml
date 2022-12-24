@@ -19,19 +19,22 @@
 import sys
 
 if 'bmes' not in sys.modules:
-	print('setting up python path for bmes.ahmet...');
-	# import ahmet's bmes module that contains useful functions for downloading files from web.
-	import os
-	if 'BMESAHMETDIR' in os.environ:
-		sys.path.append(os.environ['BMESAHMETDIR']) #this is only for ahmet's computer.
-	else:
-		sys.path.append('D:/ahmet/doc/Dropbox/share/bmes.ahmet') #this is only for ahmet's computer.
-		#if bmes.ahmet is not in your PYTHONPATH and none of the following can locate where you have your bmes.ahmet folder,
-		#  you will need to hard-code it.
-		sys.path.append('../bmes.ahmet'); sys.path.append('../../bmes.ahmet');
-		try:
-			import pathlib
-			sys.path.append(str(pathlib.Path.home())+'/Dropbox/bmes.ahmet');
-		except: #pathlib module may not be installed by default if we are using python2
-			sys.path.append(os.path.expanduser('~')+'/Dropbox/bmes.ahmet');
-	import bmes
+    print('setting up python path for bmes.ahmet...')
+    # import ahmet's bmes module that contains useful functions for downloading files from web.
+    import os
+    if 'BMESAHMETDIR' in os.environ:
+        # this is only for ahmet's computer.
+        sys.path.append(os.environ['BMESAHMETDIR'])
+    else:
+        # this is only for ahmet's computer.
+        sys.path.append('D:/ahmet/doc/Dropbox/share/bmes.ahmet')
+        # if bmes.ahmet is not in your PYTHONPATH and none of the following can locate where you have your bmes.ahmet folder,
+        #  you will need to hard-code it.
+        sys.path.append('../bmes.ahmet')
+        sys.path.append('../../bmes.ahmet')
+        try:
+            import pathlib
+            sys.path.append(str(pathlib.Path.home())+'/Dropbox/bmes.ahmet')
+        except:  # pathlib module may not be installed by default if we are using python2
+            sys.path.append(os.path.expanduser('~')+'/Dropbox/bmes.ahmet')
+    import bmes

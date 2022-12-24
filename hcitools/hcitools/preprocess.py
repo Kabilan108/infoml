@@ -85,7 +85,8 @@ def _printif(cond, *args, **kwargs):
     Print if cond is true
     """
 
-    if cond: print(*args, **kwargs)
+    if cond:
+        print(*args, **kwargs)
 
 
 def _intersperse(array, item):
@@ -99,15 +100,15 @@ def _intersperse(array, item):
 
 
 def clean_data(
-    data, 
-    metacols, 
-    dropna=False, 
-    drop_low_var=None, 
+    data,
+    metacols,
+    dropna=False,
+    drop_low_var=None,
     corr_thresh=None,
     corr_method='pearson',
-    intens_norm=False, 
+    intens_norm=False,
     intens_rgx=r'Intensity',
-    num_objs='number of objects', 
+    num_objs='number of objects',
     verbose=False
 ):
     """
@@ -136,7 +137,7 @@ def clean_data(
         Feature definining object counts, by default 'number of objects'
     `verbose` : bool, optional
         Should a log of processing steps be returned, by default False
-    
+
     Returns
     -------
     pd.DataFrame
@@ -165,8 +166,8 @@ def clean_data(
 
     if dropna:
         data = (data
-            .dropna(axis=1, how='all')   # NA-only columns
-            .dropna(axis=0, how='any'))  # Rows with NAs
+                .dropna(axis=1, how='all')   # NA-only columns
+                .dropna(axis=0, how='any'))  # Rows with NAs
         dropped['dropna'] = list(og_features.difference(data.columns))
 
         if verbose:
@@ -184,7 +185,8 @@ def clean_data(
             )
 
     if corr_thresh is not None:
-        data, dropped['high_corr'] = drop_high_corr(data, corr_thresh, corr_method)
+        data, dropped['high_corr'] = drop_high_corr(
+            data, corr_thresh, corr_method)
 
         if verbose:
             LOG.append(
@@ -194,7 +196,7 @@ def clean_data(
     if intens_norm:
         intens_features = [x for x in data.columns if re.search(intens_rgx, x)]
         data[intens_features] = (data[intens_features]
-            .div(data[num_objs], axis=0))
+                                 .div(data[num_objs], axis=0))
 
         if verbose:
             LOG.append(
@@ -205,7 +207,7 @@ def clean_data(
     data = data.reset_index()
     data.attrs['metacols'] = metacols
     data.attrs['features'] = list(set(data.columns).difference(metacols))
-    
+
     return data, dropped, LOG
 
 

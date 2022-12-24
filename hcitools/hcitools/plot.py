@@ -44,9 +44,9 @@ class colormap:
         Seaborn diverging colorscale from blue (low) to orange (high)
     """
 
-    OgBu = [[0.00, '#3F7F93'], [0.10, '#6296A6'], [0.20, '#85ADB9'], 
-            [0.30, '#A9C4CC'], [0.40, '#CDDBE0'], [0.50, '#F2F1F1'], 
-            [0.60, '#E9D2CD'], [0.70, '#DFB3A7'], [0.80, '#D69483'], 
+    OgBu = [[0.00, '#3F7F93'], [0.10, '#6296A6'], [0.20, '#85ADB9'],
+            [0.30, '#A9C4CC'], [0.40, '#CDDBE0'], [0.50, '#F2F1F1'],
+            [0.60, '#E9D2CD'], [0.70, '#DFB3A7'], [0.80, '#D69483'],
             [0.90, '#CC745D'], [1.00, '#C3553A']]
 
     # TODO: Allow for generation of colormaps wit0h other values
@@ -169,14 +169,14 @@ def _make_plate(data, feature, time_col='timepoint'):
     for T in times:
         plate.append(
             data
-                .query(f"{time_col} == {T}")
-                .loc[:, ['row', 'column', feature]]
-                .pivot(index='row', columns='column', values=feature)
-                .rename(index=rows)
-                .sort_index(ascending=False)
-                .values
+            .query(f"{time_col} == {T}")
+            .loc[:, ['row', 'column', feature]]
+            .pivot(index='row', columns='column', values=feature)
+            .rename(index=rows)
+            .sort_index(ascending=False)
+            .values
         )
-    
+
     return np.array(plate), list(rows.values())[::-1], cols
 
 
@@ -211,7 +211,7 @@ def plate_heatmap(data, feature, time_col='timepoint', colorscale=colormap.OgBu)
     time_col = time_col.lower()
 
     assert feature in data.columns, "feature must be a column in data"
-    assert time_col in data.columns, f"{time_col} must be a column in data"  
+    assert time_col in data.columns, f"{time_col} must be a column in data"
     assert data[time_col].min() > 0, "the first time point must be 1 not 0"
     assert ('compound' in data.columns) and ('conc' in data.columns), \
         "'compound' and 'conc' must be columns in data"
@@ -249,8 +249,8 @@ def plate_heatmap(data, feature, time_col='timepoint', colorscale=colormap.OgBu)
     plate, rows, cols = _make_plate(data, feature, time_col)
 
     # Create data for tooltips
-    cmpd = _make_plate(data, 'compound', time_col)[0][0,...]
-    conc = _make_plate(data, 'conc', time_col)[0][0,...]
+    cmpd = _make_plate(data, 'compound', time_col)[0][0, ...]
+    conc = _make_plate(data, 'conc', time_col)[0][0, ...]
 
     # Create figure and fill in layout
     fig = {'data': [], 'layout': {}, 'frames': []}
@@ -272,16 +272,16 @@ def plate_heatmap(data, feature, time_col='timepoint', colorscale=colormap.OgBu)
         updatemenus=[{
             "buttons": [
                 {"args": [None, {"frame": {"duration": 500, "redraw": True},
-                                "fromcurrent": True, 
-                                "transition": {"duration": 300, 
+                                 "fromcurrent": True,
+                                 "transition": {"duration": 300,
                                                 "easing": "quadratic-in-out"}}],
-                "label": "Play",
-                "method": "animate"},
+                 "label": "Play",
+                 "method": "animate"},
                 {"args": [[None], {"frame": {"duration": 0, "redraw": True},
-                                "mode": "immediate", 
-                                "transition": {"duration": 0}}],
-                "label": "Pause",
-                "method": "animate"}
+                                   "mode": "immediate",
+                                   "transition": {"duration": 0}}],
+                 "label": "Pause",
+                 "method": "animate"}
             ],
             "direction": "left",
             "pad": {"r": 10, "t": 87},
@@ -290,12 +290,12 @@ def plate_heatmap(data, feature, time_col='timepoint', colorscale=colormap.OgBu)
             "x": 0.1,
             "xanchor": "right",
             "y": 0,
-            "yanchor": "top"   
+            "yanchor": "top"
         }] if len(times) > 1 else None
     )
 
     # Add Time 0 plate to data
-    fig['data'].append(platemap(cols, rows, plate[0,...], cmpd, conc))
+    fig['data'].append(platemap(cols, rows, plate[0, ...], cmpd, conc))
 
     # Create frames & animations
     if len(times) > 1:
@@ -322,17 +322,17 @@ def plate_heatmap(data, feature, time_col='timepoint', colorscale=colormap.OgBu)
         for time in data[time_col].unique().astype(str):
             # New frame
             fig['frames'].append({
-                "data": platemap(cols, rows, plate[int(time)-1,...], cmpd, conc),
+                "data": platemap(cols, rows, plate[int(time)-1, ...], cmpd, conc),
                 "name": str(time)
             })
 
             # Corresponding slider step
             sliders['steps'].append({
-                "args": [ 
-                    [time], 
+                "args": [
+                    [time],
                     {"frame": {"duration": 300, "redraw": True},
-                    "mode": "immediate",
-                    "transition": {"duration": 300}}
+                     "mode": "immediate",
+                     "transition": {"duration": 300}}
                 ],
                 "label": time,
                 "method": "animate"
@@ -376,13 +376,14 @@ def pca_comps(proj, exp_var, time_col='timepoint', n_comps=4):
     # Prepare matrix of components as well as variables for plotting
     comp_cols = [str(x+1) for x in range(n_comps)]
     comps = (proj.query("variable == 'PCA'")
-        .reset_index(drop=True)
-        [['compound', 'conc',  time_col, *comp_cols]])
+             .reset_index(drop=True)
+             [['compound', 'conc',  time_col, *comp_cols]])
     compounds = comps['compound']
     comps.drop(['compound', time_col, 'conc'], axis=1, inplace=True)
 
     # Create labels
-    labels = {str(i): f"PC {i+1} ({var:.2f}%)" for i, var in enumerate(exp_var)}
+    labels = {str(i): f"PC {i+1} ({var:.2f}%)" for i,
+              var in enumerate(exp_var)}
 
     # TODO: Use plotly.graph_objects instead of plotly.express
     # TODO: Add better user controls over point colors & sizes
@@ -398,7 +399,7 @@ def pca_comps(proj, exp_var, time_col='timepoint', n_comps=4):
     )
     fig.update_traces(diagonal_visible=False)
     fig.update_layout(paper_bgcolor='white', plot_bgcolor='white', height=500)
-    
+
     return fig
 
 
@@ -449,15 +450,15 @@ def clusters(data, compound_a, compound_b, method, time_col='timepoint'):
         # Define colors for different time points
         if len(times) > 1:
             color_map = {tp: c for tp, c in
-                zip(times, sns.color_palette(colorscale, len(times)).as_hex())}
+                         zip(times, sns.color_palette(colorscale, len(times)).as_hex())}
             data['timecolor'] = data[time_col].replace(color_map)
         else:
             data['timecolor'] = colorscale
 
         # Subset data for compound
         cmpd = (data
-            .query(f"compound == '{compound}' & variable == '{method}'")
-            .reset_index(drop=True))
+                .query(f"compound == '{compound}' & variable == '{method}'")
+                .reset_index(drop=True))
 
         # Encode different sizes for each concentration
         cmpd['conc'] = cmpd['conc'].astype(float)
@@ -485,9 +486,9 @@ def clusters(data, compound_a, compound_b, method, time_col='timepoint'):
                         opacity=0.5,
                         colorscale=colorscale,
                         colorbar=dict(
-                            x=cbar_pos, 
-                            thickness=20, 
-                            yanchor='middle', 
+                            x=cbar_pos,
+                            thickness=20,
+                            yanchor='middle',
                             len=.7
                         ) if (i == 0) and (len(times) > 1) else None,
                         line=dict(width=1.2, color=linecolor)
@@ -502,7 +503,7 @@ def clusters(data, compound_a, compound_b, method, time_col='timepoint'):
 
     # Create figure traces
     traces = [*create_traces(compound_a, 'Reds', 'red', -0.25),
-            *create_traces(compound_b, 'Greens', 'green', -0.35)]
+              *create_traces(compound_b, 'Greens', 'green', -0.35)]
 
     # Create layout
     layout = go.Layout(
@@ -526,10 +527,10 @@ def clusters(data, compound_a, compound_b, method, time_col='timepoint'):
     # Annotate the colorbars
     if len(times) > 1:
         fig.add_annotation(
-            xref='paper', 
-            yref='paper', 
-            x=-0.33, 
-            y= 0.92, 
+            xref='paper',
+            yref='paper',
+            x=-0.33,
+            y=0.92,
             text='Time Point',
             font_size=14,
             showarrow=False
@@ -567,7 +568,7 @@ def _make_grid(items, col_wrap=2):
 
     nrows, ncols = grid_dims(len(items), col_wrap)
     positions = {
-        x: {'x': (i // col_wrap) + 1, 'y': (i % col_wrap) + 1} 
+        x: {'x': (i // col_wrap) + 1, 'y': (i % col_wrap) + 1}
         for i, x in enumerate(items)
     }
 
@@ -613,14 +614,14 @@ def _get_colors(n):
         hue = i/360.
         lightness = (50 + np.random.rand() * 10)/100
         saturation = (90 + np.random.rand() * 10)/100
-        
+
         r, g, b = _hls_to_rgb(hue, lightness, saturation)
-        colors.append( "#%02x%02x%02x" % (int(r*255), int(g*255), int(b*255)) )
-    
+        colors.append("#%02x%02x%02x" % (int(r*255), int(g*255), int(b*255)))
+
     return colors
 
 
-def distplot(data, features, group_col, tooltips=None, kind='box', col_wrap=2, 
+def distplot(data, features, group_col, tooltips=None, kind='box', col_wrap=2,
              title_len=30):
     """
     Create boxplots showing the distibution of features for different groups.
@@ -701,7 +702,7 @@ def distplot(data, features, group_col, tooltips=None, kind='box', col_wrap=2,
                         marker_color=color,
                         showlegend=True if pos['x'] == pos['y'] == 1 else False
                     ),
-                    row=pos['x'], 
+                    row=pos['x'],
                     col=pos['y']
                 )
     elif kind == 'bar':
@@ -789,10 +790,10 @@ def gifify(fig, file, frame_title='Frame', fps=30) -> None:
     for i, frame in enumerate(fig['frames']):
         _fig = go.Figure(data=frame['data'], layout=layout)
         _fig.update_layout(title=f"{frame_title} {i+1}", title_x=0.5)
-        frames.append( fig2array(_fig) )
+        frames.append(fig2array(_fig))
 
     # Create animation
-    make_frame = lambda t: frames[int(t)]
+    def make_frame(t): return frames[int(t)]
     anim = mpy.VideoClip(make_frame, duration=len(frames))
     anim.write_gif(file, fps=fps, logger=None)
     print("Done :thumbsup:")
@@ -830,7 +831,7 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
 
     # Check inputs
     # TODO: Add input checking
-    ## col_groups and row_groups: each value should be of the same length
+    # col_groups and row_groups: each value should be of the same length
     if col_group_names is None:
         col_group_names = []
     if row_group_names is None:
@@ -847,9 +848,9 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
 
     # Create subplot grid
     fig = sp.make_subplots(
-        rows=I, 
-        cols=J, 
-        column_widths=col_widths, 
+        rows=I,
+        cols=J,
+        column_widths=col_widths,
         row_heights=row_heights,
         vertical_spacing=0.01,
         horizontal_spacing=0.01,
@@ -860,7 +861,7 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
     # Perform clustering and extract clustered data frame from seaborn clustermap
     if clust_cols or clust_rows:
         data = sns.clustermap(data, row_cluster=clust_rows, col_cluster=clust_cols,
-                            **cluster_kws).data2d
+                              **cluster_kws).data2d
         plt.close()
 
     # Plot the heatmap and adjust axes
@@ -870,10 +871,10 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
             x=data.columns,
             y=data.index.astype(str),
             colorscale='RdBu_r',
-            hovertemplate='<b>Sample:</b> %{y}<br>'+
-                        '<b>Feature:</b> %{x}<br>'+
-                        '<b>Value:</b>%{z}'
-                        '<extra></extra>'
+            hovertemplate='<b>Sample:</b> %{y}<br>' +
+            '<b>Feature:</b> %{x}<br>' +
+            '<b>Value:</b>%{z}'
+            '<extra></extra>'
         ),
         row=I, col=J
     )
@@ -894,26 +895,26 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
             # Define colorscale
             znorm = np.unique((Z-Z.min()) / (Z.max()-Z.min()))
             zmax = Z.max()
-            colorscale = [[z, row_colors[le.inverse_transform([int(z*zmax)])[0]]] 
-                        for z in znorm]
+            colorscale = [[z, row_colors[le.inverse_transform([int(z*zmax)])[0]]]
+                          for z in znorm]
 
             fig.append_trace(
                 go.Heatmap(
-                    z=pd.DataFrame(Z), 
+                    z=pd.DataFrame(Z),
                     y=data.index.astype(str),
                     x=[grp],
                     text=pd.DataFrame(row_data),
                     colorscale=colorscale,
-                    hovertemplate='<b>Sample:<b> %{y}<br>'+ 
-                                f'<b>{grp}:</b>: %{{text}}'+
-                                '<extra></extra>',
+                    hovertemplate='<b>Sample:<b> %{y}<br>' +
+                    f'<b>{grp}:</b>: %{{text}}' +
+                    '<extra></extra>',
                     showscale=False
                 ),
                 row=I, col=j+1
             )
-            fig.update_yaxes(row=I, col=j+1, showticklabels=False, 
+            fig.update_yaxes(row=I, col=j+1, showticklabels=False,
                              autorange='reversed')
-            fig.update_xaxes(row=I, col=j+1, showticklabels=True, 
+            fig.update_xaxes(row=I, col=j+1, showticklabels=True,
                              tickangle=270,
                              tickfont={'size': 15, 'family': 'Arial'})
 
@@ -930,8 +931,8 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
             # Define colorscale
             znorm = np.unique((Z-Z.min()) / (Z.max()-Z.min()))
             zmax = Z.max()
-            colorscale = [[z, col_colors[le.inverse_transform([int(z*zmax)])[0]]] 
-                        for z in znorm]
+            colorscale = [[z, col_colors[le.inverse_transform([int(z*zmax)])[0]]]
+                          for z in znorm]
 
             fig.append_trace(
                 go.Heatmap(
@@ -940,20 +941,20 @@ def heatmap(data, col_groups=None, col_colors=None, col_group_names=None,
                     x=data.columns,
                     text=pd.DataFrame(col_data).T,
                     colorscale=colorscale,
-                    hovertemplate='<b>Feature:</b> %{x}<br>'+
-                                f'<b>{grp}:</b>: %{{text}}'+
-                                '<extra></extra>',
+                    hovertemplate='<b>Feature:</b> %{x}<br>' +
+                    f'<b>{grp}:</b>: %{{text}}' +
+                    '<extra></extra>',
                     showscale=False
                 ),
                 row=i+1, col=J
             )
-            fig.update_yaxes(row=i+1, col=J, showticklabels=True, 
-                             autorange='reversed', side='right', 
+            fig.update_yaxes(row=i+1, col=J, showticklabels=True,
+                             autorange='reversed', side='right',
                              tickfont={'size': 15, 'family': 'Arial'})
             fig.update_xaxes(row=i+1, col=J, showticklabels=False)
 
     # TODO: Add legends in the empty subplots
-    # BUG: Clustering Rows makes some data disappear; 
+    # BUG: Clustering Rows makes some data disappear;
     #      looks like some aggregation is happening
 
     return fig
