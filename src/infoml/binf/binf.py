@@ -6,7 +6,7 @@ algorithms.
 """
 
 # Imports
-import ToolBox.utils as utils
+from .. import utils
 import Bio.Align as Align
 import pandas as pd
 import numpy as np
@@ -17,7 +17,7 @@ import sqlite3
 import pickle
 import re
 import os
-from ToolBox.utils import download
+from ..utils import download
 from typing import Union
 
 # FEAT: Add function for plotting phylogenetric trees
