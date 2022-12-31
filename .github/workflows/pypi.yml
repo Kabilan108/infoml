@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build and publish to PyPi
-        uses: JRubrics/poetry-publish@v1.15
+        uses: JRubics/poetry-publish@v1.15s
         with:
           python_version: "3.10.8"
           poetry_version: "==1.3.1"
