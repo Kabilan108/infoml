@@ -1,13 +1,24 @@
 [tool.poetry]
 name = "infoml"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python package for bioinformatics analysis and machine learning."
 authors = ["Tony Kabilan Okeke"]
 license = "MIT"
 readme = "README.md"
+exclude = ["src/.old"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+rich = "^13.0.0"
+scikit-learn = "^1.2.0"
+scipy = "^1.9.3"
+seaborn = "^0.12.2"
+biopython = "^1.80"
+geoparse = "^2.0.3"
+tqdm = "^4.64.1"
+requests = "^2.28.1"
+pandas = "^1.5.2"
+numpy = "^1.24.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
