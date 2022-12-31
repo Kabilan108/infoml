@@ -22,4 +22,4 @@ from importlib.metadata import version
 __version__ = version("infoml")
 
 # Define visible modules
-__all__ = ['analysis', 'binf', 'utils', 'neuro']
+# __all__ = ['analysis', 'binf', 'utils', 'neuro']
