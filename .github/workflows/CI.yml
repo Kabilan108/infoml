@@ -44,5 +44,6 @@ jobs:
         run: poetry run pytest --cov=src
 
       - name: Update coverage
-        run: rm coverage.svg
-        run: poetry run coverage-badge -o coverage.svg
+        run: |
+          rm coverage.svg
+          poetry run coverage-badge -o coverage.svg
