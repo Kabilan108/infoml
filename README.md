@@ -1,4 +1,4 @@
-<h1 align="center">`infoml`</h1>
+<h1 align="center">infoml</h1>
 
 <p align="center">
 <a href="https://github.com/psf/black/blob/main/LICENSE">
