@@ -20,6 +20,7 @@ extensions = [
     "autoapi.extension",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "IPython.sphinxext.ipython_console_highlighting"
 ]
 autoapi_dirs = ["../src"]
 
