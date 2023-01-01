@@ -10,6 +10,7 @@
 <a href="https://github.com/dbrgn/coverage-badge">
     <img alt="Code Coverage" src="coverage.svg">
 </a>
+<img alt="Test Status" src="https://github.com/Kabilan108/infoml/actions/workflows/CI.yml/badge.svg">
 </p>
 
 Python package for bioinformatics analysis and machine learning.
