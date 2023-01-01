@@ -2,10 +2,10 @@
 
 <p align="center">
 <a href="https://github.com/psf/black/blob/main/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/Kabilan108/infoml?style=flat-square">
+    <img alt="License: MIT" src="https://img.shields.io/github/license/Kabilan108/infoml">
 </a>
 <a href="https://github.com/psf/black">
-    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square">
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
 </a>
 <a href="https://github.com/dbrgn/coverage-badge">
     <img alt="Code Coverage" src="coverage.svg">
