@@ -7,6 +7,9 @@
 <a href="https://github.com/psf/black">
     <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square">
 </a>
+<a href="https://github.com/dbrgn/coverage-badge">
+    <img alt="Code Coverage" src="coverage.svg">
+</a>
 </p>
 
 Python package for bioinformatics analysis and machine learning.
