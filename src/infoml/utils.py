@@ -30,15 +30,15 @@ def sanitizefilename(file):
     https://stackoverflow.com/questions/295135/turn-a-string-into-a-valid-filename
     """
 
-    valid_chars = '-_.() %s%s' % (string.ascii_letters, string.digits)
-    file = ''.join(c for c in file if c in valid_chars)
+    valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    file = "".join(c for c in file if c in valid_chars)
     if not file:
-        file = 'noname'
+        file = "noname"
 
     return file
 
 
-def tempdir(dirname: str = 'ToolBox'):
+def tempdir(dirname: str = "ToolBox"):
     """
     Create path to a temporary directory
     """
@@ -50,7 +50,7 @@ def tempdir(dirname: str = 'ToolBox'):
     return name
 
 
-def download(url: str, file: str = '', overwrite: bool = False):
+def download(url: str, file: str = "", overwrite: bool = False):
     """
     Download files from a URL
     @param url
@@ -64,7 +64,7 @@ def download(url: str, file: str = '', overwrite: bool = False):
     """
 
     # If url is not a vaild URL
-    if not re.search(r'^(http[s]?|ftp)', url):
+    if not re.search(r"^(http[s]?|ftp)", url):
         if not file:
             file = url
             return file
@@ -75,21 +75,20 @@ def download(url: str, file: str = '', overwrite: bool = False):
             return file
 
     if not file:
-        file = tempdir() + '/' + \
-            sanitizefilename(url.split('?')[0].split('/')[-1])
-    elif file.endswith('/'):
-        file = file + '/' + sanitizefilename(url)
+        file = tempdir() + "/" + sanitizefilename(url.split("?")[0].split("/")[-1])
+    elif file.endswith("/"):
+        file = file + "/" + sanitizefilename(url)
 
     if isnonemptyfile(file):
         return file
 
-    file = file.replace('\\', '/').replace('//', '/')
+    file = file.replace("\\", "/").replace("//", "/")
 
-    if not ('/' in file):
-        file = tempdir() + '/' + file
+    if not ("/" in file):
+        file = tempdir() + "/" + file
         if isnonemptyfile(file):
             return file
-        file = file.replace('\\', '/').replace('//', '/')
+        file = file.replace("\\", "/").replace("//", "/")
 
     # Download file
     urllib.request.urlretrieve(url, file)
@@ -111,10 +110,10 @@ def io_head(file: str, n: int = 5):
         return
 
     # Read and print file
-    with open(file, 'r') as f:
+    with open(file, "r") as f:
         for line in islice(f, n):
             if len(line) > 80:
-                print(line[:80] + '...')
+                print(line[:80] + "...")
             else:
                 print(line.rstrip())
 
@@ -125,10 +124,10 @@ def color_bool(val: int) -> str:
     """
     Mapping for styling pandas DataFrames
     """
-    color = ''
+    color = ""
     if val is True:
-        color = '#6dcf6d'
+        color = "#6dcf6d"
     elif val is False:
-        color = '#ff5862'
+        color = "#ff5862"
 
-    return f'background-color: {color}'
+    return f"background-color: {color}"

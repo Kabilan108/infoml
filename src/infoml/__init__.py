@@ -9,9 +9,11 @@ tasks on genomic and bioimaging data.
 # TODO: Create CONFIG class
 #   Create a dataclass that will store configuration information for the package
 
+
 class dirs:
     DATADIR = "/home/kabil/.data"
     TEMPDIR = "/tmp/data/"
+
 
 # TODO: Create a function to auto clean any cache files
 
@@ -19,6 +21,7 @@ class dirs:
 
 # Define package version
 from importlib.metadata import version
+
 __version__ = version("infoml")
 
 # Define visible modules
