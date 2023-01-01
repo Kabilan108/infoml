@@ -41,4 +41,4 @@ jobs:
         run: poetry run black src --check
 
       - name: Test
-        run: poetry run pytest -cov=src
+        run: poetry run pytest --cov=src
