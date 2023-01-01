@@ -1,5 +1,8 @@
 # infoml
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+![License](https://img.shields.io/github/license/Kabilan108/infoml?style=flat-square)
+
 Python package for bioinformatics analysis and machine learning.
 
 ## Installation
