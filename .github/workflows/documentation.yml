@@ -24,8 +24,17 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
 
-    # Install dev dependencies
-    - name: install
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      id: cache
+      with:
+        path: ~/.virtualenvs
+        key: poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          poetry-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run: poetry install --with dev
 
     # Build documentation
