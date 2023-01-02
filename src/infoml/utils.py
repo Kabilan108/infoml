@@ -173,6 +173,45 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
     return file
 
 
+class SQLite:
+    """
+    Wrapper for connecting to and querying SQLite databases
+
+    Attributes
+    ----------
+    file : Path
+        Path to SQLite database file
+    conn : sqlite3.Connection
+        Connection to SQLite database
+
+    Methods
+    -------
+    """
+
+    def __init__(self, file: str | Path, **kwargs) -> None:
+        """Initialize SQLite class"""
+        self.file = Path(file).resolve()
+        self.conn = sqlite3.connect(self.file, **kwargs)
+        self.conn.row_factory = sqlite3.Row
+
+    def __enter__(self):
+        """Enter context manager"""
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """Exit context manager"""
+        self.conn.commit()
+        self.conn.close()
+
+    def __repr__(self) -> str:
+        """Return string representation of SQLite class"""
+        return f"{self.__class__.__name__}({self.file})"
+
+    def __str__(self) -> str:
+        """Return string representation of SQLite class"""
+        return f"{self.__class__.__name__}({self.file})"
+
+
 # Define module I/O
 __all__ = [
     "ispc",
@@ -180,6 +219,7 @@ __all__ = [
     "isnonemptyfile",
     "slugify",
     "downloadurl",
+    "SQLite",
 ]
 __all__ += [m for m in dir() if m.startswith("__")]
 
