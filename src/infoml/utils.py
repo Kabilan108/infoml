@@ -25,6 +25,53 @@ def ispc() -> bool:
     return system == "Windows" or system.startswith("CYGWIN")
 
 
+def sluggify(text: str, allow_unicode: bool=False) -> str:
+    """
+    Convert a string to a slug
+
+    Based on Django's slugify function [1]_. This function converts a string to
+    a slug. A slug is a string that contains only letters, numbers, underscores
+    or hyphens. It is typically used to generate URL-friendly strings.
+
+    Parameters
+    ----------
+    text : str
+        _description_
+    allow_unicode : bool, optional
+        _description_, by default False
+
+    Returns
+    -------
+    str
+        _description_
+
+    Raises
+    ------
+    AttributeError
+        _description_
+
+    References
+    ----------
+    .. [1] Django. (n.d.). Django/text.py at main · Django/Django. GitHub. 
+           Retrieved January 2, 2023, from 
+           https://github.com/django/django/blob/main/django/utils/text.py 
+    """
+
+    if not isinstance(text, str):
+        raise AttributeError("The input must be a string")
+
+    if allow_unicode:
+        text = unicodedata.normalize("NFKC", text)
+    else:
+        text = (unicodedata.normalize("NFKD", text)
+            .encode("ascii", "ignore")
+            .decode("ascii"))
+
+    text = re.sub(r'[^\w.\s-]', '', text).strip().lower()
+
+    return re.sub(r'[-\s]+', '-', text)
+
+
 # Define module I/O
 __all__ = [
     "ispc",
