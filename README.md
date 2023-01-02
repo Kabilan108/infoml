@@ -11,7 +11,12 @@
     <img src="https://codecov.io/gh/Kabilan108/infoml/branch/dev/graph/badge.svg?token=38Y14PAAQQ"/>
 </a>
 <a href="https://github.com/Kabilan108/infoml/actions/workflows/CI-CD.yml">
-<img alt="Test Status" src="https://github.com/Kabilan108/infoml/actions/workflows/CI-CD.yml/badge.svg?branch=main">
+    <img alt="Test Status" src="https://github.com/Kabilan108/infoml/actions/workflows/CI-CD.yml/badge.svg?branch=main">
+</a>
+<a href="https://wakatime.com/badge/user/6a085912-85f1-47f5-acc7-c7f5ac1110ab/project/51ef67da-2e82-431e-9dc9-9bdd6d1c3d48">
+    <img
+    src="https://wakatime.com/badge/user/6a085912-85f1-47f5-acc7-c7f5ac1110ab/project/51ef67da-2e82-431e-9dc9-9bdd6d1c3d48.svg"
+    alt="wakatime">
 </a>
 </p>
 
