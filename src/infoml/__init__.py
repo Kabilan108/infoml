@@ -7,6 +7,7 @@ learning tasks on genomic and bioimaging data.
 """
 
 # Import modules
+from importlib.metadata import version
 from pathlib import Path
 import tempfile
 
@@ -90,19 +91,26 @@ class config:
         return self.__tempdir
 
 
-class dirs:
-    DATADIR = "/home/kabil/.data"
-    TEMPDIR = "/tmp/data/"
+# Export modules
+CONFIG = config()
 
 
-# TODO: Create a function to auto clean any cache files
+# Deine package version
+__version__ = version(__name__)
 
-# FEAT: Make modules accessible from the main module
 
-# Define package version
-from importlib.metadata import version
+# Define module I/O
+__all__ = [
+    "CONFIG", 
+]
+__all__ += [m for m in dir() if m.startswith("__")]
 
-__version__ = version("infoml")
+def __dir__():
+    """Override default dir() behavior"""
+    return __all__
 
-# Define visible modules
-# __all__ = ['analysis', 'binf', 'utils', 'neuro']
+def __getattr__(name):
+    """Override default getattr() behavior"""
+    if name not in __all__:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    return globals()[name]
