@@ -36,14 +36,15 @@ def test_slugify():
     assert isinstance(slugify(text), str)
     assert (
         slugify(text) == "jack-jill-like-numbers-123-and-4-and-silly-characters",
-        "The sluggified text is not correct"
+        "The sluggified text is not correct",
     )  # type: ignore
 
     text = "S'mores are delicious"
     assert isinstance(slugify(text), str)
     assert (
         slugify(text) == "smores-are-delicious",
-        "The sluggified text is not correct"
+        "The sluggified text is not correct",
     )  # type: ignore
+
 
 # TODO: Write tests for the `infoml.utils.SQLite` class

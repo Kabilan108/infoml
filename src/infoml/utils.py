@@ -36,7 +36,7 @@ def isnonemptyfile(path: Path) -> bool:
     return path.is_file() and path.stat().st_size > 0
 
 
-def slugify(text: str, allow_unicode: bool=False) -> str:
+def slugify(text: str, allow_unicode: bool = False) -> str:
     """
     Convert a string to a slug
 
@@ -68,9 +68,9 @@ def slugify(text: str, allow_unicode: bool=False) -> str:
 
     References
     ----------
-    .. [1] Django. (n.d.). Django/text.py at main · Django/Django. GitHub. 
-           Retrieved January 2, 2023, from 
-           https://github.com/django/django/blob/main/django/utils/text.py 
+    .. [1] Django. (n.d.). Django/text.py at main · Django/Django. GitHub.
+           Retrieved January 2, 2023, from
+           https://github.com/django/django/blob/main/django/utils/text.py
     """
 
     if not isinstance(text, str):
@@ -79,17 +79,23 @@ def slugify(text: str, allow_unicode: bool=False) -> str:
     if allow_unicode:
         text = unicodedata.normalize("NFKC", text)
     else:
-        text = (unicodedata.normalize("NFKD", text)
+        text = (
+            unicodedata.normalize("NFKD", text)
             .encode("ascii", "ignore")
-            .decode("ascii"))
+            .decode("ascii")
+        )
 
-    text = re.sub(r'[^\w.\s-]', '', text).strip().lower()
+    text = re.sub(r"[^\w.\s-]", "", text).strip().lower()
 
-    return re.sub(r'[-\s]+', '-', text)
+    return re.sub(r"[-\s]+", "-", text)
 
 
-def downloadurl(url: str, file: str | Path=CONFIG.tempdir(), 
-                overwrite: bool=False, progress: bool=True) -> Path:
+def downloadurl(
+    url: str,
+    file: str | Path = CONFIG.tempdir(),
+    overwrite: bool = False,
+    progress: bool = True,
+) -> Path:
     """
     Download and save file from a given URL
 
@@ -100,7 +106,7 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
     url : str
         The URL to download the file from
     file : str, optional
-        Path to file (or directory) where downloaded file will be stored, by 
+        Path to file (or directory) where downloaded file will be stored, by
         default the file will be saved to a temporary directory
     overwrite : bool, optional
         Should existing files be overwritten, by default False
@@ -131,7 +137,7 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
     file = Path(file)
 
     # If URL is not a remote address, assume it is a local file
-    if not re.search(r'(http[s]?|ftp):\/\/', url):
+    if not re.search(r"(http[s]?|ftp):\/\/", url):
         if not Path(url).exists():
             raise FileNotFoundError(f"File {url} does not exist")
         if not overwrite:
@@ -142,7 +148,7 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
 
     # Get file name from URL
     if file.is_dir():
-        fname = slugify(url.split('?')[0].split('/')[-1])
+        fname = slugify(url.split("?")[0].split("/")[-1])
         file = (file / fname).resolve()
     else:
         file = file.resolve()
@@ -159,8 +165,13 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
         if progress:
             with open(file, "wb") as stream:
                 with tqdm(
-                    total=size, unit="B", unit_scale=True, desc=file.name,
-                    leave=False, dynamic_ncols=True, initial=0
+                    total=size,
+                    unit="B",
+                    unit_scale=True,
+                    desc=file.name,
+                    leave=False,
+                    dynamic_ncols=True,
+                    initial=0,
                 ) as pbar:
                     for chunk in r.iter_content(chunk_size=1024):
                         if chunk:
@@ -210,7 +221,7 @@ class SQLite:
         Close the connection to the database
     """
 
-    def __init__(self, file: str | Path, quiet: bool=False, **kwargs) -> None:
+    def __init__(self, file: str | Path, quiet: bool = False, **kwargs) -> None:
         """Initialize SQLite class"""
 
         self.file = Path(file).resolve()
@@ -273,7 +284,7 @@ class SQLite:
 
         if query.upper().strip().startswith("SELECT"):
             return self.select(query, *args, **kwargs)
-        
+
         try:
             cursor = self.conn.execute(query, *args, **kwargs)
             self.conn.commit()
@@ -315,7 +326,7 @@ class SQLite:
 
         try:
             cursor = self.conn.cursor()
-            cursor.execute(query, *args, **kwargs);
+            cursor.execute(query, *args, **kwargs)
             rows = cursor.fetchall()
         except sqlite3.Error as e:
             print(f"Error: {e}")
@@ -350,7 +361,7 @@ class SQLite:
         Examples
         --------
         >>> db = SQLite("test.db")
-        >>> data = {'name': ['John', 'James', 'Rose', 'Jane'], 
+        >>> data = {'name': ['John', 'James', 'Rose', 'Jane'],
                     'age':  [30, 25, 60, 45]}
         >>> db.insert("test", data)
         >>> db.close()
@@ -376,9 +387,9 @@ class SQLite:
                 raise AttributeError(f"Column '{col}' is missing")
 
         # Execute queries
-        for _ , vals in zip(range(nrows), zip(*list(data.values()))):
-            cols = ', '.join(data.keys())
-            subs = ', '.join('?' * len(data))
+        for _, vals in zip(range(nrows), zip(*list(data.values()))):
+            cols = ", ".join(data.keys())
+            subs = ", ".join("?" * len(data))
             query = f"INSERT INTO {table} ({cols}) VALUES ({subs})"
             self.execute(query, vals, **kwargs)
 
@@ -390,7 +401,7 @@ class SQLite:
         ----------
         table : str
             Name of table
-        
+
         Returns
         -------
         bool
@@ -406,10 +417,10 @@ class SQLite:
         """
 
         try:
-            self.select((
-                "SELECT name FROM sqlite_master "
-                "WHERE type='table' AND name=?"
-            ), (table,))
+            self.select(
+                ("SELECT name FROM sqlite_master " "WHERE type='table' AND name=?"),
+                (table,),
+            )
         except sqlite3.OperationalError:
             return False
 
@@ -449,10 +460,9 @@ class SQLite:
         """
 
         tables = {}
-        for row in self.select((
-            "SELECT name, sql FROM sqlite_master "
-            "WHERE type='table'"
-        )):
+        for row in self.select(
+            ("SELECT name, sql FROM sqlite_master " "WHERE type='table'")
+        ):
             tables[row["name"]] = row["sql"]  # type: ignore
         return tables
 
