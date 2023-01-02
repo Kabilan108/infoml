@@ -1,0 +1,41 @@
+:py:mod:`infoml.datasets`
+=========================
+
+.. py:module:: infoml.datasets
+
+.. autoapi-nested-parse::
+
+   datasets
+   --------
+
+   This module contains functions to get the paths to the datasets used in the
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   infoml.datasets.get_ceman_counts
+
+
+
+.. py:function:: get_ceman_counts()
+
+   Get path the GSE50499 [1]_ gene counts matrix.
+
+   :returns: Path to file
+   :rtype: pathlib.PosixPath
+
+   .. rubric:: References
+
+   .. [1] Kenny PJ, Zhou H, Kim M, Skariah G et al. MOV10 and FMRP regulate
+          AGO2 association with microRNA recognition elements. Cell Rep 2014
+          Dec 11;9(5):1729-1741. PMID: 25464849
+
+
