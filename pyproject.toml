@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "infoml"
-version = "0.2.1"
+version = "0.3.0"
 description = "Python package for bioinformatics analysis and machine learning."
 authors = ["Tony Kabilan Okeke"]
 license = "MIT"
