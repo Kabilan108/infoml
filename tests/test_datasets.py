@@ -1,5 +1,5 @@
 """
-Tests for `infoml.datasets` module.
+Tests for the `infoml.datasets` module.
 """
 
 import pytest
