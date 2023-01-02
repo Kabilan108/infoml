@@ -38,7 +38,9 @@ jobs:
 
     - name: Install package with dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: poetry install --with dev
+      run: |
+        pip install cryptography==39.0.0
+        poetry install --with dev
 
     - name: Run tests
       run: poetry run pytest tests/ --cov=src/ --cov-report=xml
