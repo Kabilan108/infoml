@@ -19,6 +19,12 @@ import requests
 from .utils import CONFIG
 
 
+def ispc() -> bool:
+    """Check if the current platform is Windows"""
+    system = platform.system()
+    return system == "Windows" or system.startswith("CYGWIN")
+
+
 # Define module I/O
 __all__ = [
     "ispc",
