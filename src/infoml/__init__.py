@@ -6,7 +6,7 @@ infoml
 learning tasks on genomic and bioimaging data.
 """
 
-# Import modules
+# Imports from standard library
 from importlib.metadata import version
 from pathlib import Path
 import tempfile
