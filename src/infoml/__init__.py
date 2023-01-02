@@ -41,7 +41,6 @@ class config:
     __datadir = Path.home() / ".data" / "infoml"
     __tempdir = Path(tempfile.gettempdir()) / "infoml"
 
-
     def __init__(self):
         """Initialize the configuration class"""
 
@@ -54,8 +53,7 @@ class config:
         if not self.__tempdir.exists():
             self.__tempdir.mkdir(parents=True)
 
-
-    def cache(self, new_path: Path | str=""):
+    def cache(self, new_path: Path | str = ""):
         """Cache directory"""
 
         if new_path:
@@ -66,8 +64,7 @@ class config:
 
         return self.__cache
 
-
-    def datadir(self, new_path: Path | str=""):
+    def datadir(self, new_path: Path | str = ""):
         """Data directory"""
 
         if new_path:
@@ -78,8 +75,7 @@ class config:
 
         return self.__datadir
 
-
-    def tempdir(self, new_path: Path | str=""):
+    def tempdir(self, new_path: Path | str = ""):
         """Temporary directory"""
 
         if new_path:
@@ -101,13 +97,15 @@ __version__ = version(__name__)
 
 # Define module I/O
 __all__ = [
-    "CONFIG", 
+    "CONFIG",
 ]
 __all__ += [m for m in dir() if m.startswith("__")]
+
 
 def __dir__():
     """Override default dir() behavior"""
     return __all__
+
 
 def __getattr__(name):
     """Override default getattr() behavior"""
