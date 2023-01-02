@@ -16,7 +16,7 @@ from rich import print
 import requests
 
 # Imports from local source
-from .utils import CONFIG
+from . import CONFIG
 
 
 def ispc() -> bool:
