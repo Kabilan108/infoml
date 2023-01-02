@@ -1,0 +1,6 @@
+:py:mod:`infoml.data`
+=====================
+
+.. py:module:: infoml.data
+
+
