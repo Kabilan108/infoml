@@ -350,7 +350,10 @@ class SQLite:
         Examples
         --------
         >>> db = SQLite("test.db")
-        >>> db.insert("test", {"name": "John", "age": 30})
+        >>> data = {'name': ['John', 'James', 'Rose', 'Jane'], 
+                    'age':  [30, 25, 60, 45]}
+        >>> db.insert("test", data)
+        >>> db.close()
         """
 
         # Check if table exists
