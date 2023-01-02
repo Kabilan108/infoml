@@ -35,7 +35,7 @@ def isnonemptyfile(path: Path) -> bool:
     return path.is_file() and path.stat().st_size > 0
 
 
-def sluggify(text: str, allow_unicode: bool=False) -> str:
+def slugify(text: str, allow_unicode: bool=False) -> str:
     """
     Convert a string to a slug
 
@@ -85,6 +85,9 @@ def sluggify(text: str, allow_unicode: bool=False) -> str:
 # Define module I/O
 __all__ = [
     "ispc",
+    "isnonemptydir",
+    "isnonemptyfile",
+    "slugify",
 ]
 __all__ += [m for m in dir() if m.startswith("__")]
 
