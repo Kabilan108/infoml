@@ -89,6 +89,8 @@ class config:
 
 # Export modules
 CONFIG = config()
+from . import datasets
+from . import utils
 
 
 # Deine package version
@@ -98,6 +100,8 @@ __version__ = version(__name__)
 # Define module I/O
 __all__ = [
     "CONFIG",
+    "datasets",
+    "utils",
 ]
 __all__ += [m for m in dir() if m.startswith("__")]
 
