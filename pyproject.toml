@@ -29,7 +29,18 @@ sphinx-autoapi = "^2.0.0"
 sphinx-rtd-theme = "^1.1.1"
 ipython = "^8.7.0"
 black = "^22.12.0"
-coverage-badge = "^1.1.0"
+python-semantic-release = "^7.32.2"
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"  # version location
+branch = "pub"                               # branch to make releases of
+changelog_file = "CHANGELOG.md"              # changelog file
+build_command = "poetry build"               # build dists
+dist_path = "dist"                           # where to put dists
+upload_to_release = true                     # auto-create GitHub release
+upload_to_pypi = false                       # don't auto-upload to PyPI
+remove_dist = false                          # don't remove dists after upload
+patch_without_tag = true                     # make patch releases without tags
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
