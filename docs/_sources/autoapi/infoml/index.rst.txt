@@ -8,8 +8,8 @@
    infoml
    ------
 
-   infoml is a Python package for perfoming bioinformatics analysis and machine learning
-   tasks on genomic and bioimaging data.
+   `infoml` is a Python package for perfoming bioinformatics analysis and machine
+   learning tasks on genomic and bioimaging data.
 
 
 
@@ -29,43 +29,13 @@ Submodules
    :maxdepth: 1
 
    datasets/index.rst
+   utils/index.rst
 
 
 Package Contents
 ----------------
 
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   infoml.dirs
-
-
-
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   infoml.__version__
-
-
-.. py:class:: dirs
-
-   .. py:attribute:: DATADIR
-      :annotation: = /home/kabil/.data
-
-      
-
-   .. py:attribute:: TEMPDIR
-      :annotation: = /tmp/data/
-
-      
-
-
-.. py:data:: __version__
+.. py:data:: CONFIG
    
 
    

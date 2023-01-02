@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>infoml.utils &mdash; infoml  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="infoml.datasets" href="../datasets/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> infoml
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Example usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#id1"><p>Duplicate implicit target name: “infoml”.</p>
+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.datasets</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">infoml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.utils</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/infoml/utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-infoml.utils">
+<span id="infoml-utils"></span><h1><a class="reference internal" href="#module-infoml.utils" title="infoml.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.utils</span></code></a><a class="headerlink" href="#module-infoml.utils" title="Permalink to this heading"></a></h1>
+<section id="id1">
+<p>This module contains utility functions for the infoml package.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.SQLite" title="infoml.utils.SQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLite</span></code></a></p></td>
+<td><p>Wrapper for connecting to and querying SQLite databases</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.ispc" title="infoml.utils.ispc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ispc</span></code></a>(→ bool)</p></td>
+<td><p>Check if the current platform is Windows</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#infoml.utils.isnonemptydir" title="infoml.utils.isnonemptydir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isnonemptydir</span></code></a>(→ bool)</p></td>
+<td><p>Check if a directory is non-empty</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.isnonemptyfile" title="infoml.utils.isnonemptyfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isnonemptyfile</span></code></a>(→ bool)</p></td>
+<td><p>Check if a file is non-empty</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#infoml.utils.slugify" title="infoml.utils.slugify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slugify</span></code></a>(→ str)</p></td>
+<td><p>Convert a string to a slug</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.downloadurl" title="infoml.utils.downloadurl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downloadurl</span></code></a>(, overwrite, progress)</p></td>
+<td><p>Download and save file from a given URL</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.ispc">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">ispc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#ispc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.ispc" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the current platform is Windows</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.isnonemptydir">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptydir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptydir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptydir" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a directory is non-empty</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.isnonemptyfile">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptyfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptyfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptyfile" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a file is non-empty</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.slugify">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">slugify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_unicode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#slugify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.slugify" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a string to a slug</p>
+<p>Based on Django’s slugify function <a class="footnote-reference brackets" href="#id3" id="id2">1</a>. This function converts a string to
+a slug. A slug is a string that contains only letters, numbers, underscores
+or hyphens. It is typically used to generate URL-friendly strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – The string to be sluggified</p></li>
+<li><p><strong>allow_unicode</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should unicode characters be permitted, by default False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The sluggified string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – The input must be a string</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slugify</span><span class="p">(</span><span class="s2">&quot;Jack &amp; Jill like numbers 1,2,3 and 4 and silly characters ?%.$!/&quot;</span><span class="p">)</span>
+<span class="go">&#39;jack-jill-like-numbers-123-and-4-and-silly-characters&#39;</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>Django. (n.d.). Django/text.py at main · Django/Django. GitHub.
+Retrieved January 2, 2023, from
+<a class="reference external" href="https://github.com/django/django/blob/main/django/utils/text.py">https://github.com/django/django/blob/main/django/utils/text.py</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.downloadurl">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">downloadurl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CONFIG.tempdir()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#downloadurl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.downloadurl" title="Permalink to this definition"></a></dt>
+<dd><p>Download and save file from a given URL</p>
+<p>Modified from <cite>bmes.downloadurl</cite> by Ahmet Sacan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – The URL to download the file from</p></li>
+<li><p><strong>file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to file (or directory) where downloaded file will be stored, by
+default the file will be saved to a temporary directory</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should existing files be overwritten, by default False</p></li>
+<li><p><strong>progress</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should a progress bar be displayed, by default True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to downloaded file</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the file does not exist</p></li>
+<li><p><strong>FileExistsError</strong> – If the file already exists and overwrite is False</p></li>
+<li><p><strong>ConnectionError</strong> – If the URL is not valid</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">downloadurl</span><span class="p">(</span><span class="s2">&quot;https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png&quot;</span><span class="p">)</span>
+<span class="go">PosixPath(&#39;/tmp/googlelogo_color_272x92dp.png&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="infoml.utils.SQLite">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">SQLite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper for connecting to and querying SQLite databases</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#infoml.utils.SQLite.file" title="Permalink to this definition"></a></dt>
+<dd><p>Path to SQLite database file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.conn">
+<span class="sig-name descname"><span class="pre">conn</span></span><a class="headerlink" href="#infoml.utils.SQLite.conn" title="Permalink to this definition"></a></dt>
+<dd><p>Connection to SQLite database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>sqlite3.Connection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*\*kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">sqlite3.Cursor</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.execute" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a query on the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*\*kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">sqlite3.Row</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.select" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a query on the database and return the results as a DataFrame</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data:</span> <span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*\*kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Insert data into a table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.is_table">
+<span class="sig-name descname"><span class="pre">is_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.is_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.is_table" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a table exists in the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.drop">
+<span class="sig-name descname"><span class="pre">drop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.drop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.drop" title="Permalink to this definition"></a></dt>
+<dd><p>Drop a table from the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.tables">
+<span class="sig-name descname"><span class="pre">tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.tables" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of tables in the database and their schema</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close the connection to the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.__enter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.__enter__" title="Permalink to this definition"></a></dt>
+<dd><p>Enter context manager</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.__exit__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.__exit__" title="Permalink to this definition"></a></dt>
+<dd><p>Exit context manager</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.__repr__" title="Permalink to this definition"></a></dt>
+<dd><p>Return string representation of SQLite class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.SQLite.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.SQLite.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return string representation of SQLite class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">sqlite3.Cursor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<em>str</em>) – Query to execute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cursor object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sqlite3.Cursor</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – If the input is not a string</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)&quot;</span><span class="p">)</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x7f8b8c0b0e00&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO test (name) VALUES (&#39;John&#39;)&quot;</span><span class="p">)</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x7f8b8c0b0e00&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO test (name) VALUES (&#39;Jane&#39;)&quot;</span><span class="p">)</span>
+<span class="go">&lt;sqlite3.Cursor object at 0x7f8b8c0b0e00&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a SELECT query and return the results as a DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<em>str</em>) – Query to execute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Results of query</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – If the input is not a string</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM test&quot;</span><span class="p">)</span>
+<span class="go">    id  name  age</span>
+<span class="go">    0  1  John   30</span>
+<span class="go">    1  2  Jane   25</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Permalink to this definition"></a></dt>
+<dd><p>Insert data into a table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – Name of table</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Data to insert</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – If the table does not exist
+If the dictionary values are not lists of the same length
+If a database column is missing from the dictionary</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;James&#39;</span><span class="p">,</span> <span class="s1">&#39;Rose&#39;</span><span class="p">,</span> <span class="s1">&#39;Jane&#39;</span><span class="p">],</span>
+<span class="go">            &#39;age&#39;:  [30, 25, 60, 45]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">is_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.is_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a table exists in the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – Name of table</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if table exists, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">is_table</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">is_table</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">drop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.drop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Permalink to this definition"></a></dt>
+<dd><p>Drop a table from the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – Name of table</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Permalink to this definition"></a></dt>
+<dd><p>List all tables in the database and their schema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of table names and their schema</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SQLite</span><span class="p">(</span><span class="s2">&quot;test.db&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+<span class="go">{&#39;test&#39;: &#39;CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#SQLite.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Permalink to this definition"></a></dt>
+<dd><p>Close the database connection</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../datasets/index.html" class="btn btn-neutral float-left" title="infoml.datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tony Kabilan Okeke.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
