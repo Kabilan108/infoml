@@ -45,3 +45,5 @@ def test_slugify():
         slugify(text) == "smores-are-delicious",
         "The sluggified text is not correct"
     )  # type: ignore
+
+# TODO: Write tests for the `infoml.utils.SQLite` class
