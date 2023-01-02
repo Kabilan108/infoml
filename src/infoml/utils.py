@@ -6,6 +6,7 @@ This module contains utility functions for the infoml package.
 """
 
 # Imports from standard library
+from itertools import chain
 from pathlib import Path
 import os, pickle, platform, re, shutil, sqlite3, tempfile, unicodedata
 
@@ -113,10 +114,17 @@ def downloadurl(url: str, file: str | Path=CONFIG.tempdir(),
 
     Raises
     ------
+    FileNotFoundError
+        If the file does not exist
+    FileExistsError
+        If the file already exists and overwrite is False
+    ConnectionError
+        If the URL is not valid
 
     Examples
     --------
-
+    >>> downloadurl("https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")
+    PosixPath('/tmp/googlelogo_color_272x92dp.png')
     """
 
     # Convert file to Path object
@@ -186,13 +194,31 @@ class SQLite:
 
     Methods
     -------
+    execute(query: str, *args, **kwargs) -> sqlite3.Cursor
+        Execute a query on the database
+    select(query: str, *args, **kwargs) -> list[sqlite3.Row]
+        Execute a query on the database and return the results as a DataFrame
+    insert(table: str, data: dict, **kwargs) -> None
+        Insert data into a table
+    is_table(table: str) -> bool
+        Check if a table exists in the database
+    drop(table: str) -> None
+        Drop a table from the database
+    tables() -> dict
+        Return a list of tables in the database and their schema
+    close() -> None
+        Close the connection to the database
     """
 
-    def __init__(self, file: str | Path, **kwargs) -> None:
+    def __init__(self, file: str | Path, quiet: bool=False, **kwargs) -> None:
         """Initialize SQLite class"""
+
         self.file = Path(file).resolve()
         self.conn = sqlite3.connect(self.file, **kwargs)
         self.conn.row_factory = sqlite3.Row
+        self.quiet = quiet
+        if self.quiet:
+            print(f"Connected to {self.file.name}")
 
     def __enter__(self):
         """Enter context manager"""
@@ -210,6 +236,230 @@ class SQLite:
     def __str__(self) -> str:
         """Return string representation of SQLite class"""
         return f"{self.__class__.__name__}({self.file})"
+
+    def execute(self, query: str, *args, **kwargs) -> sqlite3.Cursor | DataFrame | None:
+        """
+        Execute a query
+
+        Parameters
+        ----------
+        query : str
+            Query to execute
+
+        Returns
+        -------
+        sqlite3.Cursor
+            Cursor object
+
+        Raises
+        ------
+        AttributeError
+            If the input is not a string
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.execute("CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)")
+        <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+        >>> db.execute("INSERT INTO test (name) VALUES ('John')")
+        <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+        >>> db.execute("INSERT INTO test (name) VALUES ('Jane')")
+        <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+        >>> db.close()
+        """
+
+        if not isinstance(query, str):
+            raise AttributeError("The input must be a string")
+
+        if query.upper().strip().startswith("SELECT"):
+            return self.select(query, *args, **kwargs)
+        
+        try:
+            cursor = self.conn.execute(query, *args, **kwargs)
+            self.conn.commit()
+            return cursor
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return None
+
+    def select(self, query: str, *args, **kwargs) -> DataFrame:
+        """
+        Execute a SELECT query and return the results as a DataFrame
+
+        Parameters
+        ----------
+        query : str
+            Query to execute
+
+        Returns
+        -------
+        DataFrame
+            Results of query
+
+        Raises
+        ------
+        AttributeError
+            If the input is not a string
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.select("SELECT * FROM test")
+            id  name  age
+            0  1  John   30
+            1  2  Jane   25
+        """
+
+        if not isinstance(query, str):
+            raise AttributeError("The input must be a string")
+
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, *args, **kwargs);
+            rows = cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return DataFrame()
+
+        if len(rows) == 0:
+            print("No results found")
+            return DataFrame()
+        else:
+            df = DataFrame(rows)
+            df.columns = [col[0] for col in cursor.description]  # type: ignore
+            return df
+
+    def insert(self, table: str, data: dict, **kwargs) -> None:
+        """
+        Insert data into a table
+
+        Parameters
+        ----------
+        table : str
+            Name of table
+        data : dict
+            Data to insert
+
+        Raises
+        ------
+        AttributeError
+            If the table does not exist
+            If the dictionary values are not lists of the same length
+            If a database column is missing from the dictionary
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.insert("test", {"name": "John", "age": 30})
+        """
+
+        # Check if table exists
+        if not self.is_table(table):
+            raise AttributeError(f"Table '{table}' does not exist")
+
+        # Dictionary values must be lists of the same length
+        if not all(len(v) == len(data[list(data.keys())[0]]) for v in data.values()):
+            raise AttributeError("Dictionary values must be lists of the same length")
+        nrows = len(data[list(data.keys())[0]])
+
+        # Get column information
+        info = self.select(f"PRAGMA table_info({table})")
+        columns = info["name"].tolist()
+        types = info["pk"].tolist()
+
+        # Check if all columns are present (except for autoincrementing columns)
+        for col, type in zip(columns, types):
+            if col not in data and type == 0:
+                raise AttributeError(f"Column '{col}' is missing")
+
+        # Execute queries
+        for _ , vals in zip(range(nrows), zip(*list(data.values()))):
+            cols = ', '.join(data.keys())
+            subs = ', '.join('?' * len(data))
+            query = f"INSERT INTO {table} ({cols}) VALUES ({subs})"
+            self.execute(query, vals, **kwargs)
+
+    def is_table(self, table: str) -> bool:
+        """
+        Check if a table exists in the database
+
+        Parameters
+        ----------
+        table : str
+            Name of table
+        
+        Returns
+        -------
+        bool
+            True if table exists, False otherwise
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.is_table("test")
+        True
+        >>> db.is_table("foo")
+        False
+        """
+
+        try:
+            self.select((
+                "SELECT name FROM sqlite_master "
+                "WHERE type='table' AND name=?"
+            ), (table,))
+        except sqlite3.OperationalError:
+            return False
+
+        return True
+
+    def drop(self, table: str) -> None:
+        """
+        Drop a table from the database
+
+        Parameters
+        ----------
+        table : str
+            Name of table
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.drop("test")
+        """
+
+        self.execute(f"DROP TABLE {table}")
+
+    def tables(self) -> dict:
+        """
+        List all tables in the database and their schema
+
+        Returns
+        -------
+        dict
+            Dictionary of table names and their schema
+
+        Examples
+        --------
+        >>> db = SQLite("test.db")
+        >>> db.tables()
+        {'test': 'CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)'}
+        """
+
+        tables = {}
+        for row in self.select((
+            "SELECT name, sql FROM sqlite_master "
+            "WHERE type='table'"
+        )):
+            tables[row["name"]] = row["sql"]  # type: ignore
+        return tables
+
+    def close(self) -> None:
+        """Close the database connection"""
+
+        self.conn.commit()
+        self.conn.close()
+        if self.quiet:
+            print(f"Closed connection to {self.file.name}")
 
 
 # Define module I/O
