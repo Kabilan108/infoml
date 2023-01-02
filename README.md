@@ -10,7 +10,9 @@
 <a href="https://codecov.io/gh/Kabilan108/infoml" >
     <img src="https://codecov.io/gh/Kabilan108/infoml/branch/dev/graph/badge.svg?token=38Y14PAAQQ"/>
 </a>
+<a href="https://github.com/Kabilan108/infoml/actions/workflows/CI-CD.yml">
 <img alt="Test Status" src="https://github.com/Kabilan108/infoml/actions/workflows/CI-CD.yml/badge.svg?branch=main">
+</a>
 </p>
 
 Python package for bioinformatics analysis and machine learning.
