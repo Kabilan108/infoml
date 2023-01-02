@@ -1,6 +1,6 @@
 """
 infoml
-======
+------
 
 infoml is a Python package for perfoming bioinformatics analysis and machine learning
 tasks on genomic and bioimaging data.
