@@ -46,19 +46,14 @@ def slugify(text: str, allow_unicode: bool=False) -> str:
     Parameters
     ----------
     text : str
-        _description_
+        The string to be sluggified
     allow_unicode : bool, optional
-        _description_, by default False
+        Should unicode characters be permitted, by default False
 
     Returns
     -------
     str
-        _description_
-
-    Raises
-    ------
-    AttributeError
-        _description_
+        The sluggified string
 
     References
     ----------
