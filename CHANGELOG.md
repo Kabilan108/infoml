@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.1 (2023-01-02)
+### Documentation
+* Update documentation ([`fa93e90`](https://github.com/Kabilan108/infoml/commit/fa93e9090ffa32eef3e66197b800baf82dd350a2))
+
 ## v0.2.0 (2023-01-02)
 ### Feature
 * Remove the infoml module ([`ffb3a47`](https://github.com/Kabilan108/infoml/commit/ffb3a47fbad2f35b4b5fe6ce1f0d75cd152ec039))
