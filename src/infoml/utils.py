@@ -25,6 +25,16 @@ def ispc() -> bool:
     return system == "Windows" or system.startswith("CYGWIN")
 
 
+def isnonemptydir(path: Path) -> bool:
+    """Check if a directory is non-empty"""
+    return path.is_dir() and len(os.listdir(path)) > 0
+
+
+def isnonemptyfile(path: Path) -> bool:
+    """Check if a file is non-empty"""
+    return path.is_file() and path.stat().st_size > 0
+
+
 def sluggify(text: str, allow_unicode: bool=False) -> str:
     """
     Convert a string to a slug
