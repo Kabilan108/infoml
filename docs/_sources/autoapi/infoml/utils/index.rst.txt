@@ -1,0 +1,297 @@
+:py:mod:`infoml.utils`
+======================
+
+.. py:module:: infoml.utils
+
+.. autoapi-nested-parse::
+
+   infoml.utils
+   -----------
+
+   This module contains utility functions for the infoml package.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   infoml.utils.SQLite
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   infoml.utils.ispc
+   infoml.utils.isnonemptydir
+   infoml.utils.isnonemptyfile
+   infoml.utils.slugify
+   infoml.utils.downloadurl
+
+
+
+.. py:function:: ispc() -> bool
+
+   Check if the current platform is Windows
+
+
+.. py:function:: isnonemptydir(path: pathlib.Path) -> bool
+
+   Check if a directory is non-empty
+
+
+.. py:function:: isnonemptyfile(path: pathlib.Path) -> bool
+
+   Check if a file is non-empty
+
+
+.. py:function:: slugify(text: str, allow_unicode: bool = False) -> str
+
+   Convert a string to a slug
+
+   Based on Django's slugify function [1]_. This function converts a string to
+   a slug. A slug is a string that contains only letters, numbers, underscores
+   or hyphens. It is typically used to generate URL-friendly strings.
+
+   :param text: The string to be sluggified
+   :type text: str
+   :param allow_unicode: Should unicode characters be permitted, by default False
+   :type allow_unicode: bool, optional
+
+   :returns: The sluggified string
+   :rtype: str
+
+   :raises AttributeError: The input must be a string
+
+   .. rubric:: Examples
+
+   >>> slugify("Jack & Jill like numbers 1,2,3 and 4 and silly characters ?%.$!/")
+   'jack-jill-like-numbers-123-and-4-and-silly-characters'
+
+   .. rubric:: References
+
+   .. [1] Django. (n.d.). Django/text.py at main · Django/Django. GitHub.
+          Retrieved January 2, 2023, from
+          https://github.com/django/django/blob/main/django/utils/text.py
+
+
+.. py:function:: downloadurl(url: str, file: str | Path = CONFIG.tempdir(), overwrite: bool = False, progress: bool = True) -> pathlib.Path
+
+   Download and save file from a given URL
+
+   Modified from `bmes.downloadurl` by Ahmet Sacan.
+
+   :param url: The URL to download the file from
+   :type url: str
+   :param file: Path to file (or directory) where downloaded file will be stored, by
+                default the file will be saved to a temporary directory
+   :type file: str, optional
+   :param overwrite: Should existing files be overwritten, by default False
+   :type overwrite: bool, optional
+   :param progress: Should a progress bar be displayed, by default True
+   :type progress: bool, optional
+
+   :returns: Path to downloaded file
+   :rtype: Path
+
+   :raises FileNotFoundError: If the file does not exist
+   :raises FileExistsError: If the file already exists and overwrite is False
+   :raises ConnectionError: If the URL is not valid
+
+   .. rubric:: Examples
+
+   >>> downloadurl("https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")
+   PosixPath('/tmp/googlelogo_color_272x92dp.png')
+
+
+.. py:class:: SQLite(file: str | Path, quiet: bool = False, **kwargs)
+
+   Wrapper for connecting to and querying SQLite databases
+
+   .. attribute:: file
+
+      Path to SQLite database file
+
+      :type: Path
+
+   .. attribute:: conn
+
+      Connection to SQLite database
+
+      :type: sqlite3.Connection
+
+   .. method:: execute(query: str, \*args, \*\*kwargs) -> sqlite3.Cursor
+
+      Execute a query on the database
+
+   .. method:: select(query: str, \*args, \*\*kwargs) -> list[sqlite3.Row]
+
+      Execute a query on the database and return the results as a DataFrame
+
+   .. method:: insert(table: str, data: dict, \*\*kwargs) -> None
+
+      Insert data into a table
+
+   .. method:: is_table(table: str) -> bool
+
+      Check if a table exists in the database
+
+   .. method:: drop(table: str) -> None
+
+      Drop a table from the database
+
+   .. method:: tables() -> dict
+
+      Return a list of tables in the database and their schema
+
+   .. method:: close() -> None
+
+      Close the connection to the database
+
+
+   .. py:method:: __enter__()
+
+      Enter context manager
+
+
+   .. py:method:: __exit__(exc_type, exc_value, traceback)
+
+      Exit context manager
+
+
+   .. py:method:: __repr__() -> str
+
+      Return string representation of SQLite class
+
+
+   .. py:method:: __str__() -> str
+
+      Return string representation of SQLite class
+
+
+   .. py:method:: execute(query: str, *args, **kwargs) -> sqlite3.Cursor | DataFrame | None
+
+      Execute a query
+
+      :param query: Query to execute
+      :type query: str
+
+      :returns: Cursor object
+      :rtype: sqlite3.Cursor
+
+      :raises AttributeError: If the input is not a string
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> db.execute("CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name TEXT)")
+      <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+      >>> db.execute("INSERT INTO test (name) VALUES ('John')")
+      <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+      >>> db.execute("INSERT INTO test (name) VALUES ('Jane')")
+      <sqlite3.Cursor object at 0x7f8b8c0b0e00>
+      >>> db.close()
+
+
+   .. py:method:: select(query: str, *args, **kwargs) -> pandas.DataFrame
+
+      Execute a SELECT query and return the results as a DataFrame
+
+      :param query: Query to execute
+      :type query: str
+
+      :returns: Results of query
+      :rtype: DataFrame
+
+      :raises AttributeError: If the input is not a string
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> db.select("SELECT * FROM test")
+          id  name  age
+          0  1  John   30
+          1  2  Jane   25
+
+
+   .. py:method:: insert(table: str, data: dict, **kwargs) -> None
+
+      Insert data into a table
+
+      :param table: Name of table
+      :type table: str
+      :param data: Data to insert
+      :type data: dict
+
+      :raises AttributeError: If the table does not exist
+          If the dictionary values are not lists of the same length
+          If a database column is missing from the dictionary
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> data = {'name': ['John', 'James', 'Rose', 'Jane'],
+                  'age':  [30, 25, 60, 45]}
+      >>> db.insert("test", data)
+      >>> db.close()
+
+
+   .. py:method:: is_table(table: str) -> bool
+
+      Check if a table exists in the database
+
+      :param table: Name of table
+      :type table: str
+
+      :returns: True if table exists, False otherwise
+      :rtype: bool
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> db.is_table("test")
+      True
+      >>> db.is_table("foo")
+      False
+
+
+   .. py:method:: drop(table: str) -> None
+
+      Drop a table from the database
+
+      :param table: Name of table
+      :type table: str
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> db.drop("test")
+
+
+   .. py:method:: tables() -> dict
+
+      List all tables in the database and their schema
+
+      :returns: Dictionary of table names and their schema
+      :rtype: dict
+
+      .. rubric:: Examples
+
+      >>> db = SQLite("test.db")
+      >>> db.tables()
+      {'test': 'CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)'}
+
+
+   .. py:method:: close() -> None
+
+      Close the database connection
+
+
+
