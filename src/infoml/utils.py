@@ -1,14 +1,16 @@
 """
 infoml.utils
------------
+------------
 
 This module contains utility functions for the infoml package.
 """
 
 # Imports from standard library
-from itertools import chain
+from unicodedata import normalize
+from itertools import islice
+from shutil import copyfile
 from pathlib import Path
-import os, pickle, platform, re, shutil, sqlite3, tempfile, unicodedata
+import os, platform, re, sqlite3, subprocess
 
 # Imports from third party packages
 from pandas import DataFrame
@@ -26,13 +28,15 @@ def ispc() -> bool:
     return system == "Windows" or system.startswith("CYGWIN")
 
 
-def isnonemptydir(path: Path) -> bool:
+def isnonemptydir(path: Path | str) -> bool:
     """Check if a directory is non-empty"""
+    path = Path(path)
     return path.is_dir() and len(os.listdir(path)) > 0
 
 
-def isnonemptyfile(path: Path) -> bool:
+def isnonemptyfile(path: Path | str) -> bool:
     """Check if a file is non-empty"""
+    path = Path(path)
     return path.is_file() and path.stat().st_size > 0
 
 
@@ -77,10 +81,10 @@ def slugify(text: str, allow_unicode: bool = False) -> str:
         raise AttributeError("The input must be a string")
 
     if allow_unicode:
-        text = unicodedata.normalize("NFKC", text)
+        text = normalize("NFKC", text)
     else:
         text = (
-            unicodedata.normalize("NFKD", text)
+            normalize("NFKD", text)
             .encode("ascii", "ignore")
             .decode("ascii")
         )
@@ -143,7 +147,7 @@ def downloadurl(
         if not overwrite:
             if Path(file).exists():
                 raise FileExistsError(f"File {file} already exists")
-            shutil.copyfile(url, file)
+            copyfile(url, file)
             return Path(file)
 
     # Get file name from URL
@@ -503,6 +507,38 @@ def iohead(file: str, n: int = 5) -> None:
     return
 
 
+def system(command: str, quiet: bool = False, *args, **kwargs) -> str:
+    """
+    Run a system command
+
+    Parameters
+    ----------
+    command : str
+        Command to run
+    quiet : bool, optional
+        Suppress output, by default False
+
+    Returns
+    -------
+    str
+        Output from the command
+    """
+    
+    if not quiet:
+        print("[green bold]RUNNING:[/green bold] " + command)
+    
+    try:
+        out = subprocess.check_output(
+            command, stderr=subprocess.STDOUT, shell=True, *args, **kwargs
+        )
+    except subprocess.CalledProcessError as E:
+        out = E.output.decode()
+
+    if not quiet:
+        print(out)
+
+    return out
+
 # Define module I/O
 __all__ = [
     "ispc",
@@ -511,6 +547,8 @@ __all__ = [
     "slugify",
     "downloadurl",
     "SQLite",
+    "iohead",
+    "system",
 ]
 __all__ += [m for m in dir() if m.startswith("__")]
 
