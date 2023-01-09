@@ -475,6 +475,34 @@ class SQLite:
             print(f"Closed connection to {self.file.name}")
 
 
+def iohead(file: str, n: int = 5) -> None:
+    """
+    Print the first n rows of a text file
+
+    Parameters
+    ----------
+    file : str
+        Name of file
+    n : int, optional
+        Number of rows to print
+    """
+
+    # Check if file exists
+    if not isnonemptyfile(file):
+        print("[red bold]ERROR:[/red bold] File not found.")
+        return
+
+    # Read and print file
+    with open(file, "r") as f:
+        for line in islice(f, n):
+            if len(line) > 80:
+                print(line[:80] + "...")
+            else:
+                print(line.rstrip())
+
+    return
+
+
 # Define module I/O
 __all__ = [
     "ispc",
