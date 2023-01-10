@@ -99,6 +99,18 @@ class config:
             "infoml_path": Path(__file__).parent.absolute(),
         }
 
+    def __str__(self):
+        """String representation of the class"""
+        return str(dict(
+            cache=self.cache(),
+            datadir=self.datadir(),
+            tempdir=self.tempdir(),
+        ))
+
+    def __repr__(self):
+        """Representation of the class"""
+        return str(self)
+
 
 # Export modules
 CONFIG = config()
