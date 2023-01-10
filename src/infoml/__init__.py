@@ -101,11 +101,13 @@ class config:
 
     def __str__(self):
         """String representation of the class"""
-        return str(dict(
-            cache=self.cache(),
-            datadir=self.datadir(),
-            tempdir=self.tempdir(),
-        ))
+        return str(
+            dict(
+                cache=self.cache(),
+                datadir=self.datadir(),
+                tempdir=self.tempdir(),
+            )
+        )
 
     def __repr__(self):
         """Representation of the class"""
@@ -133,11 +135,9 @@ else:
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
-
     def __dir__():
         """Override default dir() behavior"""
         return __all__
-
 
     def __getattr__(name):
         """Override default getattr() behavior"""

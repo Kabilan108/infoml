@@ -43,7 +43,7 @@ def isnonemptyfile(path: Path | str) -> bool:
     return path.is_file() and path.stat().st_size > 0
 
 
-def tempfile(filename: str = '') -> Path:
+def tempfile(filename: str = "") -> Path:
     """Get a temporary file path"""
     if not filename:
         with NamedTemporaryFile() as f:
@@ -51,7 +51,7 @@ def tempfile(filename: str = '') -> Path:
     return CONFIG.tempdir() / filename
 
 
-def unzip(file: str | Path, dest: str | Path = ''):
+def unzip(file: str | Path, dest: str | Path = ""):
     """
     Unzip a file
 
@@ -74,8 +74,8 @@ def unzip(file: str | Path, dest: str | Path = ''):
     else:
         dest = Path(dest)
 
-    with zopen(file, 'r') as zip:
-        zip.extractall(dest);
+    with zopen(file, "r") as zip:
+        zip.extractall(dest)
 
 
 def slugify(text: str, allow_unicode: bool = False) -> str:
@@ -121,11 +121,7 @@ def slugify(text: str, allow_unicode: bool = False) -> str:
     if allow_unicode:
         text = normalize("NFKC", text)
     else:
-        text = (
-            normalize("NFKD", text)
-            .encode("ascii", "ignore")
-            .decode("ascii")
-        )
+        text = normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
 
     text = re.sub(r"[^\w.\s-]", "", text).strip().lower()
 
@@ -546,12 +542,12 @@ def iohead(file: str, n: int = 5) -> None:
 
 
 def system(
-    command: str, 
+    command: str,
     stdout: str | None = None,
     stderr: str | None = None,
     quiet: bool = False,
-    *args, 
-    **kwargs
+    *args,
+    **kwargs,
 ) -> str:
     """
     Run a system command; allows you to redirect stdout and stderr.
@@ -572,21 +568,25 @@ def system(
     str
         Output from the command
     """
-    
+
     if not quiet:
         print("[green bold]RUNNING:[/green bold] " + command)
-    
+
     try:
         if stdout:
             command += f" > {stdout}"
-        
+
         if stderr:
             command += f" 2> {stderr}"
         else:
             stderr = subprocess.STDOUT  # type: ignore
 
         out = subprocess.check_output(
-            command, stderr=stderr, shell=True, *args, **kwargs,  # type: ignore
+            command,
+            stderr=stderr,
+            shell=True,
+            *args,
+            **kwargs,  # type: ignore
         )
     except subprocess.CalledProcessError as E:
         out = E.output.decode()
@@ -613,11 +613,9 @@ else:
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
-
     def __dir__():
         """Override default dir() behavior"""
         return __all__
-
 
     def __getattr__(name):
         """Override default getattr() behavior"""

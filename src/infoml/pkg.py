@@ -37,9 +37,9 @@ def check_package(importname: str) -> bool:
 
 
 def pipinstall(
-    packagename: str, 
-    importname: str = '',
-    version: str = '', 
+    packagename: str,
+    importname: str = "",
+    version: str = "",
     reinstall: bool = False,
 ) -> None:
     """
@@ -53,7 +53,7 @@ def pipinstall(
         Name used for installing the package
     importname : str
         Name used when importing the package, by default None
-        In most cases, this is identical to `packagename` but both must be 
+        In most cases, this is identical to `packagename` but both must be
         provided when they are different.
     version : str, optional
         Version of the package to install, by default None
@@ -82,7 +82,7 @@ def pipinstall(
     if check_package(importname):
         if reinstall:
             print(f"Reinstalling {packagename}...")
-            pipuninstall(packagename, importname);
+            pipuninstall(packagename, importname)
         else:
             print(f"{packagename} is already installed.")
             return
@@ -91,7 +91,7 @@ def pipinstall(
     out = system(__construct_cmd())
     known_errors = [
         "ERROR: Could not install packages",
-        "Consider using the `--user` option"
+        "Consider using the `--user` option",
     ]
 
     # Try again with `--user` option
@@ -108,7 +108,7 @@ def pipinstall(
     return
 
 
-def pipuninstall(packagename: str, importname: str = '') -> None:
+def pipuninstall(packagename: str, importname: str = "") -> None:
     """
     Uninstall a python package with `pip`.
 
@@ -118,7 +118,7 @@ def pipuninstall(packagename: str, importname: str = '') -> None:
         Name used for installing the package
     importname : str, optional
         Name used when importing the package, by default None
-        In most cases, this is identical to `packagename` but both must be 
+        In most cases, this is identical to `packagename` but both must be
         provided when they are different.
 
     Examples
@@ -158,11 +158,9 @@ else:
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
-
     def __dir__():
         """Override default dir() behavior"""
         return __all__
-
 
     def __getattr__(name):
         """Override default getattr() behavior"""
