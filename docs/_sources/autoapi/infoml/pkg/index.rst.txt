@@ -1,0 +1,81 @@
+:py:mod:`infoml.pkg`
+====================
+
+.. py:module:: infoml.pkg
+
+.. autoapi-nested-parse::
+
+   infoml.pkg
+   ----------
+
+   This module contains functions for managing - install, uninstall, check -
+   python packages with both `pip` and `conda`.
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   infoml.pkg.check_package
+   infoml.pkg.pipinstall
+   infoml.pkg.pipuninstall
+
+
+
+.. py:function:: check_package(importname: str) -> bool
+
+   Check if a package is installed.
+
+   :param importname: Name used when importing the package
+   :type importname: str
+
+   :returns: True if package is installed, False otherwise
+   :rtype: bool
+
+
+.. py:function:: pipinstall(packagename: str, importname: str = '', version: str = '', reinstall: bool = False) -> None
+
+   Install a python package with `pip`.
+
+   Modified from the `bmes` package by Ahmet Sacan.
+
+   :param packagename: Name used for installing the package
+   :type packagename: str, optional
+   :param importname: Name used when importing the package, by default None
+                      In most cases, this is identical to `packagename` but both must be
+                      provided when they are different.
+   :type importname: str
+   :param version: Version of the package to install, by default None
+   :type version: str, optional
+   :param reinstall: Should the package be reinstalled, by default False
+   :type reinstall: bool, optional
+
+   .. rubric:: Examples
+
+   >>> pipinstall('numpy');
+   >>> pipinstall('pandas', version='1.0.0');
+   >>> pipinstall('biopython', 'Bio')
+
+
+.. py:function:: pipuninstall(packagename: str, importname: str = '') -> None
+
+   Uninstall a python package with `pip`.
+
+   :param packagename: Name used for installing the package
+   :type packagename: str
+   :param importname: Name used when importing the package, by default None
+                      In most cases, this is identical to `packagename` but both must be
+                      provided when they are different.
+   :type importname: str, optional
+
+   .. rubric:: Examples
+
+   >>> pipuninstall('numpy');
+
+

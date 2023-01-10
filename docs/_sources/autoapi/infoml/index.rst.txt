@@ -29,6 +29,7 @@ Submodules
    :maxdepth: 1
 
    datasets/index.rst
+   pkg/index.rst
    utils/index.rst
 
 

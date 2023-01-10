@@ -22,7 +22,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="prev" title="infoml.datasets" href="../datasets/index.html" /> 
+    <link rel="prev" title="infoml.pkg" href="../pkg/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,6 +52,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pkg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.pkg</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.utils</span></code></a></li>
 </ul>
 </li>
@@ -91,7 +92,8 @@
   <section id="module-infoml.utils">
 <span id="infoml-utils"></span><h1><a class="reference internal" href="#module-infoml.utils" title="infoml.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">infoml.utils</span></code></a><a class="headerlink" href="#module-infoml.utils" title="Permalink to this heading"></a></h1>
 <section id="id1">
-<p>This module contains utility functions for the infoml package.</p>
+<p>This module contains utility functions for the infoml package.
+Some of these functions are modified from the bmes package by Dr. Ahmet Sacan.</p>
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
@@ -132,6 +134,12 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.downloadurl" title="infoml.utils.downloadurl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downloadurl</span></code></a>(, overwrite, progress)</p></td>
 <td><p>Download and save file from a given URL</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#infoml.utils.iohead" title="infoml.utils.iohead"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iohead</span></code></a>(→ None)</p></td>
+<td><p>Print the first n rows of a text file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.system" title="infoml.utils.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system</span></code></a>(→ str)</p></td>
+<td><p>Run a system command; allows you to redirect stdout and stderr.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -142,13 +150,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="infoml.utils.isnonemptydir">
-<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptydir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptydir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptydir" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptydir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptydir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptydir" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a directory is non-empty</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="infoml.utils.isnonemptyfile">
-<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptyfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptyfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptyfile" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">isnonemptyfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#isnonemptyfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.isnonemptyfile" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a file is non-empty</p>
 </dd></dl>
 
@@ -195,7 +203,6 @@ Retrieved January 2, 2023, from
 <dt class="sig sig-object py" id="infoml.utils.downloadurl">
 <span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">downloadurl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CONFIG.tempdir()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#downloadurl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.downloadurl" title="Permalink to this definition"></a></dt>
 <dd><p>Download and save file from a given URL</p>
-<p>Modified from <cite>bmes.downloadurl</cite> by Ahmet Sacan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -474,6 +481,42 @@ If a database column is missing from the dictionary</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.iohead">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">iohead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#iohead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.iohead" title="Permalink to this definition"></a></dt>
+<dd><p>Print the first n rows of a text file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – Name of file</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of rows to print</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infoml.utils.system">
+<span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/infoml/utils.html#system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.system" title="Permalink to this definition"></a></dt>
+<dd><p>Run a system command; allows you to redirect stdout and stderr.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – Command to run</p></li>
+<li><p><strong>stdout</strong> (<em>str</em><em>, </em><em>optional</em>) – File to redirect stdout to, by default ‘’</p></li>
+<li><p><strong>stderr</strong> (<em>str</em><em>, </em><em>optional</em>) – File to redirect stderr to, by default ‘’</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em>) – Suppress output, by default False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Output from the command</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 </section>
@@ -482,7 +525,7 @@ If a database column is missing from the dictionary</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../datasets/index.html" class="btn btn-neutral float-left" title="infoml.datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pkg/index.html" class="btn btn-neutral float-left" title="infoml.pkg" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

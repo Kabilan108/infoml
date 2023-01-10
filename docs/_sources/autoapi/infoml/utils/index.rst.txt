@@ -6,9 +6,10 @@
 .. autoapi-nested-parse::
 
    infoml.utils
-   -----------
+   ------------
 
    This module contains utility functions for the infoml package.
+   Some of these functions are modified from the bmes package by Dr. Ahmet Sacan.
 
 
 
@@ -34,6 +35,8 @@ Functions
    infoml.utils.isnonemptyfile
    infoml.utils.slugify
    infoml.utils.downloadurl
+   infoml.utils.iohead
+   infoml.utils.system
 
 
 
@@ -42,12 +45,12 @@ Functions
    Check if the current platform is Windows
 
 
-.. py:function:: isnonemptydir(path: pathlib.Path) -> bool
+.. py:function:: isnonemptydir(path: Path | str) -> bool
 
    Check if a directory is non-empty
 
 
-.. py:function:: isnonemptyfile(path: pathlib.Path) -> bool
+.. py:function:: isnonemptyfile(path: Path | str) -> bool
 
    Check if a file is non-empty
 
@@ -85,8 +88,6 @@ Functions
 .. py:function:: downloadurl(url: str, file: str | Path = CONFIG.tempdir(), overwrite: bool = False, progress: bool = True) -> pathlib.Path
 
    Download and save file from a given URL
-
-   Modified from `bmes.downloadurl` by Ahmet Sacan.
 
    :param url: The URL to download the file from
    :type url: str
@@ -293,5 +294,32 @@ Functions
 
       Close the database connection
 
+
+
+.. py:function:: iohead(file: str, n: int = 5) -> None
+
+   Print the first n rows of a text file
+
+   :param file: Name of file
+   :type file: str
+   :param n: Number of rows to print
+   :type n: int, optional
+
+
+.. py:function:: system(command: str, stdout: str | None = None, stderr: str | None = None, quiet: bool = False, *args, **kwargs) -> str
+
+   Run a system command; allows you to redirect stdout and stderr.
+
+   :param command: Command to run
+   :type command: str
+   :param stdout: File to redirect stdout to, by default ''
+   :type stdout: str, optional
+   :param stderr: File to redirect stderr to, by default ''
+   :type stderr: str, optional
+   :param quiet: Suppress output, by default False
+   :type quiet: bool, optional
+
+   :returns: Output from the command
+   :rtype: str
 
 
