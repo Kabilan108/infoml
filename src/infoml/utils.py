@@ -229,6 +229,8 @@ class SQLite:
         """Initialize SQLite class"""
 
         self.file = Path(file).resolve()
+        if not self.file.suffix and not self.file.is_dir():
+            self.file = self.file.with_suffix(".db")
         self.conn = sqlite3.connect(self.file, **kwargs)
         self.conn.row_factory = sqlite3.Row
         self.quiet = quiet
