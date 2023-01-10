@@ -7,6 +7,7 @@ This module contains utility functions for the infoml package.
 
 # Imports from standard library
 from tempfile import NamedTemporaryFile
+from zipfile import ZipFile as zopen
 from unicodedata import normalize
 from itertools import islice
 from shutil import copyfile
@@ -47,6 +48,33 @@ def tempfile(filename: str = '') -> Path:
         with NamedTemporaryFile() as f:
             filename = f.name
     return CONFIG.tempdir() / filename
+
+
+def unzip(file: str | Path, dest: str | Path = ''):
+    """
+    Unzip a file
+
+    Parameters
+    ----------
+    file : str | Path
+        Path to the file to be unzipped
+    dest : str | Path, optional
+        Path to the destination directory, by default ''
+    """
+
+    # Convert file to Path
+    file = Path(file)
+
+    # Define destination directory
+    if not dest:
+        dest = CONFIG.tempdir() / Path(file).stem
+        if not dest.exists():
+            dest.mkdir(parents=True)
+    else:
+        dest = Path(dest)
+
+    with zopen(file, 'r') as zip:
+        zip.extractall(dest);
 
 
 def slugify(text: str, allow_unicode: bool = False) -> str:
