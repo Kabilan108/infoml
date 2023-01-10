@@ -565,9 +565,9 @@ def system(
         out = E.output.decode()
 
     if not quiet:
-        print(out)
+        print(out.decode())
 
-    return out
+    return out.decode()
 
 
 if __name__ == "__main__":
