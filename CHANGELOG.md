@@ -2,6 +2,28 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2023-01-10)
+### Feature
+* Add unzip ([`9e7ec78`](https://github.com/Kabilan108/infoml/commit/9e7ec78e6db4220f0455433a908c2a79016b40d8))
+* Allow user to store stdout and stderr in files ([`dba5b38`](https://github.com/Kabilan108/infoml/commit/dba5b38b0c68ff19fe08ddf38719f28b975dd404))
+* Add tempfile ([`de76660`](https://github.com/Kabilan108/infoml/commit/de766602336f121a0810eef5203bf3c126ce6fec))
+* Add method for retrieving system information ([`4419d83`](https://github.com/Kabilan108/infoml/commit/4419d83890475faf300b8392386d5d54ff15103c))
+* Add functions for installing and removing packages using pip ([`ced2965`](https://github.com/Kabilan108/infoml/commit/ced2965826a98af792b3657067b993f73274d1a8))
+* Add system function ([`64fa8bb`](https://github.com/Kabilan108/infoml/commit/64fa8bb2329171157c1bba86f4f1a4f7c40c0353))
+* Add module for package management ([`2a2499c`](https://github.com/Kabilan108/infoml/commit/2a2499ce151f697c632aee0c2b066292e79b4f55))
+* Add iohead() ([`d81f98a`](https://github.com/Kabilan108/infoml/commit/d81f98af8076f38bfb4c2c2db9e0354f40bbc7fa))
+
+### Fix
+* Add string representation for CONFIG ([`2c313f3`](https://github.com/Kabilan108/infoml/commit/2c313f3050652d525a78b773b18a3979a63fc0d1))
+* Decode sttring output from system ([`6becdb6`](https://github.com/Kabilan108/infoml/commit/6becdb62d2ee9ae61c497f25beb38421416aefe7))
+* SQLite will automatically add the .db extension to database files ([`6a111d3`](https://github.com/Kabilan108/infoml/commit/6a111d312742d39a03e3acbe9d6d5ce368362bdd))
+* Config.tempdir will only create folders in the system tempdir ([`b560b1a`](https://github.com/Kabilan108/infoml/commit/b560b1aab57ea03b90c04253582aad727108f46d))
+
+### Documentation
+* Update documentation ([`9a52049`](https://github.com/Kabilan108/infoml/commit/9a5204988bb74383caa468ab8df4985c67ed261d))
+* Add acknowledgement ([`c6e89d4`](https://github.com/Kabilan108/infoml/commit/c6e89d4974e3f3de6e498dee88d2b2db9745ae57))
+* Add build files ([`685c724`](https://github.com/Kabilan108/infoml/commit/685c72434214f5558099baf871d0ab8e08ae7bdb))
+
 ## v0.3.0 (2023-01-02)
 ### Feature
 * **utils:** Add methods to SQLite ([`55124ce`](https://github.com/Kabilan108/infoml/commit/55124ce9eaf8dfba2400a16366db3a623af60a12))
