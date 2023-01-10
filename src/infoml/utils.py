@@ -518,14 +518,25 @@ def iohead(file: str, n: int = 5) -> None:
     return
 
 
-def system(command: str, quiet: bool = False, *args, **kwargs) -> str:
+def system(
+    command: str, 
+    stdout: str | None = None,
+    stderr: str | None = None,
+    quiet: bool = False,
+    *args, 
+    **kwargs
+) -> str:
     """
-    Run a system command
+    Run a system command; allows you to redirect stdout and stderr.
 
     Parameters
     ----------
     command : str
         Command to run
+    stdout : str, optional
+        File to redirect stdout to, by default ''
+    stderr : str, optional
+        File to redirect stderr to, by default ''
     quiet : bool, optional
         Suppress output, by default False
 
@@ -539,8 +550,16 @@ def system(command: str, quiet: bool = False, *args, **kwargs) -> str:
         print("[green bold]RUNNING:[/green bold] " + command)
     
     try:
+        if stdout:
+            command += f" > {stdout}"
+        
+        if stderr:
+            command += f" 2> {stderr}"
+        else:
+            stderr = subprocess.STDOUT  # type: ignore
+
         out = subprocess.check_output(
-            command, stderr=subprocess.STDOUT, shell=True, *args, **kwargs
+            command, stderr=stderr, shell=True, *args, **kwargs,  # type: ignore
         )
     except subprocess.CalledProcessError as E:
         out = E.output.decode()
