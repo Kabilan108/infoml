@@ -539,27 +539,31 @@ def system(command: str, quiet: bool = False, *args, **kwargs) -> str:
 
     return out
 
-# Define module I/O
-__all__ = [
-    "ispc",
-    "isnonemptydir",
-    "isnonemptyfile",
-    "slugify",
-    "downloadurl",
-    "SQLite",
-    "iohead",
-    "system",
-]
-__all__ += [m for m in dir() if m.startswith("__")]
+
+if __name__ == "__main__":
+    print("This module is not intended to be run directly.")
+else:
+    # Define module I/O
+    __all__ = [
+        "ispc",
+        "isnonemptydir",
+        "isnonemptyfile",
+        "slugify",
+        "downloadurl",
+        "SQLite",
+        "iohead",
+        "system",
+    ]
+    __all__ += [m for m in dir() if m.startswith("__")]
 
 
-def __dir__():
-    """Override default dir() behavior"""
-    return __all__
+    def __dir__():
+        """Override default dir() behavior"""
+        return __all__
 
 
-def __getattr__(name):
-    """Override default getattr() behavior"""
-    if name not in __all__:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    return globals()[name]
+    def __getattr__(name):
+        """Override default getattr() behavior"""
+        if name not in __all__:
+            raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+        return globals()[name]
