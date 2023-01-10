@@ -3,6 +3,7 @@ infoml.utils
 ------------
 
 This module contains utility functions for the infoml package.
+Some of these functions are modified from the bmes package by Dr. Ahmet Sacan.
 """
 
 # Imports from standard library
@@ -139,8 +140,6 @@ def downloadurl(
 ) -> Path:
     """
     Download and save file from a given URL
-
-    Modified from `bmes.downloadurl` by Ahmet Sacan.
 
     Parameters
     ----------
