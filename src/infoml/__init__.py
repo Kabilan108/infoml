@@ -8,8 +8,10 @@ learning tasks on genomic and bioimaging data.
 
 # Imports from standard library
 from importlib.metadata import version
+from socket import gethostname
 from pathlib import Path
-import tempfile
+from rich import print
+import sys, tempfile
 
 
 class config:
@@ -53,7 +55,7 @@ class config:
         if not self.__tempdir.exists():
             self.__tempdir.mkdir(parents=True)
 
-    def cache(self, new_path: Path | str = ""):
+    def cache(self, new_path: Path | str = "") -> Path:
         """Cache directory"""
 
         if new_path:
@@ -64,7 +66,7 @@ class config:
 
         return self.__cache
 
-    def datadir(self, new_path: Path | str = ""):
+    def datadir(self, new_path: Path | str = "") -> Path:
         """Data directory"""
 
         if new_path:
@@ -75,7 +77,7 @@ class config:
 
         return self.__datadir
 
-    def tempdir(self, new_path: Path | str = ""):
+    def tempdir(self, new_path: Path | str = "") -> Path:
         """Temporary directory"""
 
         if new_path:
@@ -85,6 +87,17 @@ class config:
                 self.__tempdir.mkdir(parents=True)
 
         return self.__tempdir
+
+    def sysinfo(self) -> dict:
+        """Get System Information"""
+        return {
+            "host_name": gethostname(),
+            "operating_system": sys.platform,
+            "python_version": sys.version,
+            "python_executable": sys.executable,
+            "infoml_version": version("infoml"),
+            "infoml_path": Path(__file__).parent.absolute(),
+        }
 
 
 # Export modules
