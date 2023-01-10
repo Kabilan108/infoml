@@ -6,6 +6,7 @@ This module contains utility functions for the infoml package.
 """
 
 # Imports from standard library
+from tempfile import NamedTemporaryFile
 from unicodedata import normalize
 from itertools import islice
 from shutil import copyfile
@@ -38,6 +39,14 @@ def isnonemptyfile(path: Path | str) -> bool:
     """Check if a file is non-empty"""
     path = Path(path)
     return path.is_file() and path.stat().st_size > 0
+
+
+def tempfile(filename: str = '') -> Path:
+    """Get a temporary file path"""
+    if not filename:
+        with NamedTemporaryFile() as f:
+            filename = f.name
+    return CONFIG.tempdir() / filename
 
 
 def slugify(text: str, allow_unicode: bool = False) -> str:
