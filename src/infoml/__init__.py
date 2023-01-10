@@ -79,7 +79,7 @@ class config:
         """Temporary directory"""
 
         if new_path:
-            self.__tempdir = Path(new_path)
+            self.__tempdir = Path(tempfile.gettempdir()) / new_path
 
             if not self.__tempdir.exists():
                 self.__tempdir.mkdir(parents=True)
@@ -97,22 +97,25 @@ from . import utils
 __version__ = version(__name__)
 
 
-# Define module I/O
-__all__ = [
-    "CONFIG",
-    "datasets",
-    "utils",
-]
-__all__ += [m for m in dir() if m.startswith("__")]
+if __name__ == "__main__":
+    print("This module is not intended to be run directly.")
+else:
+    # Define module I/O
+    __all__ = [
+        "CONFIG",
+        "datasets",
+        "utils",
+    ]
+    __all__ += [m for m in dir() if m.startswith("__")]
 
 
-def __dir__():
-    """Override default dir() behavior"""
-    return __all__
+    def __dir__():
+        """Override default dir() behavior"""
+        return __all__
 
 
-def __getattr__(name):
-    """Override default getattr() behavior"""
-    if name not in __all__:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    return globals()[name]
+    def __getattr__(name):
+        """Override default getattr() behavior"""
+        if name not in __all__:
+            raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+        return globals()[name]
