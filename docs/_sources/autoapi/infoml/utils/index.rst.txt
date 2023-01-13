@@ -33,6 +33,8 @@ Functions
    infoml.utils.ispc
    infoml.utils.isnonemptydir
    infoml.utils.isnonemptyfile
+   infoml.utils.tempfile
+   infoml.utils.unzip
    infoml.utils.slugify
    infoml.utils.downloadurl
    infoml.utils.iohead
@@ -53,6 +55,21 @@ Functions
 .. py:function:: isnonemptyfile(path: Path | str) -> bool
 
    Check if a file is non-empty
+
+
+.. py:function:: tempfile(filename: str = '') -> pathlib.Path
+
+   Get a temporary file path
+
+
+.. py:function:: unzip(file: str | Path, dest: str | Path = '')
+
+   Unzip a file
+
+   :param file: Path to the file to be unzipped
+   :type file: str | Path
+   :param dest: Path to the destination directory, by default ''
+   :type dest: str | Path, optional
 
 
 .. py:function:: slugify(text: str, allow_unicode: bool = False) -> str
