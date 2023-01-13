@@ -118,6 +118,7 @@ class config:
 CONFIG = config()
 from . import datasets
 from . import utils
+from . import pkg
 
 
 # Deine package version
@@ -132,6 +133,7 @@ else:
         "CONFIG",
         "datasets",
         "utils",
+        "pkg",
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
