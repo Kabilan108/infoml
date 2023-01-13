@@ -194,6 +194,7 @@ def downloadurl(
         return file
 
     # Download the file
+    # TODO: See if urllib.request.urlretrieve can be used instead
     r = requests.get(url, stream=True, allow_redirects=True, timeout=(3, 30))
     if r.status_code == 200:
         size = int(r.headers.get("content-length", 0))
@@ -583,7 +584,7 @@ def system(
 
         out = subprocess.check_output(
             command,
-            stderr=stderr,
+            stderr=stderr,  # type: ignore
             shell=True,
             *args,
             **kwargs,  # type: ignore
@@ -605,6 +606,8 @@ else:
         "ispc",
         "isnonemptydir",
         "isnonemptyfile",
+        "tempfile",
+        "unzip",
         "slugify",
         "downloadurl",
         "SQLite",
