@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.1 (2023-02-09)
+### Documentation
+* Update documentation ([`870ac75`](https://github.com/Kabilan108/infoml/commit/870ac757d49419708bcdccec3443a8cbcc3719cb))
+
 ## v0.5.0 (2023-01-13)
 ### Feature
 * Add functions to __all__ ([`49facde`](https://github.com/Kabilan108/infoml/commit/49facded9f3aaf8f16037816b35a80d3042b8634))
