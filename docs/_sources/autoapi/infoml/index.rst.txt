@@ -37,7 +37,6 @@ Package Contents
 ----------------
 
 .. py:data:: CONFIG
-   
 
    
 
