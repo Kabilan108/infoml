@@ -606,13 +606,13 @@ else:
         "ispc",
         "isnonemptydir",
         "isnonemptyfile",
-        "tempfile",
-        "unzip",
+        "tempfile",  # --
+        "unzip",  # --
         "slugify",
-        "downloadurl",
-        "SQLite",
-        "iohead",
-        "system",
+        "downloadurl",  # --
+        "SQLite",  # --
+        "iohead",  # --
+        "system",  # --
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
