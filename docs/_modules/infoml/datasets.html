@@ -83,7 +83,10 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">loadtxt</span>
 <span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
 
 
 <div class="viewcode-block" id="get_ceman_counts"><a class="viewcode-back" href="../../autoapi/infoml/datasets/index.html#infoml.datasets.get_ceman_counts">[docs]</a><span class="k">def</span> <span class="nf">get_ceman_counts</span><span class="p">():</span>
@@ -105,6 +108,52 @@
     <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;infoml.data&quot;</span><span class="p">,</span> <span class="s2">&quot;GSE50499_GEO_Ceman_counts.txt.gz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">datapath</span> <span class="o">=</span> <span class="n">f</span>
     <span class="k">return</span> <span class="n">datapath</span></div>
+
+
+<div class="viewcode-block" id="load_boston"><a class="viewcode-back" href="../../autoapi/infoml/datasets/index.html#infoml.datasets.load_boston">[docs]</a><span class="k">def</span> <span class="nf">load_boston</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load the Boston Housing dataset [1]_ for house porice prediction.</span>
+
+<span class="sd">    Columns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `CRIM`: per capita crime rate by town</span>
+<span class="sd">    `ZN`: proportion of residential land zoned for lots over 25,000 sq.ft.</span>
+<span class="sd">    `INDUS`: proportion of non-retail business acres per town</span>
+<span class="sd">    `CHAS`: Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)</span>
+<span class="sd">    `NOX`: nitric oxides concentration (parts per 10 million)</span>
+<span class="sd">    `RM`: average number of rooms per dwelling</span>
+<span class="sd">    `AGE`: proportion of owner-occupied units built prior to 1940</span>
+<span class="sd">    `DIS`: weighted distances to five Boston employment centres</span>
+<span class="sd">    `RAD`: index of accessibility to radial highways</span>
+<span class="sd">    `TAX`: full-value property-tax rate per $10,000</span>
+<span class="sd">    `PTRATIO`: pupil-teacher ratio by town</span>
+<span class="sd">    `B`: 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town</span>
+<span class="sd">    `LSTAT`: % lower status of the population</span>
+<span class="sd">    `MEDV`: Median value of owner-occupied homes in $1000&#39;s</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[ndarray, ndarray, list]</span>
+<span class="sd">        Tuple of (X, y, feature_names) where X is the input data, y is the</span>
+<span class="sd">        target variable, and feature_names is the list of feature names.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Harrison, Jr., David, Rubinfeld, Daniel L. (1978/03).&quot;Hedonic housing</span>
+<span class="sd">           prices and the demand for clean air.&quot; Journal of Environmental</span>
+<span class="sd">           Economics and Management 5(1): 81-102.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;infoml.data&quot;</span><span class="p">,</span> <span class="s2">&quot;boston-housing.txt.gz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">datapath</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">feature_names</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">loadtxt</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">feature_names</span></div>
 </pre></div>
 
            </div>
