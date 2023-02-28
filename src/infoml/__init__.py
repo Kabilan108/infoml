@@ -2,7 +2,7 @@
 infoml
 ------
 
-`infoml` is a Python package for perfoming bioinformatics analysis and machine 
+`infoml` is a Python package for perfoming bioinformatics analysis and machine
 learning tasks on genomic and bioimaging data.
 """
 
@@ -119,6 +119,7 @@ CONFIG = config()
 from . import datasets
 from . import utils
 from . import pkg
+from . import viz
 
 
 # Deine package version
