@@ -598,6 +598,77 @@ def system(
     return out.decode()
 
 
+class Bidict:
+    """
+    A bidirectional dictionary
+
+    Methods
+    -------
+    items
+        Return a list of (key, value) tuples
+    keys
+        Return a list of keys
+    values
+        Return a list of values
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Class constructor"""
+        self._dict = dict(*args, **kwargs)
+        self._rev = dict((v, k) for k, v in self._dict.items())
+
+    def __getitem__(self, key):
+        """Get item from dictionary"""
+        return self._dict[key]
+
+    def __setitem__(self, key, value):
+        """Set item in dictionary"""
+        self._dict[key] = value
+        self._rev[value] = key
+
+    def __delitem__(self, key):
+        """Delete item from dictionary"""
+        del self._rev[self._dict[key]]
+        del self._dict[key]
+
+    def __iter__(self):
+        """Iterate over dictionary"""
+        return iter(self._dict)
+
+    def __len__(self):
+        """Return length of dictionary"""
+        return len(self._dict)
+
+    def __repr__(self):
+        """Return string representation of dictionary"""
+        return repr(self._dict)
+
+    def __str__(self):
+        """Return string representation of dictionary"""
+        return str(self._dict)
+
+    def __contains__(self, key):
+        """Check if key is in dictionary"""
+        return key in self._dict
+
+    def items(self):
+        """Return a list of (key, value) tuples"""
+        return self._dict.items()
+
+    def keys(self):
+        """Return a list of keys"""
+        return self._dict.keys()
+
+    def values(self):
+        """Return a list of values"""
+        return self._dict.values()
+
+    @property
+    def rev(self):
+        """Return the reverse dictionary"""
+        return self._rev
+
+
 if __name__ == "__main__":
     print("This module is not intended to be run directly.")
 else:
@@ -613,6 +684,7 @@ else:
         "SQLite",  # --
         "iohead",  # --
         "system",  # --
+        "Bidict",
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
