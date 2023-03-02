@@ -19,7 +19,9 @@ Subpackages
    :titlesonly:
    :maxdepth: 3
 
+   binf/index.rst
    data/index.rst
+   viz/index.rst
 
 
 Submodules

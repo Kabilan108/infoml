@@ -1,0 +1,23 @@
+:py:mod:`infoml.binf`
+=====================
+
+.. py:module:: infoml.binf
+
+.. autoapi-nested-parse::
+
+   infoml.binf
+   -----------
+
+   This sub-package contains functions for bioinformatics.
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   data/index.rst
+
+

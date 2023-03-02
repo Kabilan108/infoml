@@ -1,0 +1,159 @@
+:py:mod:`infoml.binf.data`
+==========================
+
+.. py:module:: infoml.binf.data
+
+.. autoapi-nested-parse::
+
+   infoml.binf.data
+   ----------------
+
+   This module contains functions for downloading data from bioinformatics
+   repositiories like Gene Expression Omnibus and the Curated Microarray Database.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   infoml.binf.data.CuMiDa
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   infoml.binf.data.geodlparse
+
+
+
+.. py:function:: geodlparse(acc: str, datadir: str | Path = '', silent: bool = True, make_dir: bool = False, cache: bool = False) -> GSE | GPL
+
+   Download, parse and cache data from GEO.
+   This fuction only downloads GSE and GPL data.
+
+   :param acc: GEO accession
+   :type acc: str
+   :param datadir: Directory for storing downloaded data, will default to a
+                   temporary directory if not specified
+   :type datadir: str | Path, optional
+   :param silent: Whether to suppress output, by default False
+   :type silent: bool, optional
+   :param make_dir: Whether to make the directory if it does not exist,
+                    by default False
+   :type make_dir: bool, optional
+   :param cache: Whether to cache the data, by default False
+   :type cache: bool, optional
+
+   :returns: Parsed GEO data
+   :rtype: GPL | GSE
+
+
+.. py:class:: CuMiDa(datadir: Union[str, pathlib.Path] = '')
+
+   Class for loading datasets from the Curated Microarray Database
+   hosted by SBCB (sbcb.inf.ufrgs.br)
+
+   .. attribute:: INDEX
+
+      Path to the JSON file containing an index of all datasets in the
+      database.
+
+      :type: str
+
+   .. attribute:: BASEURL
+
+      Base URL for downloading datasets from CuMiDa.
+
+      :type: str
+
+   .. attribute:: index
+
+      Index of all datasets available from CuMiDa.
+
+      :type: pd.DataFrame
+
+   .. attribute:: datadir
+
+      Directory for storing downloaded data.
+
+      :type: str | Path
+
+   .. attribute:: gse_dir
+
+      Directory for storing downloaded GSE data.
+
+      :type: str | Path
+
+   .. attribute:: gpl_dir
+
+      Directory for storing downloaded GPL data.
+
+      :type: str | Path
+
+   .. method:: download(acc: str, datadir: str | Path='', silent: bool=False,
+
+           make_dir: bool=False)
+      Download a dataset from CuMiDa.
+
+   .. method:: load(dataset: tuple)
+
+      Load a specified dataset, along with gene annotations from its GPL.
+
+
+   .. py:attribute:: INDEX
+      :value: 'https://gist.githubusercontent.com/Kabilan108/3d11266abdd3c237d359dd7c11a40871/raw/ff2af81ae70afa...'
+
+      
+
+   .. py:attribute:: BASEURL
+      :value: 'https://sbcb.inf.ufrgs.br'
+
+      
+
+   .. py:method:: _makeindex() -> None
+
+      Create a dataframe containing the index of all datasets
+      available from CuMiDa.
+
+
+   .. py:method:: download(selected: pd.DataFrame | tuple | list) -> None
+
+      Download selected datasets from CuMiDa.
+
+      :param selected: A subset of `self.index` containing the datasets to download.
+                       Or a tuple of (ID, Type) for a single dataset or a list of tuples.
+      :type selected: pd.DataFrame | tuple
+
+      :rtype: None
+
+
+   .. py:method:: load(dataset: tuple) -> pandas.DataFrame
+
+      Load a specified dataset.
+
+      :param dataset: A tuple of (ID, Type) for a single dataset.
+      :type dataset: tuple
+
+      :returns: **gse**
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: __repr__() -> str
+
+      Return a string representation of the CuMiDa class
+
+
+   .. py:method:: __str__() -> str
+
+      String representation of the CuMiDa class
+
+
+

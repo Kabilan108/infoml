@@ -2,6 +2,23 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2023-03-02)
+### Feature
+* Add binf and viz modules to the Public interface ([`d48e139`](https://github.com/Kabilan108/infoml/commit/d48e13904c0aa61f278fa4b1cf03a2e83ed82b5b))
+* Add geodlparse() and CuMiDa ([`cf57fc1`](https://github.com/Kabilan108/infoml/commit/cf57fc13c89243d4f041e315c59377e04606d936))
+* Add data module ([`21de915`](https://github.com/Kabilan108/infoml/commit/21de91506bc9adf45967751531af5ac325bbf562))
+* Add binf module ([`6b54525`](https://github.com/Kabilan108/infoml/commit/6b54525f3ea3683ff633e3533c1dab072825012b))
+* Add themes module ([`5179c25`](https://github.com/Kabilan108/infoml/commit/5179c2500bd6f6a35008a1805c87135805a617a3))
+* Add viz module to publlic interface ([`176391a`](https://github.com/Kabilan108/infoml/commit/176391a8d561196f4978efb3cb0a171972bf9910))
+* Add viz module ([`12edb95`](https://github.com/Kabilan108/infoml/commit/12edb95b30412c96f532b392bbd074ab47a9a9df))
+* Add Bidict ([`e051523`](https://github.com/Kabilan108/infoml/commit/e0515231af2803c06938b58b1afe8f70c250acd5))
+
+### Fix
+* Geodlparse() no longer defaults to downloading to the current directory ([`d085aec`](https://github.com/Kabilan108/infoml/commit/d085aec2bac333b202d7ce59c607d8d2e9ae2c08))
+
+### Documentation
+* Update documentation ([`f06ffc8`](https://github.com/Kabilan108/infoml/commit/f06ffc801524dbb823aabe6fec142443a9247d1d))
+
 ## v0.6.0 (2023-02-27)
 ### Feature
 * Add boston housing dataset ([`f596ef1`](https://github.com/Kabilan108/infoml/commit/f596ef13a216e3bc344aa2e593456562f74b06b7))

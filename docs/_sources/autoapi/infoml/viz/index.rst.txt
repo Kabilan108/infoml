@@ -1,0 +1,23 @@
+:py:mod:`infoml.viz`
+====================
+
+.. py:module:: infoml.viz
+
+.. autoapi-nested-parse::
+
+   infoml.viz
+   ----------
+
+   This sub-package contains functions for visualizing data.
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   themes/index.rst
+
+

@@ -1,0 +1,14 @@
+:py:mod:`infoml.viz.themes`
+===========================
+
+.. py:module:: infoml.viz.themes
+
+.. autoapi-nested-parse::
+
+   infoml.themes
+   -----------
+
+   This module contains themes for plotly and matplotlib (seaborn included).
+
+
+

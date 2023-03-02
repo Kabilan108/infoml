@@ -22,6 +22,7 @@ Classes
 .. autoapisummary::
 
    infoml.utils.SQLite
+   infoml.utils.Bidict
 
 
 
@@ -338,5 +339,82 @@ Functions
 
    :returns: Output from the command
    :rtype: str
+
+
+.. py:class:: Bidict(*args, **kwargs)
+
+   A bidirectional dictionary
+
+   .. method:: items
+
+      Return a list of (key, value) tuples
+
+   .. method:: keys
+
+      Return a list of keys
+
+   .. method:: values
+
+      Return a list of values
+
+
+   .. py:property:: rev
+
+      Return the reverse dictionary
+
+   .. py:method:: __getitem__(key)
+
+      Get item from dictionary
+
+
+   .. py:method:: __setitem__(key, value)
+
+      Set item in dictionary
+
+
+   .. py:method:: __delitem__(key)
+
+      Delete item from dictionary
+
+
+   .. py:method:: __iter__()
+
+      Iterate over dictionary
+
+
+   .. py:method:: __len__()
+
+      Return length of dictionary
+
+
+   .. py:method:: __repr__()
+
+      Return string representation of dictionary
+
+
+   .. py:method:: __str__()
+
+      Return string representation of dictionary
+
+
+   .. py:method:: __contains__(key)
+
+      Check if key is in dictionary
+
+
+   .. py:method:: items()
+
+      Return a list of (key, value) tuples
+
+
+   .. py:method:: keys()
+
+      Return a list of keys
+
+
+   .. py:method:: values()
+
+      Return a list of values
+
 
 
