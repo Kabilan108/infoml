@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2023-03-02)
+### Feature
+* Add probe_ids option to CuMiDa.load() ([`cb7be0a`](https://github.com/Kabilan108/infoml/commit/cb7be0affb8028ce7fc61feaabedb14ca7e5c7fd))
+
+### Documentation
+* Update documentation ([`7cd33d6`](https://github.com/Kabilan108/infoml/commit/7cd33d6ec4d6456d93002b0b9dcf6eecf345ec88))
+
 ## v0.7.0 (2023-03-02)
 ### Feature
 * Add binf and viz modules to the Public interface ([`d48e139`](https://github.com/Kabilan108/infoml/commit/d48e13904c0aa61f278fa4b1cf03a2e83ed82b5b))
