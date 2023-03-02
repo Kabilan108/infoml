@@ -36,7 +36,7 @@ warnings.filterwarnings(
 def geodlparse(
     acc: str,
     datadir: str | Path = "",
-    silent: bool = False,
+    silent: bool = True,
     make_dir: bool = False,
     cache: bool = False,
 ) -> GSE | GPL:  # type: ignore
@@ -75,8 +75,6 @@ def geodlparse(
     assert isinstance(datadir, str) or isinstance(
         datadir, Path
     ), "datadir must be a string or pathlib.Path object"
-    if isinstance(datadir, str):
-        datadir = Path(datadir)
     if datadir == "":
         # Use a temporary directory
         datadir = CONFIG.tempdir()
@@ -85,6 +83,8 @@ def geodlparse(
             os.makedirs(datadir)
         else:
             raise ValueError("Directory does not exist")
+    if isinstance(datadir, str):
+        datadir = Path(datadir)
 
     assert isinstance(silent, bool), "silent must be a boolean"
     assert isinstance(make_dir, bool), "make_dir must be a boolean"
