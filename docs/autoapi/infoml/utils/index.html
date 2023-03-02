@@ -108,6 +108,9 @@ Some of these functions are modified from the bmes package by Dr. Ahmet Sacan.</
 <tr class="row-odd"><td><p><a class="reference internal" href="#infoml.utils.SQLite" title="infoml.utils.SQLite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SQLite</span></code></a></p></td>
 <td><p>Wrapper for connecting to and querying SQLite databases</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#infoml.utils.Bidict" title="infoml.utils.Bidict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bidict</span></code></a></p></td>
+<td><p>A bidirectional dictionary</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -538,6 +541,102 @@ If a database column is missing from the dictionary</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="infoml.utils.Bidict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">infoml.utils.</span></span><span class="sig-name descname"><span class="pre">Bidict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict" title="Permalink to this definition"></a></dt>
+<dd><p>A bidirectional dictionary</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.items" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of (key, value) tuples</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.keys" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of keys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.values" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of values</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.rev">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rev</span></span><a class="headerlink" href="#infoml.utils.Bidict.rev" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reverse dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__getitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Get item from dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__setitem__">
+<span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__setitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__setitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Set item in dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__delitem__">
+<span class="sig-name descname"><span class="pre">__delitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__delitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__delitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Delete item from dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__iter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__iter__" title="Permalink to this definition"></a></dt>
+<dd><p>Iterate over dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__len__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__len__" title="Permalink to this definition"></a></dt>
+<dd><p>Return length of dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__repr__" title="Permalink to this definition"></a></dt>
+<dd><p>Return string representation of dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return string representation of dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="infoml.utils.Bidict.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.__contains__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infoml.utils.Bidict.__contains__" title="Permalink to this definition"></a></dt>
+<dd><p>Check if key is in dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of (key, value) tuples</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of keys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/infoml/utils.html#Bidict.values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of values</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
