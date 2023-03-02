@@ -120,6 +120,7 @@ from . import datasets
 from . import utils
 from . import pkg
 from . import viz
+from . import binf
 
 
 # Deine package version
@@ -135,6 +136,8 @@ else:
         "datasets",
         "utils",
         "pkg",
+        "viz",
+        "binf",
     ]
     __all__ += [m for m in dir() if m.startswith("__")]
 
