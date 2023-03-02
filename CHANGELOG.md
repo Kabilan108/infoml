@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2023-02-27)
+### Feature
+* Add boston housing dataset ([`f596ef1`](https://github.com/Kabilan108/infoml/commit/f596ef13a216e3bc344aa2e593456562f74b06b7))
+
+### Documentation
+* Update documentation ([`eb6cee4`](https://github.com/Kabilan108/infoml/commit/eb6cee482d8b39b1a1cb42416f8fc2f66007215e))
+
 ## v0.5.1 (2023-02-09)
 ### Documentation
 * Update documentation ([`870ac75`](https://github.com/Kabilan108/infoml/commit/870ac757d49419708bcdccec3443a8cbcc3719cb))
