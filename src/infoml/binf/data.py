@@ -311,7 +311,7 @@ class CuMiDa:
                 self._gpls[acc] = geodlparse(acc, self.gpl_dir.__str__(), silent=True)
                 pbar.update(1)
 
-    def load(self, dataset: tuple) -> pd.DataFrame:
+    def load(self, dataset: tuple, probe_ids: bool = False) -> pd.DataFrame:
         """
         Load a specified dataset.
 
@@ -319,6 +319,8 @@ class CuMiDa:
         ----------
         dataset : tuple
             A tuple of (ID, Type) for a single dataset.
+        probe_ids : bool, optional
+            If true, return the probe IDs instead of the GenBank Accessions.
 
         Returns
         -------
@@ -334,21 +336,23 @@ class CuMiDa:
         path = self.gse_dir / f"{'_'.join(dataset[::-1])}.csv"
         gse = pd.read_csv(path).set_index(["samples", "type"])
 
-        try:
-            # Rename GSE columns with GenBank IDs where possible
-            gpl = self._gpls[self.index.loc[dataset]["Platform"]].table
-            gpl["GB_ACC"] = gpl["GB_ACC"].fillna(gpl["ID"])
-            gse.columns = gse.columns.map(gpl.set_index("ID")["GB_ACC"])
+        # Rename the columns
+        if not probe_ids:
+            try:
+                # Rename GSE columns with GenBank IDs where possible
+                gpl = self._gpls[self.index.loc[dataset]["Platform"]].table
+                gpl["GB_ACC"] = gpl["GB_ACC"].fillna(gpl["ID"])
+                gse.columns = gse.columns.map(gpl.set_index("ID")["GB_ACC"])
 
-            # Add numeric suffices to duplicate column names
-            idx = gse.columns.to_series().groupby(level=0).transform("cumcount")
-            gse.columns = gse.columns + "." + idx.astype(str)
+                # Add numeric suffices to duplicate column names
+                idx = gse.columns.to_series().groupby(level=0).transform("cumcount")
+                gse.columns = gse.columns + "." + idx.astype(str)
 
-            # Sort columns alphabetically
-            gse = gse.reindex(sorted(gse.columns), axis=1)
-        except KeyError as E:
-            print(f"No GenBank IDs found for {dataset[0]}")
-            print(E)
+                # Sort columns alphabetically
+                gse = gse.reindex(sorted(gse.columns), axis=1)
+            except KeyError as E:
+                print(f"No GenBank IDs found for {dataset[0]}")
+                print(E)
 
         return gse
 
