@@ -135,12 +135,14 @@ Functions
       :rtype: None
 
 
-   .. py:method:: load(dataset: tuple) -> pandas.DataFrame
+   .. py:method:: load(dataset: tuple, probe_ids: bool = False) -> pandas.DataFrame
 
       Load a specified dataset.
 
       :param dataset: A tuple of (ID, Type) for a single dataset.
       :type dataset: tuple
+      :param probe_ids: If true, return the probe IDs instead of the GenBank Accessions.
+      :type probe_ids: bool, optional
 
       :returns: **gse**
       :rtype: pd.DataFrame
